@@ -1,14 +1,15 @@
 {
     "name": "xml",
-    "displayName": "XML Tools",
+    "displayName": "XML Tools for BaseX",
     "description": "XML Formatting, XQuery, and XPath Tools for Visual Studio Code",
-    "version": "2.5.1",
+    "version": "2.5.2",
     "preview": false,
-    "publisher": "DotJoshJohnson",
+    "publisher": "quodatum",
     "author": {
-        "name": "Josh Johnson",
+        "name": "Andy Bunce",
         "url": "https://github.com/DotJoshJohnson"
     },
+    "license": "MIT",
     "galleryBanner": {
         "color": "#FFFFFF",
         "theme": "light"
@@ -23,7 +24,7 @@
         "url": "https://github.com/DotJoshJohnson/vscode-xml/issues"
     },
     "engines": {
-        "vscode": "^1.22.2"
+        "vscode": "^1.63.0"
     },
     "categories": [
         "Formatters",
@@ -260,20 +261,25 @@
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
-        "compile": "npm run lint && tsc -p ./",
+        "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && mocha './out/test/**/*.js'",
-        "test-windows": "npm run compile && mocha ./out/test/**/*.js",
-        "lint": "tslint -p tslint.json --fix"
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^7.0.43",
-        "@types/xmldom": "^0.1.29",
-        "tslint": "^5.9.1",
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.16"
+        "@types/vscode": "^1.63.0",
+        "@types/glob": "^7.2.0",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "14.x",
+        "@typescript-eslint/eslint-plugin": "^5.9.1",
+        "@typescript-eslint/parser": "^5.9.1",
+        "@types/xmldom": "^0.1.13",
+        "eslint": "^8.6.0",
+        "glob": "^7.2.0",
+        "mocha": "^9.1.3",
+        "typescript": "^4.5.4",
+        "@vscode/test-electron": "^2.0.3"
     },
     "dependencies": {
         "xmldom": "^0.1.27",

@@ -33,7 +33,7 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
         return window.activeTextEditor || null;
     }
 
-    getTreeItem(element: Node): TreeItem | Thenable<TreeItem> {
+    getTreeItem(element: Element): TreeItem | Thenable<TreeItem> {
         const enableMetadata = Configuration.enableXmlTreeViewMetadata;
         const enableSync = Configuration.enableXmlTreeViewCursorSync;
 
@@ -60,9 +60,9 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
                     treeItem.label += `children: ${childElements.length}, `;
                     treeItem.collapsibleState = TreeItemCollapsibleState.Collapsed;
                 }
+                const label = treeItem.label as string;
+                treeItem.label = label.substr(0, label.length - 2) + ")";
 
-                treeItem.label = treeItem.label.substr(0, treeItem.label.length - 2);
-                treeItem.label += ")";
             }
 
             if (this._xmlTraverser.hasSimilarSiblings(<Element>element) && enableSync) {
@@ -134,7 +134,7 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
             NativeCommands.setContext(constants.contextKeys.xmlTreeViewEnabled, false);
 
             this._xmlDocument = null;
-            this._onDidChangeTreeData.fire();
+            this._onDidChangeTreeData.fire(0);
             return;
         }
 
@@ -162,7 +162,7 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
             this._xmlTraverser.xmlDocument = this._xmlDocument;
         }
 
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(0);
     }
 
 }

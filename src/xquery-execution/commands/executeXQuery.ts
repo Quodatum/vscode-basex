@@ -108,12 +108,14 @@ export async function executeXQuery(editor: TextEditor, edit: TextEditorEdit): P
         await ChildProcess.spawn(executable, args);
     }
 
-    catch (error) {
-        if (error.message.search(/[Ll]ine:?\s*\d+/gm) > -1) {
-            const match: RegExpExecArray = /[Ll]ine:?\s*\d+/gm.exec(error.message);
-            const line: number = (Number.parseInt(match[0].replace(/([Ll]ine:?\s*)|\s/, "")) - 1);
+    catch (error ) {
+        let message = "Unknown Error";
+        if (error instanceof Error) { message = error.message; }
+        if (message.search(/[Ll]ine:?\s*\d+/gm) > -1) {
+            const match: RegExpExecArray = /[Ll]ine:?\s*\d+/gm.exec(message);
+            const line: number = (Number.parseInt(match[0].replace(/([Ll]ine:?\s*)|\s/, ""), 10) - 1);
 
-            const selection: string = await window.showErrorMessage(error.message, `Go to Line ${line}`);
+            const selection: string = await window.showErrorMessage(message, `Go to Line ${line}`);
 
             if (selection === `Go to Line ${line}`) {
                 editor.revealRange(new Range(line, 0, line, 0));
@@ -121,7 +123,7 @@ export async function executeXQuery(editor: TextEditor, edit: TextEditorEdit): P
         }
 
         else {
-            window.showErrorMessage(error.message);
+            window.showErrorMessage(message);
         }
     }
 

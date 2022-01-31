@@ -2,26 +2,26 @@
     "name": "vscode-basex",
     "displayName": "XML Tools for BaseX",
     "description": "XML Formatting, XQuery, and XPath Tools for Visual Studio Code",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "preview": false,
     "publisher": "quodatum",
     "author": {
         "name": "Andy Bunce",
-        "url": "https://github.com/DotJoshJohnson"
+        "url": "https://github.com/Quodatum"
     },
     "license": "MIT",
     "galleryBanner": {
         "color": "#FFFFFF",
         "theme": "light"
     },
-    "icon": "resources/xml.png",
-    "homepage": "https://github.com/DotJoshJohnson/vscode-xml",
+    "icon": "resources/basex.png",
+    "homepage": "https://github.com/Quodatum/vscode-xml",
     "repository": {
         "type": "git",
-        "url": "https://github.com/DotJoshJohnson/vscode-xml.git"
+        "url": "https://github.com/Quodatum/vscode-xml.git"
     },
     "bugs": {
-        "url": "https://github.com/DotJoshJohnson/vscode-xml/issues"
+        "url": "https://github.com/Quodatum/vscode-xml/issues"
     },
     "engines": {
         "vscode": "^1.63.0"

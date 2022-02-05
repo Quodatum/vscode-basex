@@ -2,7 +2,7 @@
     "name": "vscode-basex",
     "displayName": "BaseX tools",
     "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "preview": false,
     "publisher": "quodatum",
     "author": {
@@ -203,7 +203,8 @@
                     ".xsd",
                     ".xsl",
                     ".plist",
-                    ".mobileconfig"
+                    ".mobileconfig",
+                    ".sch"
                 ]
             },
             {

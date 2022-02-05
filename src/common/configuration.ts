@@ -1,6 +1,6 @@
 import { workspace, Uri } from "vscode";
 
-const ExtensionTopLevelSection = "xmlTools";
+const ExtensionTopLevelSection = "basexTools";
 
 export class Configuration {
     static get enableXmlTreeView(): boolean {

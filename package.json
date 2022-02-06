@@ -2,7 +2,7 @@
     "name": "vscode-basex",
     "displayName": "BaseX tools",
     "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-    "version": "0.0.4",
+    "version": "0.0.6",
     "preview": false,
     "publisher": "quodatum",
     "author": {
@@ -261,7 +261,11 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
+        "vscode:prepublish": "npm run esbuild-base -- --minify",
+        "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+        "esbuild": "npm run esbuild-base -- --sourcemap",
+        "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+        "test-compile": "tsc -p ./",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "pretest": "npm run compile && npm run lint",

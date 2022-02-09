@@ -1,11 +1,11 @@
 export namespace commands {
-    export const evaluateXPath = "xmlTools.evaluateXPath";
-    export const executeXQuery = "xmlTools.executeXQuery";
-    export const formatAsXml = "xmlTools.formatAsXml";
-    export const xmlToText = "xmlTools.xmlToText";
-    export const textToXml = "xmlTools.textToXml";
-    export const getCurrentXPath = "xmlTools.getCurrentXPath";
-    export const minifyXml = "xmlTools.minifyXml";
+    export const evaluateXPath = "basexTools.evaluateXPath";
+    export const executeXQuery = "basexTools.executeXQuery";
+    export const formatAsXml = "basexTools.formatAsXml";
+    export const xmlToText = "basexTools.xmlToText";
+    export const textToXml = "basexTools.textToXml";
+    export const getCurrentXPath = "basexTools.getCurrentXPath";
+    export const minifyXml = "basexTools.minifyXml";
 }
 
 export namespace contextKeys {

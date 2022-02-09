@@ -7,7 +7,7 @@ about: Report an issue with the XML formatter.
 What seems to be the problem?
 
 #### Formatter Implementation
-Which XML Formatter implementation are you using (the value of your `xmlTools.xmlFormatterImplementation` setting).
+Which XML Formatter implementation are you using (the value of your `basexTools.xmlFormatterImplementation` setting).
 
 #### XML Tools Version
 What version of XML Tools are you using?

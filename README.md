@@ -1,10 +1,6 @@
-# XML Tools for Visual Studio Code
-[![Visual Studio Marketplace](https://img.shields.io/vscode-marketplace/v/DotJoshJohnson.xml.svg?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=DotJoshJohnson.xml)
-[![Visual Studio Marketplace](https://img.shields.io/vscode-marketplace/r/DotJoshJohnson.xml.svg?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=DotJoshJohnson.xml)  
+# BaseX Tools for Visual Studio Code
+This project was originally a fork of https://github.com/DotJoshJohnson/vscode-xml
 
-[![](https://img.shields.io/badge/TWITTER-%40DotJohnson-blue.svg?logo=twitter&style=for-the-badge)](https://twitter.com/DotJoshJohnson)
-[![](https://img.shields.io/badge/gitter-join_chat-1dce73.svg?style=for-the-badge&logo=gitter-white)](https://gitter.im/vscode-xml/vscode-xml)
-[![Beerpay](https://img.shields.io/beerpay/DotJoshJohnson/vscode-xml.svg?style=for-the-badge)](https://beerpay.io/DotJoshJohnson/vscode-xml)
 
 ## Features
 * [XML Formatting](https://github.com/DotJoshJohnson/vscode-xml/wiki/xml-formatting)
@@ -18,18 +14,18 @@
 * VS Code `1.22.2` or higher
 
 ## Extension Settings
-* **`xmlTools.enableXmlTreeView`:** Enables the XML Tree View for XML documents.
-* **`xmlTools.enableXmlTreeViewMetadata`:** Enables attribute and child element counts in the XML Document view.
-* **`xmlTools.enableXmlTreeViewCursorSync`:** Enables auto-reveal of elements in the XML Document view when a start tag is clicked in the editor.
-* **`xmlTools.enforcePrettySelfClosingTagOnFormat`:** Ensures a space is added before the forward slash at the end of a self-closing tag.
-* **`xmlTools.ignoreDefaultNamespace`:** Ignore default xmlns attributes when evaluating XPath.
-* **`xmlTools.persistXPathQuery`:** Remember the last XPath query used.
-* **`xmlTools.removeCommentsOnMinify`:** Remove XML comments during minification.
-* **`xmlTools.splitAttributesOnFormat`:** Put each attribute on a new line when formatting XML. Overrides `xmlTools.splitXmlnsOnFormat` if set to `true`. (V2 Formatter Only)
-* **`xmlTools.splitXmlnsOnFormat`:** Put each xmlns attribute on a new line when formatting XML.
-* **`xmlTools.xmlFormatterImplementation`:** Supported XML Formatters: `classic`, `v2`.
-* **`xmlTools.xqueryExecutionArguments`:** Arguments to be passed to the XQuery execution engine.
-* **`xmlTools.xqueryExecutionEngine`:** The full path to the executable to run when executing XQuery scripts.
+* **`basexTools.enableXmlTreeView`:** Enables the XML Tree View for XML documents.
+* **`basexTools.enableXmlTreeViewMetadata`:** Enables attribute and child element counts in the XML Document view.
+* **`basexTools.enableXmlTreeViewCursorSync`:** Enables auto-reveal of elements in the XML Document view when a start tag is clicked in the editor.
+* **`basexTools.enforcePrettySelfClosingTagOnFormat`:** Ensures a space is added before the forward slash at the end of a self-closing tag.
+* **`basexTools.ignoreDefaultNamespace`:** Ignore default xmlns attributes when evaluating XPath.
+* **`basexTools.persistXPathQuery`:** Remember the last XPath query used.
+* **`basexTools.removeCommentsOnMinify`:** Remove XML comments during minification.
+* **`basexTools.splitAttributesOnFormat`:** Put each attribute on a new line when formatting XML. Overrides `basexTools.splitXmlnsOnFormat` if set to `true`. (V2 Formatter Only)
+* **`basexTools.splitXmlnsOnFormat`:** Put each xmlns attribute on a new line when formatting XML.
+* **`basexTools.xmlFormatterImplementation`:** Supported XML Formatters: `classic`, `v2`.
+* **`basexTools.xqueryExecutionArguments`:** Arguments to be passed to the XQuery execution engine.
+* **`basexTools.xqueryExecutionEngine`:** The full path to the executable to run when executing XQuery scripts.
 
 ## Release Notes
 Detailed release notes are available [here](https://github.com/DotJoshJohnson/vscode-xml/releases).

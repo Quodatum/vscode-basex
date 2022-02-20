@@ -1,6 +1,6 @@
 import * as xpath from "xpath";
 import { SelectedValue, XPathSelect } from "xpath";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 
 export class EvaluatorResult {
     type: EvaluatorResultType;

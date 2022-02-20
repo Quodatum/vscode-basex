@@ -5,7 +5,7 @@ import {
 } from "vscode";
 
 import * as path from "path";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 
 import { Configuration, NativeCommands, XmlTraverser } from "../common";
 import * as constants from "../constants";
@@ -14,6 +14,7 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
     private _onDidChangeTreeData: EventEmitter<any> = new EventEmitter<any>();
     private _xmlDocument: Document;
     private _xmlTraverser: XmlTraverser;
+
 
     constructor(private _context: ExtensionContext) {
         window.onDidChangeActiveTextEditor(() => {
@@ -134,7 +135,7 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
             NativeCommands.setContext(constants.contextKeys.xmlTreeViewEnabled, false);
 
             this._xmlDocument = null;
-            this._onDidChangeTreeData.fire(0);
+            this._onDidChangeTreeData.fire(null);
             return;
         }
 
@@ -162,7 +163,7 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
             this._xmlTraverser.xmlDocument = this._xmlDocument;
         }
 
-        this._onDidChangeTreeData.fire(0);
+        this._onDidChangeTreeData.fire(this.activeEditor.document.uri);
     }
 
 }

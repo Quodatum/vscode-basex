@@ -1,12 +1,9 @@
-import { workspace } from "vscode";
 import { ProviderResult, Range, TextEdit, TextEditor, TextEditorEdit } from "vscode";
 
 import { NativeCommands } from "../../common";
-import * as constants from "../../constants";
 
 import { XmlFormatterFactory } from "../xml-formatter";
 import { XmlFormattingEditProvider } from "../xml-formatting-edit-provider";
-import { XmlFormattingOptionsFactory } from "../xml-formatting-options";
 
 export function formatAsXml(editor: TextEditor, edit: TextEditorEdit): void {
     const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());

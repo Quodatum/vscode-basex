@@ -1,6 +1,6 @@
 import { window } from "vscode";
 import { TextEditor, TextEditorEdit } from "vscode";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 
 import { XPathBuilder } from "../xpath-builder";
 

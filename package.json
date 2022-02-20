@@ -1,295 +1,292 @@
 {
-    "name": "vscode-basex",
-    "displayName": "BaseX tools",
-    "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-    "version": "0.0.6",
-    "preview": false,
-    "publisher": "quodatum",
-    "author": {
-        "name": "Andy Bunce",
-        "url": "https://github.com/Quodatum"
-    },
-    "license": "MIT",
-    "galleryBanner": {
-        "color": "#FFFFFF",
-        "theme": "light"
-    },
-    "icon": "resources/basex.png",
-    "homepage": "https://github.com/Quodatum/vscode-xml",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Quodatum/vscode-xml.git"
-    },
-    "bugs": {
-        "url": "https://github.com/Quodatum/vscode-xml/issues"
-    },
-    "engines": {
-        "vscode": "^1.63.0"
-    },
-    "categories": [
-        "Formatters",
-        "Programming Languages",
-        "Linters",
-        "Other"
+  "name": "vscode-basex",
+  "displayName": "BaseX tools",
+  "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
+  "version": "0.0.28",
+  "preview": true,
+  "publisher": "quodatum",
+  "author": "Andy Bunce (https://github.com/Quodatum)",
+  "license": "MIT",
+  "galleryBanner": {
+    "color": "#FFFFFF",
+    "theme": "light"
+  },
+  "icon": "resources/basex.png",
+  "homepage": "https://github.com/Quodatum/vscode-xml",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Quodatum/vscode-xml.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Quodatum/vscode-xml/issues"
+  },
+  "engines": {
+    "vscode": "^1.63.0"
+  },
+  "categories": [
+    "Formatters",
+    "Programming Languages",
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:basexTools.evaluateXPath",
+    "onCommand:basexTools.executeXQuery",
+    "onCommand:basexTools.formatAsXml",
+    "onCommand:basexTools.textToXml",
+    "onCommand:basexTools.xmlToText",
+    "onCommand:basexTools.minifyXml",
+    "onLanguage:xml",
+    "onLanguage:xquery",
+    "onLanguage:xsl"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "basexTools.evaluateXPath",
+        "title": "BaseX Tools: Evaluate XPath"
+      },
+      {
+        "command": "basexTools.executeXQuery",
+        "title": "BaseX Tools: Execute XQuery"
+      },
+      {
+        "command": "basexTools.formatAsXml",
+        "title": "BaseX Tools: Format as XML"
+      },
+      {
+        "command": "basexTools.textToXml",
+        "title": "BaseX Tools: Convert text to XML (&lt;&gt; -> <>)"
+      },
+      {
+        "command": "basexTools.xmlToText",
+        "title": "BaseX Tools: Convert XML to text  (<> -> &lt;&gt;)"
+      },
+      {
+        "command": "basexTools.getCurrentXPath",
+        "title": "BaseX Tools: Get Current XPath"
+      },
+      {
+        "command": "basexTools.minifyXml",
+        "title": "BaseX Tools: Minify XML"
+      }
     ],
-    "activationEvents": [
-        "onCommand:basexTools.evaluateXPath",
-        "onCommand:basexTools.executeXQuery",
-        "onCommand:basexTools.formatAsXml",
-        "onCommand:basexTools.textToXml",
-        "onCommand:basexTools.xmlToText",
-        "onCommand:basexTools.minifyXml",
-        "onLanguage:xml",
-        "onLanguage:xquery",
-        "onLanguage:xsl"
-    ],
-    "main": "./out/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "basexTools.evaluateXPath",
-                "title": "BaseX Tools: Evaluate XPath"
-            },
-            {
-                "command": "basexTools.executeXQuery",
-                "title": "BaseX Tools: Execute XQuery"
-            },
-            {
-                "command": "basexTools.formatAsXml",
-                "title": "BaseX Tools: Format as XML"
-            },
-            {
-                "command": "basexTools.textToXml",
-                "title": "BaseX Tools: Convert text to XML (&lt;&gt; -> <>)"
-            },
-            {
-                "command": "basexTools.xmlToText",
-                "title": "BaseX Tools: Convert XML to text  (<> -> &lt;&gt;)"
-            },
-            {
-                "command": "basexTools.getCurrentXPath",
-                "title": "BaseX Tools: Get Current XPath"
-            },
-            {
-                "command": "basexTools.minifyXml",
-                "title": "BaseX Tools: Minify XML"
-            }
-        ],
-        "configuration": {
-            "title": "XML Tools Configuration",
-            "type": "object",
-            "properties": {
-                "basexTools.enableXmlTreeView": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enables the XML Document view in the explorer for XML documents.",
-                    "scope": "window"
-                },
-                "basexTools.enableXmlTreeViewMetadata": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enables attribute and child element counts in the XML Document view.",
-                    "scope": "window"
-                },
-                "basexTools.enableXmlTreeViewCursorSync": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Enables auto-reveal of elements in the XML Document view when a start tag is clicked in the editor.",
-                    "scope": "window"
-                },
-                "basexTools.enforcePrettySelfClosingTagOnFormat": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Enforces a space before the forward slash at the end of a self-closing XML tag.",
-                    "scope": "resource"
-                },
-                "basexTools.ignoreDefaultNamespace": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Ignore default xmlns attributes when evaluating XPath.",
-                    "scope": "window"
-                },
-                "basexTools.persistXPathQuery": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Remember the last XPath query used.",
-                    "scope": "window"
-                },
-                "basexTools.removeCommentsOnMinify": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Remove XML comments during minification.",
-                    "scope": "resource"
-                },
-                "basexTools.splitAttributesOnFormat": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Put each attribute on a new line when formatting XML. Overrides `basexTools.splitXmlnsOnFormat` if set to `true`.",
-                    "scope": "resource"
-                },
-                "basexTools.splitXmlnsOnFormat": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Put each xmlns attribute on a new line when formatting XML.",
-                    "scope": "resource"
-                },
-                "basexTools.xmlFormatterImplementation": {
-                    "type": "string",
-                    "enum": [
-                        "classic",
-                        "v2"
-                    ],
-                    "default": "v2",
-                    "description": "Supported XML Formatters: classic",
-                    "scope": "window"
-                },
-                "basexTools.xqueryExecutionArguments": {
-                    "type": "array",
-                    "default": [
-                        "-xquery",
-                        "$(script)",
-                        "-in",
-                        "$(input)",
-                        "-out",
-                        "$(input).output.xml"
-                    ],
-                    "description": "Arguments to be passed to the XQuery execution engine.",
-                    "scope": "window"
-                },
-                "basexTools.xqueryExecutionEngine": {
-                    "type": "string",
-                    "default": "",
-                    "description": "The full path to the executable to run when executing XQuery scripts.",
-                    "scope": "window"
-                },
-                "basexTools.xqueryExecutionInputLimit": {
-                    "type": "integer",
-                    "default": 100,
-                    "description": "The maximum number of input files to enumerate when executing XQuery scripts.",
-                    "scope": "window"
-                },
-                "basexTools.xqueryExecutionInputSearchPattern": {
-                    "type": "string",
-                    "default": "**/*.xml",
-                    "description": "The pattern used to search for input XML files when executing XQuery scripts.",
-                    "scope": "window"
-                }
-            }
+    "configuration": {
+      "title": "BaseX Tools Configuration",
+      "type": "object",
+      "properties": {
+        "basexTools.enableXmlTreeView": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enables the XML Document view in the explorer for XML documents.",
+          "scope": "window"
         },
-        "grammars": [
-            {
-                "language": "xquery",
-                "path": "./languages/xquery/xquery.tmLanguage",
-                "scopeName": "source.xquery"
-            }
-        ],
-        "keybindings": [
-            {
-                "key": "ctrl+shift+alt+x",
-                "command": "basexTools.evaluateXPath"
-            },
-            {
-                "key": "ctrl+shift+alt+b",
-                "command": "basexTools.formatAsXml"
-            }
-        ],
-        "languages": [
-            {
-                "id": "xml",
-                "extensions": [
-                    ".config",
-                    ".csproj",
-                    ".xml",
-                    ".xsd",
-                    ".xsl",
-                    ".plist",
-                    ".mobileconfig",
-                    ".sch"
-                ]
-            },
-            {
-                "id": "xquery",
-                "aliases": [
-                    "XQuery",
-                    "xquery"
-                ],
-                "extensions": [
-                    ".xq",
-                    ".xql",
-                    ".xqm",
-                    ".xqy",
-                    ".xquery"
-                ],
-                "configuration": "./languages/xquery/xquery.json"
-            }
-        ],
-        "menus": {
-            "commandPalette": [
-                {
-                    "command": "basexTools.evaluateXPath",
-                    "when": "editorLangId == xml"
-                },
-                {
-                    "command": "basexTools.executeXQuery",
-                    "when": "editorLangId == xquery"
-                },
-                {
-                    "command": "basexTools.getCurrentXPath",
-                    "when": "editorLangId == xml"
-                },
-                {
-                    "command": "basexTools.minifyXml",
-                    "when": "editorLangId == xml"
-                }
-            ],
-            "editor/context": [
-                {
-                    "command": "basexTools.minifyXml",
-                    "group": "1_modification@100",
-                    "when": "editorLangId == 'xml'"
-                }
-            ]
+        "basexTools.enableXmlTreeViewMetadata": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enables attribute and child element counts in the XML Document view.",
+          "scope": "window"
         },
-        "views": {
-            "explorer": [
-                {
-                    "id": "xmlTreeView",
-                    "name": "XML Document",
-                    "when": "xmlTreeViewEnabled"
-                }
-            ]
+        "basexTools.enableXmlTreeViewCursorSync": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enables auto-reveal of elements in the XML Document view when a start tag is clicked in the editor.",
+          "scope": "window"
+        },
+        "basexTools.enforcePrettySelfClosingTagOnFormat": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enforces a space before the forward slash at the end of a self-closing XML tag.",
+          "scope": "resource"
+        },
+        "basexTools.ignoreDefaultNamespace": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore default xmlns attributes when evaluating XPath.",
+          "scope": "window"
+        },
+        "basexTools.persistXPathQuery": {
+          "type": "boolean",
+          "default": true,
+          "description": "Remember the last XPath query used.",
+          "scope": "window"
+        },
+        "basexTools.removeCommentsOnMinify": {
+          "type": "boolean",
+          "default": false,
+          "description": "Remove XML comments during minification.",
+          "scope": "resource"
+        },
+        "basexTools.splitAttributesOnFormat": {
+          "type": "boolean",
+          "default": false,
+          "description": "Put each attribute on a new line when formatting XML. Overrides `basexTools.splitXmlnsOnFormat` if set to `true`.",
+          "scope": "resource"
+        },
+        "basexTools.splitXmlnsOnFormat": {
+          "type": "boolean",
+          "default": true,
+          "description": "Put each xmlns attribute on a new line when formatting XML.",
+          "scope": "resource"
+        },
+        "basexTools.xmlFormatterImplementation": {
+          "type": "string",
+          "enum": [
+            "classic",
+            "v2"
+          ],
+          "default": "v2",
+          "description": "Supported XML Formatters: classic",
+          "scope": "window"
+        },
+        "basexTools.xqueryExecutionArguments": {
+          "type": "array",
+          "default": [
+            "-xquery",
+            "$(script)",
+            "-in",
+            "$(input)",
+            "-out",
+            "$(input).output.xml"
+          ],
+          "description": "Arguments to be passed to the XQuery execution engine.",
+          "scope": "window"
+        },
+        "basexTools.xqueryExecutionEngine": {
+          "type": "string",
+          "default": "",
+          "description": "The full path to the executable to run when executing XQuery scripts.",
+          "scope": "window"
+        },
+        "basexTools.xqueryExecutionInputLimit": {
+          "type": "integer",
+          "default": 100,
+          "description": "The maximum number of input files to enumerate when executing XQuery scripts.",
+          "scope": "window"
+        },
+        "basexTools.xqueryExecutionInputSearchPattern": {
+          "type": "string",
+          "default": "**/*.xml",
+          "description": "The pattern used to search for input XML files when executing XQuery scripts.",
+          "scope": "window"
         }
+      }
     },
-    "scripts": {
-        "vscode:prepublish": "npm run esbuild-base -- --minify",
-        "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
-        "esbuild": "npm run esbuild-base -- --sourcemap",
-        "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
-        "test-compile": "tsc -p ./",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "pretest": "npm run compile && npm run lint",
-        "lint": "eslint src --ext ts",
-        "test": "node ./out/test/runTest.js"
+    "grammars": [
+      {
+        "language": "xquery",
+        "path": "./languages/xquery/xquery.tmLanguage",
+        "scopeName": "source.xquery"
+      }
+    ],
+    "keybindings": [
+      {
+        "key": "ctrl+shift+alt+x",
+        "command": "basexTools.evaluateXPath"
+      },
+      {
+        "key": "ctrl+shift+alt+b",
+        "command": "basexTools.formatAsXml"
+      }
+    ],
+    "languages": [
+      {
+        "id": "xml",
+        "extensions": [
+          ".config",
+          ".csproj",
+          ".xml",
+          ".xsd",
+          ".xsl",
+          ".plist",
+          ".mobileconfig",
+          ".sch"
+        ]
+      },
+      {
+        "id": "xquery",
+        "aliases": [
+          "XQuery",
+          "xquery"
+        ],
+        "extensions": [
+          ".xq",
+          ".xql",
+          ".xqm",
+          ".xqy",
+          ".xquery"
+        ],
+        "configuration": "./languages/xquery/xquery.json"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "basexTools.evaluateXPath",
+          "when": "editorLangId == xml"
+        },
+        {
+          "command": "basexTools.executeXQuery",
+          "when": "editorLangId == xquery"
+        },
+        {
+          "command": "basexTools.getCurrentXPath",
+          "when": "editorLangId == xml"
+        },
+        {
+          "command": "basexTools.minifyXml",
+          "when": "editorLangId == xml"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "basexTools.minifyXml",
+          "group": "1_modification@100",
+          "when": "editorLangId == 'xml'"
+        }
+      ]
     },
-    "devDependencies": {
-        "@types/glob": "^7.2.0",
-        "@types/mocha": "^9.0.0",
-        "@types/node": "14.x",
-        "@types/vscode": "^1.63.0",
-        "@types/xmldom": "^0.1.13",
-        "@typescript-eslint/eslint-plugin": "^5.9.1",
-        "@typescript-eslint/parser": "^5.9.1",
-        "@vscode/test-electron": "^2.0.3",
-        "esbuild": "^0.14.18",
-        "eslint": "^8.6.0",
-        "glob": "^7.2.0",
-        "mocha": "^9.1.3",
-        "typescript": "^4.5.4"
-    },
-    "dependencies": {
-        "xmldom": "^0.1.27",
-        "xpath": "0.0.27",
-        "xqlint": "^0.4.1"
+    "views": {
+      "explorer": [
+        {
+          "id": "xmlTreeView",
+          "name": "XML Document",
+          "when": "xmlTreeViewEnabled"
+        }
+      ]
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "test-compile": "tsc -p ./",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^14.18.12",
+    "@types/vscode": "^1.63.0",
+    "@types/xmldom": "^0.1.31",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "@vscode/test-electron": "^2.1.2",
+    "esbuild": "^0.14.23",
+    "eslint": "^8.9.0",
+    "glob": "^7.2.0",
+    "mocha": "^9.2.1",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@quodatum/xqlint": "^0.0.8",
+    "@xmldom/xmldom": "^0.8.1",
+    "xpath": "0.0.32"
+  }
 }

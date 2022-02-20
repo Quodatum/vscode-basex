@@ -1,7 +1,8 @@
 import {
     commands, languages, window, workspace, ExtensionContext, Memento,
-    TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind, DiagnosticCollection
+    TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind, DiagnosticCollection, TextDocument, TextEdit,Range
     } from "vscode";
+import { channel } from "./common/logger";
 
 import { createDocumentSelector, ExtensionState, Configuration } from "./common";
 import { XQueryCompletionItemProvider } from "./completion";
@@ -13,10 +14,12 @@ import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 import { executeXQuery } from "./xquery-execution/commands";
 
 import * as constants from "./constants";
+import { XQueryFormatter } from "./formatting/XQueryFormatter";
 
 let diagnosticCollectionXQuery: DiagnosticCollection;
 
 export function activate(context: ExtensionContext) {
+    channel.log("Extension activate");
     ExtensionState.configure(context);
 
     const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
@@ -39,6 +42,20 @@ export function activate(context: ExtensionContext) {
         languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider)
     );
 
+    // 👍 XQuery formatter implemented using API
+    languages.registerDocumentFormattingEditProvider(constants.languageIds.xquery, {
+        async provideDocumentFormattingEdits(document: TextDocument): Promise<TextEdit[]> {
+            
+            try {
+                const text =  XQueryFormatter.format(document.getText())
+                const entireDocRange = document.validateRange(new Range(0, 0, document.lineCount, 0));
+                return [TextEdit.replace(entireDocRange, text)];
+            } catch (e) {
+                window.showInformationMessage('Format failed -syntax error')
+            }
+        }
+    });
+  
     /* Linting Features */
     diagnosticCollectionXQuery = languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
     context.subscriptions.push(
@@ -75,12 +92,12 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(
         commands.registerTextEditorCommand(constants.commands.executeXQuery, executeXQuery)
     );
+   
 }
 
 export function deactivate() {
     // do nothing
-}
-
+};
 
 function _handleContextChange(editor: TextEditor): void {
     const supportedSchemes = [constants.uriSchemes.file, constants.uriSchemes.untitled];

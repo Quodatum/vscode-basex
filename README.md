@@ -1,6 +1,9 @@
 # BaseX Tools for Visual Studio Code
 This project was originally a fork of https://github.com/DotJoshJohnson/vscode-xml
 
+This extension adds features to support BaseX development on VSCode.
+* XQuery 3.1, XQuery update, Full text syntax support 
+* XQuery code format
 
 ## Features
 * [XML Formatting](https://github.com/DotJoshJohnson/vscode-xml/wiki/xml-formatting)
@@ -11,21 +14,7 @@ This project was originally a fork of https://github.com/DotJoshJohnson/vscode-x
 * [XQuery Code Completion](https://github.com/DotJoshJohnson/vscode-xml/wiki/xquery-code-completion)
 
 ## Requirements
-* VS Code `1.22.2` or higher
-
-## Extension Settings
-* **`basexTools.enableXmlTreeView`:** Enables the XML Tree View for XML documents.
-* **`basexTools.enableXmlTreeViewMetadata`:** Enables attribute and child element counts in the XML Document view.
-* **`basexTools.enableXmlTreeViewCursorSync`:** Enables auto-reveal of elements in the XML Document view when a start tag is clicked in the editor.
-* **`basexTools.enforcePrettySelfClosingTagOnFormat`:** Ensures a space is added before the forward slash at the end of a self-closing tag.
-* **`basexTools.ignoreDefaultNamespace`:** Ignore default xmlns attributes when evaluating XPath.
-* **`basexTools.persistXPathQuery`:** Remember the last XPath query used.
-* **`basexTools.removeCommentsOnMinify`:** Remove XML comments during minification.
-* **`basexTools.splitAttributesOnFormat`:** Put each attribute on a new line when formatting XML. Overrides `basexTools.splitXmlnsOnFormat` if set to `true`. (V2 Formatter Only)
-* **`basexTools.splitXmlnsOnFormat`:** Put each xmlns attribute on a new line when formatting XML.
-* **`basexTools.xmlFormatterImplementation`:** Supported XML Formatters: `classic`, `v2`.
-* **`basexTools.xqueryExecutionArguments`:** Arguments to be passed to the XQuery execution engine.
-* **`basexTools.xqueryExecutionEngine`:** The full path to the executable to run when executing XQuery scripts.
+* VS Code `1.63.0` or higher
 
 ## Release Notes
 Detailed release notes are available [here](https://github.com/DotJoshJohnson/vscode-xml/releases).
@@ -37,3 +26,7 @@ Run into a bug? Report it [here](https://github.com/DotJoshJohnson/vscode-xml/is
 Icons used in the XML Tree View are used under the Creative Commons 3.0 BY license.
 * "Code" icon by Dave Gandy from www.flaticon.com
 * "At" icon by FreePik from www.flaticon.com
+
+## Inspiration
+
+This is a fork of [DotJoshJohnson/vscode-xml](https://github.com/DotJoshJohnson/vscode-xml). DotJoshJohnson did the intial work, but I want to go in a different direction.

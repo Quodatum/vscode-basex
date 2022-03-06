@@ -24,7 +24,9 @@ export class XQueryCompletionItemProvider implements CompletionItemProvider {
             case "function":
                 completionItem.kind = CompletionItemKind.Function;
 
+                // eslint-disable-next-line no-case-declarations
                 const funcStart = (xqLintCompletionItem.value.indexOf(":") + 1);
+                // eslint-disable-next-line no-case-declarations
                 const funcEnd = xqLintCompletionItem.value.indexOf("(");
 
                 completionItem.insertText = xqLintCompletionItem.value.substring(funcStart, funcEnd);

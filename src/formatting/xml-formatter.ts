@@ -1,6 +1,6 @@
-import { window, workspace } from "vscode";
 
-import { Configuration, ExtensionState } from "../common";
+
+import { Configuration } from "../common";
 import * as constants from "../constants";
 import { ClassicXmlFormatter } from "./formatters/classic-xml-formatter";
 import { V2XmlFormatter } from "./formatters/v2-xml-formatter";

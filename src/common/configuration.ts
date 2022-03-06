@@ -4,23 +4,23 @@ const ExtensionTopLevelSection = "basexTools";
 
 export class Configuration {
     static get enableXmlTreeView(): boolean {
-        return this._getForWindow<boolean>("enableXmlTreeView");
+        return this._getForWindow<boolean>("xmlTree.enableTreeView");
     }
 
     static get enableXmlTreeViewMetadata(): boolean {
-        return this._getForWindow<boolean>("enableXmlTreeViewMetadata");
+        return this._getForWindow<boolean>("xmlTree.enableViewMetadata");
     }
 
-    static get enableXmlTreeViewCursorSync(): boolean {
-        return this._getForWindow<boolean>("enableXmlTreeViewCursorSync");
+    static get enableViewCursorSync(): boolean {
+        return this._getForWindow<boolean>("xmlTree.enableViewCursorSync");
     }
 
     static get ignoreDefaultNamespace(): boolean {
-        return this._getForWindow<boolean>("ignoreDefaultNamespace");
+        return this._getForWindow<boolean>("xpath.ignoreDefaultNamespace");
     }
 
     static get persistXPathQuery(): boolean {
-        return this._getForWindow<boolean>("persistXPathQuery");
+        return this._getForWindow<boolean>("xpath.persistXPathQuery");
     }
 
     static get xmlFormatterImplementation(): string {

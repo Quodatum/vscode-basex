@@ -1,9 +1,9 @@
 // debug messages
 import { OutputChannel, window } from "vscode";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const XQLint = require("@quodatum/xqlint").XQLint;
+const ver = require("@quodatum/xqlint").version;
 
-const _channel:OutputChannel = window.createOutputChannel("BaseX log");
+const _channel:OutputChannel = window.createOutputChannel("BaseX");
 function logdate(){
     return (new Date()).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
 }
@@ -19,5 +19,5 @@ export class channel {
         _channel.show
     }
 }
-channel.log("started, XQLint version: "+XQLint.version);
+channel.log("started, XQLint version: "+ver);
 _channel.show

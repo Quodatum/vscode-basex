@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 export namespace commands {
     export const evaluateXPath = "basexTools.evaluateXPath";
     export const executeXQuery = "basexTools.executeXQuery";

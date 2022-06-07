@@ -1,20 +1,21 @@
 import {
-    commands, languages, window, workspace, ExtensionContext, Memento,
-    TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind, DiagnosticCollection, TextDocument, TextEdit,Range
+    commands, languages, window, ExtensionContext, 
+    TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind, DiagnosticCollection 
     } from "vscode";
 import { channel } from "./common/logger";
 
 import { createDocumentSelector, ExtensionState, Configuration } from "./common";
 import { XQueryCompletionItemProvider } from "./completion";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
-import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
-import { XQueryLinter } from "./linting";
+import { formatAsXml, minifyXml, xmlToText, textToXml  } from "./formatting/commands";
+import { XQueryLinter,getAst } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 import { executeXQuery } from "./xquery-execution/commands";
 
 import * as constants from "./constants";
-import { XQueryFormatter } from "./formatting/XQueryFormatter";
+import { XQueryFormatter } from "./formatting/xquery-formatting-provider";
+import { Symbols } from './symbols/symbols';
 
 let diagnosticCollectionXQuery: DiagnosticCollection;
 
@@ -32,30 +33,27 @@ export function activate(context: ExtensionContext) {
 
     /* Formatting Features */
     const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
-
+    const xqueryFormattingEditProvider = new XQueryFormatter();
     context.subscriptions.push(
         commands.registerTextEditorCommand(constants.commands.formatAsXml, formatAsXml),
         commands.registerTextEditorCommand(constants.commands.xmlToText, xmlToText),
         commands.registerTextEditorCommand(constants.commands.textToXml, textToXml),
         commands.registerTextEditorCommand(constants.commands.minifyXml, minifyXml),
+        commands.registerTextEditorCommand(constants.commands.getAST, getAst),
+
         languages.registerDocumentFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
-        languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider)
+        languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
+        
+        languages.registerDocumentFormattingEditProvider(xqueryDocSelector, xqueryFormattingEditProvider),
+        languages.registerDocumentRangeFormattingEditProvider(xqueryDocSelector, xqueryFormattingEditProvider)
     );
 
-    // 👍 XQuery formatter implemented using API
-    languages.registerDocumentFormattingEditProvider(constants.languageIds.xquery, {
-        async provideDocumentFormattingEdits(document: TextDocument): Promise<TextEdit[]> {
-            
-            try {
-                const text =  XQueryFormatter.format(document.getText())
-                const entireDocRange = document.validateRange(new Range(0, 0, document.lineCount, 0));
-                return [TextEdit.replace(entireDocRange, text)];
-            } catch (e) {
-                window.showInformationMessage('Format failed -syntax error')
-            }
-        }
-    });
-  
+    
+
+    // symbols
+    const symbols = new Symbols();
+    context.subscriptions.push(languages.registerDocumentSymbolProvider(constants.languageIds.xquery, symbols));
+
     /* Linting Features */
     diagnosticCollectionXQuery = languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
     context.subscriptions.push(
@@ -97,7 +95,7 @@ export function activate(context: ExtensionContext) {
 
 export function deactivate() {
     // do nothing
-};
+}
 
 function _handleContextChange(editor: TextEditor): void {
     const supportedSchemes = [constants.uriSchemes.file, constants.uriSchemes.untitled];

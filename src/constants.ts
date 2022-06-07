@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 export namespace commands {
     export const evaluateXPath = "basexTools.evaluateXPath";
     export const executeXQuery = "basexTools.executeXQuery";
@@ -6,6 +7,7 @@ export namespace commands {
     export const textToXml = "basexTools.textToXml";
     export const getCurrentXPath = "basexTools.getCurrentXPath";
     export const minifyXml = "basexTools.minifyXml";
+    export const getAST = "basexTools.getAST";
 }
 
 export namespace contextKeys {

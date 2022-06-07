@@ -4,23 +4,23 @@ const ExtensionTopLevelSection = "basexTools";
 
 export class Configuration {
     static get enableXmlTreeView(): boolean {
-        return this._getForWindow<boolean>("enableXmlTreeView");
+        return this._getForWindow<boolean>("xmlTree.enableTreeView");
     }
 
     static get enableXmlTreeViewMetadata(): boolean {
-        return this._getForWindow<boolean>("enableXmlTreeViewMetadata");
+        return this._getForWindow<boolean>("xmlTree.enableViewMetadata");
     }
 
     static get enableXmlTreeViewCursorSync(): boolean {
-        return this._getForWindow<boolean>("enableXmlTreeViewCursorSync");
+        return this._getForWindow<boolean>("xmlTree.enableViewCursorSync");
     }
 
     static get ignoreDefaultNamespace(): boolean {
-        return this._getForWindow<boolean>("ignoreDefaultNamespace");
+        return this._getForWindow<boolean>("xpath.ignoreDefaultNamespace");
     }
 
     static get persistXPathQuery(): boolean {
-        return this._getForWindow<boolean>("persistXPathQuery");
+        return this._getForWindow<boolean>("xpath.persistXPathQuery");
     }
 
     static get xmlFormatterImplementation(): string {
@@ -28,19 +28,19 @@ export class Configuration {
     }
 
     static get xqueryExecutionArguments(): string[] {
-        return this._getForWindow<string[]>("xqueryExecutionArguments");
+        return this._getForWindow<string[]>("xquery.executionArguments");
     }
 
     static get xqueryExecutionEngine(): string {
-        return this._getForWindow<string>("xqueryExecutionEngine");
+        return this._getForWindow<string>("xquery.executionEngine");
     }
 
     static get xqueryExecutionInputLimit(): number {
-        return this._getForWindow<number>("xqueryExecutionInputLimit");
+        return this._getForWindow<number>("xquery.executionInputLimit");
     }
 
     static get xqueryExecutionInputSearchPattern(): string {
-        return this._getForWindow<string>("xqueryExecutionInputSearchPattern");
+        return this._getForWindow<string>("xquery.executionInputSearchPattern");
     }
 
     static enforcePrettySelfClosingTagOnFormat(resource: Uri): boolean {

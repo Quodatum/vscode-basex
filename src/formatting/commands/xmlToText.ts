@@ -1,12 +1,7 @@
-import { workspace } from "vscode";
-import { ProviderResult, Range, TextEdit, TextEditor, Selection } from "vscode";
 
-import { NativeCommands } from "../../common";
-import * as constants from "../../constants";
+import {  Range,  TextEditor, Selection } from "vscode";
 
-import { XmlFormatterFactory } from "../xml-formatter";
-import { XmlFormattingEditProvider } from "../xml-formatting-edit-provider";
-import { XmlFormattingOptionsFactory } from "../xml-formatting-options";
+
 
 export function xmlToText(textEditor: TextEditor): void {
     textEditor.edit(textEdit => {
@@ -20,9 +15,9 @@ export function xmlToText(textEditor: TextEditor): void {
             }
             const txt = textEditor.document.getText(new Range(selection.start, selection.end));
             const transformed = txt
+                .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
-                .replace(/&/g, "&amp;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&apos;");
 
@@ -30,3 +25,27 @@ export function xmlToText(textEditor: TextEditor): void {
         });
     });
 }
+export function textToXml(textEditor: TextEditor): void {
+    textEditor.edit(textEdit => {
+        const selections = textEditor.selections;
+        selections.forEach(selection => {
+            if (selection.isEmpty) {
+                selection = new Selection(
+                    textEditor.document.positionAt(0),
+                    textEditor.document.positionAt(textEditor.document.getText().length)
+                );
+            }
+            const txt = textEditor.document.getText(new Range(selection.start, selection.end));
+            const transformed = txt
+                .replace(/&lt;/g, "<")
+                .replace(/&gt;/g, ">")
+                .replace(/&amp;/g, "&")
+                // tslint:disable-next-line
+                .replace(/&quot;/g, '"')
+                .replace(/&apos;/g, "'");
+
+            textEdit.replace(selection, transformed);
+        });
+    });
+}
+

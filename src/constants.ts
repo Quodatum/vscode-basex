@@ -7,6 +7,7 @@ export namespace commands {
     export const textToXml = "basexTools.textToXml";
     export const getCurrentXPath = "basexTools.getCurrentXPath";
     export const minifyXml = "basexTools.minifyXml";
+    export const getAST = "basexTools.getAST";
 }
 
 export namespace contextKeys {

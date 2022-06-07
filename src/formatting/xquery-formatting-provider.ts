@@ -27,7 +27,7 @@ export class XQueryFormatter implements DocumentFormattingEditProvider, Document
 
     provideDocumentRangeFormattingEdits(document: TextDocument, range: Range, _options: FormattingOptions, _token: CancellationToken): ProviderResult<TextEdit[]> {
         const selected = document.getText(range);
-        const result = format(selected);
+        const result = format(selected, document);
         return [TextEdit.replace(range, result)];
     }
 }

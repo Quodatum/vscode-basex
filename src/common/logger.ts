@@ -4,6 +4,7 @@ import { OutputChannel, window } from "vscode";
 const ver = require("@quodatum/xqlint").version;
 
 const _channel:OutputChannel = window.createOutputChannel("BaseX");
+
 function logdate(){
     return (new Date()).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
 }

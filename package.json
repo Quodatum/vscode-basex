@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.0.48",
+  "version": "0.0.52",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -12,13 +12,13 @@
     "theme": "light"
   },
   "icon": "resources/basex.png",
-  "homepage": "https://github.com/Quodatum/vscode-xml",
+  "homepage": "https://github.com/Quodatum/vscode-basex",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Quodatum/vscode-xml.git"
+    "url": "git+https://github.com/Quodatum/vscode-basex.git"
   },
   "bugs": {
-    "url": "https://github.com/Quodatum/vscode-xml/issues"
+    "url": "https://github.com/Quodatum/vscode-basex/issues"
   },
   "engines": {
     "vscode": "^1.63.0"
@@ -27,6 +27,7 @@
     "Formatters",
     "Programming Languages",
     "Linters",
+    "Snippets",
     "Other"
   ],
   "activationEvents": [
@@ -70,16 +71,21 @@
       {
         "command": "basexTools.minifyXml",
         "title": "BaseX Tools: Minify XML"
+      },
+      {
+        "command": "basexTools.getAST",
+        "title": "BaseX Tools: AST"
       }
     ],
     "configuration": [
       {
         "id": "xmltree",
         "title": "XML tree view ",
+
         "properties": {
           "basexTools.xmlTree.enableTreeView": {
             "type": "boolean",
-            "default": true,
+            "default": false,
             "description": "Enables the XML Document view in the explorer for XML documents.",
             "scope": "window"
           },
@@ -114,8 +120,44 @@
             "scope": "window"
           }
         } 
-      },
-      {
+      },{
+        "id": "xquery",
+        "title": "XQuery ",
+        "properties":{
+          "basexTools.xquery.executionArguments": {
+            "type": "array",
+            "default": [
+              "-xquery",
+              "$(script)",
+              "-in",
+              "$(input)",
+              "-out",
+              "$(input).output.xml"
+            ],
+            "description": "Arguments to be passed to the XQuery execution engine.",
+            "scope": "window"
+          },
+          "basexTools.xquery.executionEngine": {
+            "type": "string",
+            "default": "",
+            "description": "The full path to the executable to run when executing XQuery scripts.",
+            "scope": "window"
+          },
+          "basexTools.xquery.executionInputLimit": {
+            "type": "integer",
+            "default": 100,
+            "description": "The maximum number of input files to enumerate when executing XQuery scripts.",
+            "scope": "window"
+          },
+          "basexTools.xquery.executionInputSearchPattern": {
+            "type": "string",
+            "default": "**/*.xml",
+            "description": "The pattern used to search for input XML files when executing XQuery scripts.",
+            "scope": "window"
+          }
+        }
+   
+      },{
         "title": "BaseX Tools ",
         "type": "object",
         "properties": {
@@ -153,39 +195,8 @@
             "default": "v2",
             "description": "Supported XML Formatters: classic",
             "scope": "window"
-          },
-          "basexTools.xqueryExecutionArguments": {
-            "type": "array",
-            "default": [
-              "-xquery",
-              "$(script)",
-              "-in",
-              "$(input)",
-              "-out",
-              "$(input).output.xml"
-            ],
-            "description": "Arguments to be passed to the XQuery execution engine.",
-            "scope": "window"
-          },
-          "basexTools.xqueryExecutionEngine": {
-            "type": "string",
-            "default": "",
-            "description": "The full path to the executable to run when executing XQuery scripts.",
-            "scope": "window"
-          },
-          "basexTools.xqueryExecutionInputLimit": {
-            "type": "integer",
-            "default": 100,
-            "description": "The maximum number of input files to enumerate when executing XQuery scripts.",
-            "scope": "window"
-          },
-          "basexTools.xqueryExecutionInputSearchPattern": {
-            "type": "string",
-            "default": "**/*.xml",
-            "description": "The pattern used to search for input XML files when executing XQuery scripts.",
-            "scope": "window"
           }
-        }
+        } 
       }
     ],
     "grammars": [
@@ -193,6 +204,12 @@
         "language": "xquery",
         "path": "./languages/xquery/xquery.tmLanguage",
         "scopeName": "source.xquery"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "xquery",
+        "path": "./snippets.jsonc"
       }
     ],
     "keybindings": [

@@ -1,4 +1,4 @@
-const child_process = require("child_process");
+import child_process = require("child_process");
 
 export class ChildProcess {
     static async spawn(executable: string, args: string[]): Promise<void> {

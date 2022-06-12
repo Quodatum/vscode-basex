@@ -1,4 +1,4 @@
-Detailed release notes are available [here](https://github.com/DotJoshJohnson/vscode-xml/releases).
+Detailed release notes are available [here](https://git.quodatum.duckdns.org/apb/vscode-basex/releases).
 
-0.0.27 doc format
-0.0.4 [add] treat schematron (.sch) as XML
+* 0.0.54
+* 0.0.52 typescript fixes

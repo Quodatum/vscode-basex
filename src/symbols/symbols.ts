@@ -13,6 +13,15 @@ function makeSymbol(name: string, description: string, icon: SymbolKind, pos: an
   const selrange = new Range(spos, spos);
   return new DocumentSymbol(name, description, icon, fullrange, selrange);
 }
+export type VarTypes = {
+  name: string;
+  pos: any;
+};
+export type FunTypes = {
+  name: string;
+  params: any; //@todo
+  pos: boolean;
+};
 
 export class Symbols implements DocumentSymbolProvider {
   provideDocumentSymbols = async (
@@ -36,17 +45,17 @@ export class Symbols implements DocumentSymbolProvider {
     // pos: pos,
     // qname: qname,
     // annotations: {}
-    xqdoc.variables.forEach(v => {
+    xqdoc.variables.forEach(function (v: VarTypes): void {
       const name = v.name;
-      const info = makeSymbol(name, "", SymbolKind.Variable, v.pos)
+      const info = makeSymbol(name, "", SymbolKind.Variable, v.pos);
       vars.children.push(info);
     });
 
     const funs=makeSymbol("Variables", "", SymbolKind.Function, prolog)
     funs.children=[]
-    xqdoc.functions.forEach(v => {
-      const name = v.name +"#" + v.params.length;
-      const info = makeSymbol(name, "", SymbolKind.Function, v.pos)
+    xqdoc.functions.forEach(function (f: FunTypes) {
+      const name = f.name + "#" + f.params.length;
+      const info = makeSymbol(name, "", SymbolKind.Function, f.pos);
       funs.children.push(info);
     });
     symbols.push(vars)

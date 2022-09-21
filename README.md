@@ -21,6 +21,8 @@ Detailed release notes are available [here](https://git.quodatum.duckdns.org/apb
 
 ## Issues
 Run into a bug? Report it [here](https://git.quodatum.duckdns.org/apb/vscode-basex/issues).
+## Development
+
 ## build
 
 ```

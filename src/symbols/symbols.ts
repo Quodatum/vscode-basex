@@ -51,7 +51,7 @@ export class Symbols implements DocumentSymbolProvider {
       vars.children.push(info);
     });
 
-    const funs=makeSymbol("Variables", "", SymbolKind.Function, prolog)
+    const funs=makeSymbol("Functions", "", SymbolKind.Function, prolog)
     funs.children=[]
     xqdoc.functions.forEach(function (f: FunTypes) {
       const name = f.name + "#" + f.params.length;

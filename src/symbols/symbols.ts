@@ -13,13 +13,13 @@ function makeSymbol(name: string, description: string, icon: SymbolKind, pos: an
   const selrange = new Range(spos, spos);
   return new DocumentSymbol(name, description, icon, fullrange, selrange);
 }
-export type VarTypes = {
+export type VarType = {
   name: string;
   pos: any;
 };
-export type FunTypes = {
+export type FunType = {
   name: string;
-  params: any; //@todo
+  params: string[]; // name
   pos: boolean;
 };
 
@@ -36,30 +36,29 @@ export class Symbols implements DocumentSymbolProvider {
 
     const xqdoc = linter.getXQDoc();
     channel.log("got xqdoc");
-    const prolog=new Range(0,0,0,0)
-    symbols.push(makeSymbol(xqdoc.moduleNamespace || "Main", xqdoc.description, SymbolKind.Module, prolog))
-
-    let vars=makeSymbol("Variables", "", SymbolKind.Variable, prolog)
-    vars.children=[]
+   
     // type: type,
     // pos: pos,
     // qname: qname,
     // annotations: {}
-    xqdoc.variables.forEach(function (v: VarTypes): void {
-      const name = v.name;
-      const info = makeSymbol(name, "", SymbolKind.Variable, v.pos);
-      vars.children.push(info);
+    xqdoc.variables.forEach(function (v: VarType): void {
+      const name = "$" + v.name;
+      const description="about this variable, some doc here";
+      const info = makeSymbol(name, description, SymbolKind.Variable, v.pos);
+      symbols.push(info);
     });
 
-    const funs=makeSymbol("Functions", "", SymbolKind.Function, prolog)
-    funs.children=[]
-    xqdoc.functions.forEach(function (f: FunTypes) {
+    xqdoc.functions.forEach(function (f: FunType) {
       const name = f.name + "#" + f.params.length;
-      const info = makeSymbol(name, "", SymbolKind.Function, f.pos);
-      funs.children.push(info);
+      const description="about this function, some doc here";
+      const info = makeSymbol(name, description, SymbolKind.Function, f.pos);
+      // info.children=[];
+      // f.params.forEach(function(paramName: string){
+      //   info.children.push(makeSymbol(paramName, "", SymbolKind.Variable, f.pos))
+      // });
+      symbols.push(info);
     });
-    symbols.push(vars)
-    symbols.push(funs)
+  
     channel.log("Symbols done " + document.uri);
     return symbols;
   };

@@ -1,5 +1,8 @@
 declare module '@quodatum/xqlint'{
-    export function  XQLint(source :string, opts :object) :any;
+    export class  XQLint{
+        constructor(source :string, opts? :object);
+        public getCompletions(pos :object): [object]; 
+    }
     export function XQueryLexer() :any;
    export function createStaticContext(processor :string) :any;
    export function CodeFormatter(ast :object) :any;

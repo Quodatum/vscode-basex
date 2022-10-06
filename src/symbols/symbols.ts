@@ -32,7 +32,7 @@ export class Symbols implements DocumentSymbolProvider {
     channel.log("Symbols: " + document.uri);
     const symbols: DocumentSymbol[] = [];
     const text = document.getText();
-    const linter = new (XQLint as any)(text, { "styleCheck": false });
+    const linter = new XQLint(text, { "styleCheck": false });
 
     const xqdoc = linter.getXQDoc();
     channel.log("got xqdoc");
@@ -44,6 +44,7 @@ export class Symbols implements DocumentSymbolProvider {
     xqdoc.variables.forEach(function (v: VarType): void {
       const name = "$" + v.name;
       const description="about this variable, some doc here";
+      channel.log(name + v);
       const info = makeSymbol(name, description, SymbolKind.Variable, v.pos);
       symbols.push(info);
     });
@@ -51,6 +52,7 @@ export class Symbols implements DocumentSymbolProvider {
     xqdoc.functions.forEach(function (f: FunType) {
       const name = f.name + "#" + f.params.length;
       const description="about this function, some doc here";
+      channel.log(name + f);
       const info = makeSymbol(name, description, SymbolKind.Function, f.pos);
       // info.children=[];
       // f.params.forEach(function(paramName: string){

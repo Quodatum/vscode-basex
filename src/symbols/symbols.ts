@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { XQLint } from '@quodatum/xqlint';
+import { VarType, FunType, XQLint } from '@quodatum/xqlint';
 import {SymbolKind, DocumentSymbol, DocumentSymbolProvider,
         Range, Position, TextDocument,CancellationToken}  from 'vscode';
 import { channel } from "../common/logger";
 //
-// This class handles Symbols
+// This class handles XQuery Symbols
 //
 function makeSymbol(name: string, description: string, icon: SymbolKind, pos: any) {
   const spos = new Position(pos.sl, pos.sc);
@@ -13,15 +13,7 @@ function makeSymbol(name: string, description: string, icon: SymbolKind, pos: an
   const selrange = new Range(spos, spos);
   return new DocumentSymbol(name, description, icon, fullrange, selrange);
 }
-export type VarType = {
-  name: string;
-  pos: any;
-};
-export type FunType = {
-  name: string;
-  params: string[]; // name
-  pos: boolean;
-};
+
 
 export class Symbols implements DocumentSymbolProvider {
   provideDocumentSymbols = async (

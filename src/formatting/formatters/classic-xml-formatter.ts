@@ -9,8 +9,8 @@ export class ClassicXmlFormatter implements XmlFormatter {
 
         if (options.splitXmlnsOnFormat) {
             xml = xml
-                .replace(/xmlns\:/g, "~::~xmlns:")
-                .replace(/xmlns\=/g, "~::~xmlns=");
+                .replace(/xmlns:/g, "~::~xmlns:")
+                .replace(/xmlns=/g, "~::~xmlns=");
         }
 
         const parts: string[] = xml.split("~::~");

@@ -16,6 +16,7 @@ import { executeXQuery } from "./xquery-execution/commands";
 import * as constants from "./constants";
 import { XQueryFormatter } from "./formatting/xquery-formatting-provider";
 import { Symbols } from './symbols/symbols';
+import { XQueryHoverProvider } from './hover/hover';
 
 let diagnosticCollectionXQuery: DiagnosticCollection;
 
@@ -53,6 +54,9 @@ export function activate(context: ExtensionContext) {
     // symbols
     const symbols = new Symbols();
     context.subscriptions.push(languages.registerDocumentSymbolProvider(constants.languageIds.xquery, symbols));
+   // hover
+   const hover = new XQueryHoverProvider();
+   context.subscriptions.push(languages.registerHoverProvider(constants.languageIds.xquery, hover));
 
     /* Linting Features */
     diagnosticCollectionXQuery = languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);

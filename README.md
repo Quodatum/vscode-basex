@@ -1,9 +1,13 @@
 # BaseX Tools for Visual Studio Code
-This project was originally a fork of https://github.com/DotJoshJohnson/vscode-xml
 
-This extension adds features to support BaseX development on VSCode.
-* XQuery 3.1, XQuery update, Full text syntax support 
-* XQuery code format
+
+The vscode-basex extension adds features to support BaseX development on VSCode.
+For XQuery
+* Grammar support for:XQuery 3.1, XQuery update, Full text syntax  
+* code format
+* code completion
+* code snippets
+* outline symbol view
 
 ## Features
 * [XML Formatting](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xml-formatting)
@@ -40,4 +44,4 @@ Icons used in the XML Tree View are used under the Creative Commons 3.0 BY licen
 
 ## Inspiration
 
-This is built on a fork of [DotJoshJohnson/vscode-xml](https://github.com/DotJoshJohnson/vscode-xml). 
+This project was created from a fork of [DotJoshJohnson/vscode-xml](https://github.com/DotJoshJohnson/vscode-xml). Much of `DotJoshJohnson/vscode-xml` code dealing with XML has been removed and additional XQuery features added. 

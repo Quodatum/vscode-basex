@@ -1,7 +1,6 @@
 import { EndOfLine, FormattingOptions, TextDocument } from "vscode";
 
 import { Configuration } from "../common";
-import * as constants from "../constants";
 
 export interface XmlFormattingOptions {
     editorOptions: FormattingOptions;

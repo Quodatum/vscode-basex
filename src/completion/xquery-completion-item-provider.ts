@@ -1,6 +1,6 @@
 import { CompletionItem, CompletionItemKind, CompletionItemProvider, Position, TextDocument } from "vscode";
 import { XQLint} from "@quodatum/xqlint";
-//const XQLint = require("@quodatum/xqlint").XQLint;
+
 
 export class XQueryCompletionItemProvider implements CompletionItemProvider {
 

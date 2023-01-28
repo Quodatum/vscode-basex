@@ -1,10 +1,7 @@
-import { workspace } from "vscode";
-import { ProviderResult, Range, TextEdit, TextEditor, TextEditorEdit } from "vscode";
+import { Range, TextEditor, TextEditorEdit } from "vscode";
 
-import * as constants from "../../constants";
 
 import { XmlFormatterFactory } from "../xml-formatter";
-import { XmlFormattingEditProvider } from "../xml-formatting-edit-provider";
 import { XmlFormattingOptionsFactory } from "../xml-formatting-options";
 
 export function minifyXml(editor: TextEditor, edit: TextEditorEdit): void {

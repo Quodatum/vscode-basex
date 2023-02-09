@@ -1,6 +1,6 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from "vscode";
+import { XQLint} from "@quodatum/xqlint";
 
-const XQLint = require("@quodatum/xqlint").XQLint;
 
 export class XQueryLinter {
     static SEVERITY_WARNING = 1;

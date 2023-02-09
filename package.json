@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.0.65",
+  "version": "0.0.66",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -37,6 +37,7 @@
     "onCommand:basexTools.textToXml",
     "onCommand:basexTools.xmlToText",
     "onCommand:basexTools.minifyXml",
+    "onCommand:basexTools.xqLintReport",
     "onLanguage:xml",
     "onLanguage:xquery",
     "onLanguage:xsl"
@@ -73,8 +74,8 @@
         "title": "BaseX Tools: Minify XML"
       },
       {
-        "command": "basexTools.getAST",
-        "title": "BaseX Tools: AST"
+        "command": "basexTools.xqLintReport",
+        "title": "BaseX Tools: Analysis of current location in Xquery source"
       }
     ],
     "configuration": [
@@ -316,7 +317,7 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@quodatum/xqlint": "^0.0.17",
+    "@quodatum/xqlint": "^0.1.0",
     "@xmldom/xmldom": "^0.8.1",
     "xpath": "0.0.32"
   }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { VarType, FunType, XQLint } from '@quodatum/xqlint';
+import { VarDecl, FunDecl, XQLint } from '@quodatum/xqlint';
 import {SymbolKind, DocumentSymbol, DocumentSymbolProvider,
         Range, Position, TextDocument,CancellationToken}  from 'vscode';
 import { channel } from "../common/logger";
@@ -33,7 +33,7 @@ export class Symbols implements DocumentSymbolProvider {
     // pos: pos,
     // qname: qname,
     // annotations: {}
-    xqdoc.variables.forEach(function (v: VarType): void {
+    xqdoc.variables.forEach(function (v: VarDecl): void {
       const name = "$" + v.name;
       const description="about this variable, some doc here";
       channel.log(name + v);
@@ -41,7 +41,7 @@ export class Symbols implements DocumentSymbolProvider {
       symbols.push(info);
     });
 
-    xqdoc.functions.forEach(function (f: FunType) {
+    xqdoc.functions.forEach(function (f: FunDecl) {
       const name = f.name + "#" + f.params.length;
       const description="about this function, some doc here";
       channel.log(name + f);

@@ -8,7 +8,7 @@ import { createDocumentSelector, ExtensionState, Configuration } from "./common"
 import { XQueryCompletionItemProvider } from "./completion";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
 import { formatAsXml, minifyXml, xmlToText, textToXml  } from "./formatting/commands";
-import { XQueryLinter,getAst } from "./linting";
+import { XQueryLinter,xqLintReport } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 import { executeXQuery } from "./xquery-execution/commands";
@@ -40,7 +40,7 @@ export function activate(context: ExtensionContext) {
         commands.registerTextEditorCommand(constants.commands.xmlToText, xmlToText),
         commands.registerTextEditorCommand(constants.commands.textToXml, textToXml),
         commands.registerTextEditorCommand(constants.commands.minifyXml, minifyXml),
-        commands.registerTextEditorCommand(constants.commands.getAST, getAst),
+        commands.registerTextEditorCommand(constants.commands.xqLintReport, xqLintReport),
 
         languages.registerDocumentFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
         languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),

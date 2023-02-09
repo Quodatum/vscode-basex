@@ -23,7 +23,7 @@ const replacerFunc = () => {
   };
 
 export function dump(obj :object) {
-  return JSON.stringify(obj,replacerFunc())
+  return JSON.stringify(obj,replacerFunc(),1)
 }
 
 export class channel {

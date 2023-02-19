@@ -1,5 +1,5 @@
-# 0.0.67 (2023-02-09)
-Update xqlint 0.1.2
+# 0.1.0 (2023-02-19)
+Update xqlint 0.2.0
 
 # 0.0.64 (2023-01-26)
 * add simple hover display

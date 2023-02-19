@@ -1,7 +1,7 @@
 # BaseX Tools for Visual Studio Code
 
 
-The vscode-basex extension adds features to support BaseX development on VSCode.
+The vscode-basex extension adds features to support [BaseX](https://basex.org/) development on VSCode.
 For XQuery
 * Grammar support for:XQuery 3.1, XQuery update, Full text syntax  
 * code format
@@ -10,12 +10,14 @@ For XQuery
 * outline symbol view
 
 ## Features
+* [XQuery Linting](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-linting)
+* [XQuery Code Completion](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-code-completion)
+* [XQuery Execution](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-script-execution)
+
 * [XML Formatting](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xml-formatting)
 * [XML Tree View](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xml-tree-view)
 * [XPath Evaluation](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xpath-evaluation)
-* [XQuery Linting](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-linting)
-* [XQuery Execution](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-script-execution)
-* [XQuery Code Completion](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-code-completion)
+
 
 ## Requirements
 * VS Code `1.63.0` or higher

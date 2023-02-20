@@ -13,6 +13,7 @@ For XQuery
 * [XQuery Linting](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-linting)
 * [XQuery Code Completion](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-code-completion)
 * [XQuery Execution](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-script-execution)
+* [XQuery source formating](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-source-formating)
 
 * [XML Formatting](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xml-formatting)
 * [XML Tree View](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xml-tree-view)
@@ -39,11 +40,16 @@ npm install --global vsce
 npm run compile
 vsce package
 ```
+
+## Inspiration
+
+This project was created from a fork of [DotJoshJohnson/vscode-xml](https://github.com/DotJoshJohnson/vscode-xml). Much of `DotJoshJohnson/vscode-xml` code dealing with XML has been removed and additional XQuery features added. 
+
+The code parsing uses [quodatum/xqlint] which is based on [wcandillon/xqlint]
+
 ## Icon Credits
 Icons used in the XML Tree View are used under the Creative Commons 3.0 BY license.
 * "Code" icon by Dave Gandy from www.flaticon.com
 * "At" icon by FreePik from www.flaticon.com
 
-## Inspiration
 
-This project was created from a fork of [DotJoshJohnson/vscode-xml](https://github.com/DotJoshJohnson/vscode-xml). Much of `DotJoshJohnson/vscode-xml` code dealing with XML has been removed and additional XQuery features added. 

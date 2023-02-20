@@ -10,24 +10,24 @@ For XQuery
 * outline symbol view
 
 ## Features
-* [XQuery Linting](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-linting)
-* [XQuery Code Completion](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-code-completion)
-* [XQuery Execution](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-script-execution)
-* [XQuery source formating](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xquery-source-formating)
+* [XQuery Linting](https://github.com/Quodatum/vscode-basex/wiki/xquery-linting)
+* [XQuery Code Completion](https://github.com/Quodatum/vscode-basex/wiki/xquery-code-completion)
+* [XQuery Execution](https://github.com/Quodatum/vscode-basex/wiki/xquery-script-execution)
+* [XQuery source formating](https://github.com/Quodatum/vscode-basex/wiki/xquery-source-formating)
 
-* [XML Formatting](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xml-formatting)
-* [XML Tree View](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xml-tree-view)
-* [XPath Evaluation](https://git.quodatum.duckdns.org/apb/vscode-basex/wiki/xpath-evaluation)
+* [XML Formatting](https://github.com/Quodatum/vscode-basex/wiki/xml-formatting)
+* [XML Tree View](https://github.com/Quodatum/vscode-basex/wiki/xml-tree-view)
+* [XPath Evaluation](https://github.com/Quodatum/vscode-basex/wiki/xpath-evaluation)
 
 
 ## Requirements
 * VS Code `1.63.0` or higher
 
 ## Release Notes
-Detailed release notes are available [here](https://git.quodatum.duckdns.org/apb/vscode-basex/releases).
+Detailed release notes are available [here](https://github.com/Quodatum/vscode-basex/releases).
 
 ## Issues
-Run into a bug? Report it [here](https://git.quodatum.duckdns.org/apb/vscode-basex/issues).
+Run into a bug? Report it [here](https://github.com/Quodatum/vscode-basex/issues).
 ## Development
 
 ## build

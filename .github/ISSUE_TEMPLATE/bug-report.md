@@ -1,5 +1,6 @@
 ---
 name: Bug Report
+About: Something is not working
 ---
 
 **Description**

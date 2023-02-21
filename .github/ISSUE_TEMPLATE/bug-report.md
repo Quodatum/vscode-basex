@@ -1,6 +1,5 @@
 ---
 name: Bug Report
-about: Something (aside from the formatter) isn't working right!
 ---
 
 **Description**
@@ -10,7 +9,7 @@ What seems to be the problem?
 If applicable, add screenshots to help explain your problem.
 
 **Extension Version**
-What version of the XML Tools extension are you using?
+What version of the Basex-Tools extension are you using?
 
 **VS Code Version**
 What version of VS Code are you using?

@@ -32,7 +32,7 @@ export class ClassicXmlFormatter implements XmlFormatter {
                 output += parts[i];
                 inComment = false;
             } else if (/^<(\w|:)/.test(parts[i - 1]) && /^<\/(\w|:)/.test(parts[i])
-                && /^<[\w:\-\.\,\/]+/.exec(parts[i - 1])[0] === /^<\/[\w:\-\.\,]+/.exec(parts[i])[0].replace("/", "")) {
+                && /^<[\w:\-.,/]+/.exec(parts[i - 1])[0] === /^<\/[\w:\-.,]+/.exec(parts[i])[0].replace("/", "")) {
 
                 output += parts[i];
                 if (!inComment) { level--; }
@@ -48,7 +48,7 @@ export class ClassicXmlFormatter implements XmlFormatter {
                 output = (!inComment) ? output += this._getIndent(options, level--, parts[i]) : output += parts[i];
             } else if (parts[i].search(/<\?/) > -1) {
                 output += this._getIndent(options, level, parts[i]);
-            } else if (options.splitXmlnsOnFormat && (parts[i].search(/xmlns\:/) > -1 || parts[i].search(/xmlns\=/) > -1)) {
+            } else if (options.splitXmlnsOnFormat && (parts[i].search(/xmlns:/) > -1 || parts[i].search(/xmlns=/) > -1)) {
                 output += this._getIndent(options, level, parts[i]);
             } else {
                 output += parts[i];
@@ -67,7 +67,7 @@ export class ClassicXmlFormatter implements XmlFormatter {
 
     minifyXml(xml: string, options: XmlFormattingOptions): string {
         xml = this._stripLineBreaks(options, xml); // all line breaks outside of CDATA elements and comments
-        xml = (options.removeCommentsOnMinify) ? xml.replace(/\<![ \r\n\t]*(--([^\-]|[\r\n]|-[^\-])*--[ \r\n\t]*)\>/g, "") : xml;
+        xml = (options.removeCommentsOnMinify) ? xml.replace(/<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>/g, "") : xml;
         xml = xml.replace(/>\s{0,}</g, "><"); // insignificant whitespace between tags
         xml = xml.replace(/"\s+(?=[^\s]+=)/g, "\" "); // spaces between attributes
         xml = xml.replace(/"\s+(?=>)/g, "\""); // spaces between the last attribute and tag close (>)

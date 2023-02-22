@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -15,7 +15,7 @@
   "homepage": "https://github.com/Quodatum/vscode-basex",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Quodatum/vscode-basex.git"
+    "url": "https://github.com/Quodatum/vscode-basex.git"
   },
   "bugs": {
     "url": "https://github.com/Quodatum/vscode-basex/issues"
@@ -31,15 +31,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:basexTools.evaluateXPath",
-    "onCommand:basexTools.executeXQuery",
-    "onCommand:basexTools.formatAsXml",
-    "onCommand:basexTools.textToXml",
-    "onCommand:basexTools.xmlToText",
-    "onCommand:basexTools.minifyXml",
-    "onCommand:basexTools.xqLintReport",
-    "onLanguage:xml",
-    "onLanguage:xquery",
     "onLanguage:xsl"
   ],
   "main": "./out/extension.js",
@@ -125,6 +116,11 @@
         "id": "xquery",
         "title": "XQuery ",
         "properties": {
+          "basexTools.xquery.showHovers": {
+              "type": "boolean",
+              "default": false,
+              "description": "Show hovers in xquery."
+          },
           "basexTools.xquery.executionArguments": {
             "type": "array",
             "default": [
@@ -159,34 +155,34 @@
         }
       },
       {
-        "title": "BaseX Tools ",
+        "title": "XML edit ",
         "type": "object",
         "properties": {
-          "basexTools.enforcePrettySelfClosingTagOnFormat": {
+          "basexTools.xml.enforcePrettySelfClosingTagOnFormat": {
             "type": "boolean",
             "default": false,
             "description": "Enforces a space before the forward slash at the end of a self-closing XML tag.",
             "scope": "resource"
           },
-          "basexTools.removeCommentsOnMinify": {
+          "basexTools.xml.removeCommentsOnMinify": {
             "type": "boolean",
             "default": false,
             "description": "Remove XML comments during minification.",
             "scope": "resource"
           },
-          "basexTools.splitAttributesOnFormat": {
+          "basexTools.xml.splitAttributesOnFormat": {
             "type": "boolean",
             "default": false,
             "description": "Put each attribute on a new line when formatting XML. Overrides `basexTools.splitXmlnsOnFormat` if set to `true`.",
             "scope": "resource"
           },
-          "basexTools.splitXmlnsOnFormat": {
+          "basexTools.xml.splitXmlnsOnFormat": {
             "type": "boolean",
             "default": true,
             "description": "Put each xmlns attribute on a new line when formatting XML.",
             "scope": "resource"
           },
-          "basexTools.xmlFormatterImplementation": {
+          "basexTools.xml.FormatterImplementation": {
             "type": "string",
             "enum": [
               "classic",

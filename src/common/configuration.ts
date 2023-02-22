@@ -24,7 +24,7 @@ export class Configuration {
     }
 
     static get xmlFormatterImplementation(): string {
-        return this._getForWindow<string>("xmlFormatterImplementation");
+        return this._getForWindow<string>("xml.FormatterImplementation");
     }
 
     static get xqueryExecutionArguments(): string[] {
@@ -43,20 +43,24 @@ export class Configuration {
         return this._getForWindow<string>("xquery.executionInputSearchPattern");
     }
 
+    static xqueryShowHovers(resource: Uri): boolean {
+        return this._getForResource<boolean>("xquery.showHovers", resource);
+    }
+
     static enforcePrettySelfClosingTagOnFormat(resource: Uri): boolean {
-        return this._getForResource<boolean>("enforcePrettySelfClosingTagOnFormat", resource);
+        return this._getForResource<boolean>("xml.enforcePrettySelfClosingTagOnFormat", resource);
     }
 
     static removeCommentsOnMinify(resource: Uri): boolean {
-        return this._getForResource<boolean>("removeCommentsOnMinify", resource);
+        return this._getForResource<boolean>("xml.removeCommentsOnMinify", resource);
     }
 
     static splitAttributesOnFormat(resource: Uri): boolean {
-        return this._getForResource<boolean>("splitAttributesOnFormat", resource);
+        return this._getForResource<boolean>("xml.splitAttributesOnFormat", resource);
     }
 
     static splitXmlnsOnFormat(resource: Uri): boolean {
-        return this._getForResource<boolean>("splitXmlnsOnFormat", resource);
+        return this._getForResource<boolean>("xml.splitXmlnsOnFormat", resource);
     }
 
     private static _getForResource<T>(section: string, resource: Uri): T {

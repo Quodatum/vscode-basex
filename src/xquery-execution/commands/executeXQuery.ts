@@ -87,7 +87,7 @@ export async function executeXQuery(editor: TextEditor, edit: TextEditorEdit): P
 
     if (outputPath) {
         outputPath = await window.showInputBox({
-            placeHolder: "ex. C:\\TEMP\XQueryOutput\\MyOutputFile.xml",
+            placeHolder: "ex. C:/TEMP/XQueryOutput/MyOutputFile.xml",
             prompt: "Please specify the output file path. Existing file behavior is determined by the execution engine you have specified.",
             value: outputPath
         });

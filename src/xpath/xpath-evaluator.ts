@@ -52,18 +52,19 @@ export class XPathEvaluator {
                 evaluatorResult.result = xPathResult.booleanValue;
                 break;
             case XPathResultTypes.UNORDERED_NODE_ITERATOR_TYPE:
-            case XPathResultTypes.ORDERED_NODE_ITERATOR_TYPE:
+            case XPathResultTypes.ORDERED_NODE_ITERATOR_TYPE:{
                 evaluatorResult.result = xPathResult.booleanValue;
 
                 let node: Node;
 
-                while (node = xPathResult.iterateNext()) {
+                while ((node = xPathResult.iterateNext())) {
                     nodes.push(node);
                 }
 
                 evaluatorResult.result = nodes;
                 evaluatorResult.type = EvaluatorResultType.NODE_COLLECTION;
                 break;
+            }
         }
 
 

@@ -33,7 +33,7 @@
 			"${3:expr}",
 			"};"
 		],
-		"description": "declare a function"
+		"description": "declare  function"
 	},
 	"declare variable": {
 		"prefix": "dv",

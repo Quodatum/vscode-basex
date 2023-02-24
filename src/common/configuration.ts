@@ -31,6 +31,10 @@ export class Configuration {
         return this._getForWindow<string[]>("xquery.executionArguments");
     }
 
+    static get xquerySuppressErrors(): string[] {
+        return this._getForWindow<string[]>("xquery.suppressErrors");
+    }
+    
     static get xqueryExecutionEngine(): string {
         return this._getForWindow<string>("xquery.executionEngine");
     }

@@ -2,14 +2,14 @@ import { window, workspace } from "vscode";
 import { Disposable, Range, TextEditor, TextEditorEdit, Uri } from "vscode";
 
 import * as constants from "../../constants";
-
+import { channel } from "../../common/logger";
 import { ChildProcess } from "../child-process";
 import { Configuration, NativeCommands } from "../../common";
 
 export async function executeXQuery(editor: TextEditor, edit: TextEditorEdit): Promise<void> {
     // this disposable will be used for creating status bar messages
     let disposable: Disposable;
-
+    channel.log("executeXQuery");
     if (editor.document.languageId !== constants.languageIds.xquery) {
         window.showErrorMessage("This action can only be performed on an XQuery file.");
         return;
@@ -103,7 +103,8 @@ export async function executeXQuery(editor: TextEditor, edit: TextEditorEdit): P
             .replace("$(input)", inputFile.fsPath)
             .replace("$(project)", (workspace.workspaceFolders) ? workspace.workspaceFolders[0].uri.fsPath : "");
     });
-
+    channel.log(executable);
+    channel.log(args.toString());
     try {
         await ChildProcess.spawn(executable, args);
     }

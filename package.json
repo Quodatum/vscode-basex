@@ -70,57 +70,32 @@
       }
     ],
     "configuration": [
+
       {
-        "id": "xmltree",
-        "title": "XML tree view ",
-        "properties": {
-          "basexTools.xmlTree.enableTreeView": {
-            "type": "boolean",
-            "default": false,
-            "description": "Enables the XML Document view in the explorer for XML documents.",
-            "scope": "window"
-          },
-          "basexTools.xmlTree.enableViewMetadata": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enables attribute and child element counts in the XML Document view.",
-            "scope": "window"
-          },
-          "basexTools.xmlTree.enableViewCursorSync": {
-            "type": "boolean",
-            "default": false,
-            "description": "Enables auto-reveal of elements in the XML Document view when a start tag is clicked in the editor.",
-            "scope": "window"
-          }
-        }
-      },
-      {
-        "id": "xpath",
-        "title": "XPath ",
-        "properties": {
-          "basexTools.xpath.ignoreDefaultNamespace": {
-            "type": "boolean",
-            "default": true,
-            "description": "Ignore default xmlns attributes when evaluating XPath.",
-            "scope": "window"
-          },
-          "basexTools.xpath.persistXPathQuery": {
-            "type": "boolean",
-            "default": true,
-            "description": "Remember the last XPath query used.",
-            "scope": "window"
-          }
-        }
-      },
-      {
-        "id": "xquery",
-        "title": "XQuery ",
+        "id": "xqueryui",
+        "order": 1,
+        "title": "XQuery UI",
         "properties": {
           "basexTools.xquery.showHovers": {
               "type": "boolean",
               "default": false,
-              "description": "Show hovers in xquery."
+              "description": "Show hovers in xquery. Currently these show just Diagnostic info"
           },
+          "basexTools.xquery.suppressErrors": {
+            "type": "array",
+            "default": [
+              "[XQST0059]",
+              "[XPST0008]"
+            ],
+            "description": "Error messages including these strings are marked as info rather than error. TEMP HACK! "
+        }
+        }
+      },
+      {
+        "id": "xqueryexec",
+        "order": 2,
+        "title": "XQuery Execute",
+        "properties": {
           "basexTools.xquery.executionArguments": {
             "type": "array",
             "default": [
@@ -155,7 +130,28 @@
         }
       },
       {
+        "id": "xpath",
+        "order": 3,
+        "title": "XPath ",
+        "properties": {
+          "basexTools.xpath.ignoreDefaultNamespace": {
+            "type": "boolean",
+            "default": true,
+            "description": "Ignore default xmlns attributes when evaluating XPath.",
+            "scope": "window"
+          },
+          "basexTools.xpath.persistXPathQuery": {
+            "type": "boolean",
+            "default": true,
+            "description": "Remember the last XPath query used.",
+            "scope": "window"
+          }
+        }
+      },
+
+      {
         "title": "XML edit ",
+        "order": 4,
         "type": "object",
         "properties": {
           "basexTools.xml.enforcePrettySelfClosingTagOnFormat": {
@@ -190,6 +186,31 @@
             ],
             "default": "v2",
             "description": "Supported XML Formatters: classic",
+            "scope": "window"
+          }
+        }
+      },
+      {
+        "id": "xmltree",
+        "order": 5,
+        "title": "XML tree view ",
+        "properties": {
+          "basexTools.xmlTree.enableTreeView": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enables the XML Document view in the explorer for XML documents.",
+            "scope": "window"
+          },
+          "basexTools.xmlTree.enableViewMetadata": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enables attribute and child element counts in the XML Document view.",
+            "scope": "window"
+          },
+          "basexTools.xmlTree.enableViewCursorSync": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enables auto-reveal of elements in the XML Document view when a start tag is clicked in the editor.",
             "scope": "window"
           }
         }

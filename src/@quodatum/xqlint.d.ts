@@ -1,20 +1,28 @@
 
 declare module '@quodatum/xqlint'{
-  import { Position } from "vscode";
+  import { Position, Range } from "vscode";
     export class  XQLint{
         constructor(source :string, opts? :object);
-        public getCompletions(pos :object): [object];
+        public getCompletions(pos :Position): [object];
         public getXQDoc() :XQDoc;
         public getAST(pos? :Position) :any;
         public getSctx(pos? :Position) :any;
         public getErrors() :[Marker];
         public getWarnings() :[Marker];   
     }
+// 
     export class Marker{
-      pos: Position;
-      type: string;
-      level: string;
-      message: string;
+      pos: LintRange;
+      type: string; // error,warning
+      level: string; //same as type??
+      message: string; // '[code] ...'
+    }
+  
+    export class  LintRange{
+      sl: number;
+      sc: number;
+      el: number;
+      ec: number;
     }
     export class  XQDoc{
       moduleNamespace: string;

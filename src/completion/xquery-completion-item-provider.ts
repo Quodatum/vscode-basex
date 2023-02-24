@@ -8,7 +8,7 @@ export class XQueryCompletionItemProvider implements CompletionItemProvider {
         const completionItems = new Array<CompletionItem>();
         const linter = new XQLint(document.getText());
 
-        linter.getCompletions({ line: position.line, col: position.character }).forEach((x: any) => {
+        linter.getCompletions(position).forEach((x: any) => {
             completionItems.push(this._getCompletionItem(x));
         });
 

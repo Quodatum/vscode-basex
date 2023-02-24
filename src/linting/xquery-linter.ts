@@ -1,23 +1,29 @@
+// convert xqlint markers 
 import { Diagnostic, DiagnosticSeverity, Position, Range } from "vscode";
-import { XQLint} from "@quodatum/xqlint";
+import { Marker, XQLint } from "@quodatum/xqlint";
+import { Configuration } from "../common";
 
+// [XQST0059] module "http://www.rave-tech.com/bloomsbury/config" not found
+// [XPST0008] "list-details#0": undeclared function
+function isSuppressed(msg: string): boolean {
+    const errs = Configuration.xquerySuppressErrors;
+    return errs.some((x) => msg.includes(x));
+}
 
 export class XQueryLinter {
-    static SEVERITY_WARNING = 1;
-    static SEVERITY_ERROR = 2;
 
     lint(text: string): Diagnostic[] {
         const linter = new XQLint(text);
         const diagnostics = new Array<Diagnostic>();
 
-        linter.getErrors().forEach((error: any) => {
+        linter.getErrors().forEach((error: Marker) => {
             diagnostics.push(new Diagnostic(
                 new Range(
                     new Position(error.pos.sl, error.pos.sc),
                     new Position(error.pos.el, error.pos.ec)
                 ),
                 error.message,
-                DiagnosticSeverity.Error
+                isSuppressed(error.message) ? DiagnosticSeverity.Information : DiagnosticSeverity.Error
             ));
         });
 
@@ -31,7 +37,7 @@ export class XQueryLinter {
                 DiagnosticSeverity.Warning
             ));
         });
-
         return diagnostics;
+
     }
 }

@@ -1,5 +1,7 @@
-# 0.1.1 (2023-02-21)
-* Add Hover show option
+# 0.1.1 (2023-02-24)
+* Add setting to control "Hover show"
+* Add setting to filter out matching diagnostic messages
+
 # 0.1.0 (2023-02-19)
 * Update xqlint to 0.2.0
 

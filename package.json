@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -70,16 +70,28 @@
       }
     ],
     "configuration": [
-
       {
         "id": "xqueryui",
         "order": 1,
         "title": "XQuery UI",
         "properties": {
+          "basexTools.xquery.platform": {
+            "type": "string",
+            "default": "basex",
+            "enum": [
+              "basex",
+              "none"
+            ],
+            "enumDescriptions": [
+              "BaseX 9.7.5 ",
+              "no custom libraries"
+            ],
+            "description": "XQuery implementation. Determines syntax and core module libraries."
+          },
           "basexTools.xquery.showHovers": {
-              "type": "boolean",
-              "default": false,
-              "description": "Show hovers in xquery. Currently these show just Diagnostic info"
+            "type": "boolean",
+            "default": false,
+            "description": "Show hovers in XQuery source. Currently these show just Diagnostic info"
           },
           "basexTools.xquery.suppressErrors": {
             "type": "array",
@@ -88,7 +100,7 @@
               "[XPST0008]"
             ],
             "description": "Error messages including these strings are marked as info rather than error. TEMP HACK! "
-        }
+          }
         }
       },
       {
@@ -148,7 +160,6 @@
           }
         }
       },
-
       {
         "title": "XML edit ",
         "order": 4,

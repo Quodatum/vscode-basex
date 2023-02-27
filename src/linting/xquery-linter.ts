@@ -1,7 +1,8 @@
 // convert xqlint markers 
 import { Diagnostic, DiagnosticSeverity, Position, Range } from "vscode";
-import { Marker, XQLint } from "@quodatum/xqlint";
+import { Marker } from "@quodatum/xqlint";
 import { Configuration } from "../common";
+import  {factory} from "../common/xqlint";
 
 // [XQST0059] module "http://www.rave-tech.com/bloomsbury/config" not found
 // [XPST0008] "list-details#0": undeclared function
@@ -13,7 +14,7 @@ function isSuppressed(msg: string): boolean {
 export class XQueryLinter {
 
     lint(text: string): Diagnostic[] {
-        const linter = new XQLint(text);
+        const linter = factory.XQLint(text);
         const diagnostics = new Array<Diagnostic>();
 
         linter.getErrors().forEach((error: Marker) => {

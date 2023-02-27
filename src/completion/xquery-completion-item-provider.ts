@@ -1,12 +1,12 @@
 import { CompletionItem, CompletionItemKind, CompletionItemProvider, Position, TextDocument } from "vscode";
-import { XQLint} from "@quodatum/xqlint";
+import  {factory} from "../common/xqlint";
 
 
 export class XQueryCompletionItemProvider implements CompletionItemProvider {
 
     provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
         const completionItems = new Array<CompletionItem>();
-        const linter = new XQLint(document.getText());
+        const linter =  factory.XQLint(document.getText());
 
         linter.getCompletions(position).forEach((x: any) => {
             completionItems.push(this._getCompletionItem(x));

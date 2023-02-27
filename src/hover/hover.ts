@@ -1,7 +1,7 @@
 // xquery hover
 
 import { CancellationToken, Hover, HoverProvider, Position, TextDocument } from "vscode";
-import { XQLint } from "@quodatum/xqlint";
+import { factory } from "../common/xqlint";
 import { Configuration } from "../common";
 
 export class XQueryHoverProvider implements HoverProvider {
@@ -10,7 +10,7 @@ export class XQueryHoverProvider implements HoverProvider {
         position: Position,
         token: CancellationToken
     ): Hover | null {
-        const linter = new XQLint(document.getText());
+        const linter = factory.XQLint(document.getText());
 
         const node = linter.getAST(position);
         //const sctx=linter.getCompletions(position);

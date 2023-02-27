@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { VarDecl, FunDecl, XQLint } from '@quodatum/xqlint';
+import { VarDecl, FunDecl} from '@quodatum/xqlint';
 import {SymbolKind, DocumentSymbol, DocumentSymbolProvider,
         Range, Position, TextDocument,CancellationToken}  from 'vscode';
 import { channel } from "../common/logger";
+import  {factory} from "../common/xqlint";
 //
 // This class handles XQuery Symbols
 //
@@ -24,7 +25,7 @@ export class Symbols implements DocumentSymbolProvider {
     channel.log("Symbols: " + document.uri);
     const symbols: DocumentSymbol[] = [];
     const text = document.getText();
-    const linter = new XQLint(text, { "styleCheck": false });
+    const linter =factory.XQLint(text);
 
     const xqdoc = linter.getXQDoc();
     channel.log("got xqdoc");

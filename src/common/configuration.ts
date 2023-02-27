@@ -46,7 +46,9 @@ export class Configuration {
     static get xqueryExecutionInputSearchPattern(): string {
         return this._getForWindow<string>("xquery.executionInputSearchPattern");
     }
-
+    static get xqueryPlatform(): string {
+        return this._getForWindow<string>("xquery.platform");
+    }
     static xqueryShowHovers(resource: Uri): boolean {
         return this._getForResource<boolean>("xquery.showHovers", resource);
     }

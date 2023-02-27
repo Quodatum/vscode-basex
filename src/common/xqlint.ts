@@ -4,8 +4,8 @@ import { channel } from "../common/logger";
 
 export class factory{
     static XQLint( txt: string) :ext.XQLint{
-    const platform= Configuration.xqueryPlatform;
-    channel.log(platform);
-    return new ext.XQLint(txt, {"platform": platform, "styleCheck": false })
+    const processor= Configuration.xqueryProcessor;
+    channel.log(processor);
+    return new ext.XQLint(txt, {"processor": processor, "styleCheck": false })
   }
 }

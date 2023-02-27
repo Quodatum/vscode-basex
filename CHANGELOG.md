@@ -1,6 +1,9 @@
+# 0.1.3 (2023-02-27)
+* Rename setting `platform` to `processor`
+
 # 0.1.2 (2023-02-26)
 * update to xqlint 0.2.1
-* add setting platform
+* add setting `platform`
 * common XQlint configuration.
 
 # 0.1.1 (2023-02-24)

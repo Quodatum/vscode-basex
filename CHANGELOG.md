@@ -1,4 +1,14 @@
+# 0.1.5 (2023-05-03)
+
+*  use xqlint 0.2.2 
+* improve hover display
+* Add XQuery icon
+
+# 0.1.4 (2023-03-18)
+* [fix] use xqlint 0.2.1, was using 0.2.0
+
 # 0.1.3 (2023-02-27)
+
 * Rename setting `platform` to `processor`
 
 # 0.1.2 (2023-02-26)

@@ -1,22 +1,22 @@
 import {
-    commands, languages, window, ExtensionContext, 
-    TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind, DiagnosticCollection 
-    } from "vscode";
+    commands, languages, window, ExtensionContext,
+    TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind, DiagnosticCollection
+} from "vscode";
 import { channel } from "./common/logger";
 
 import { createDocumentSelector, ExtensionState, Configuration } from "./common";
-import { XQueryCompletionItemProvider } from "./completion";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
-import { formatAsXml, minifyXml, xmlToText, textToXml  } from "./formatting/commands";
-import { XQueryLinter,xqLintReport } from "./linting";
+import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
+import { XQueryLinter, xqLintReport } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 import { executeXQuery } from "./xquery-execution/commands";
 
 import * as constants from "./constants";
 import { XQueryFormatter } from "./formatting/xquery-formatting-provider";
-import { Symbols } from './symbols/symbols';
-import { XQueryHoverProvider } from './hover/hover';
+import * as symbols from './providers/symbols';
+import  * as hover from './providers/hover';
+import  * as completion from './providers/completion';
 
 let diagnosticCollectionXQuery: DiagnosticCollection;
 
@@ -27,10 +27,6 @@ export function activate(context: ExtensionContext) {
     const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
     const xqueryDocSelector = createDocumentSelector(constants.languageIds.xquery);
 
-    /* Completion Features */
-    context.subscriptions.push(
-        languages.registerCompletionItemProvider(xqueryDocSelector, new XQueryCompletionItemProvider(), ":", "$")
-    );
 
     /* Formatting Features */
     const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
@@ -44,20 +40,17 @@ export function activate(context: ExtensionContext) {
 
         languages.registerDocumentFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
         languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
-        
+
         languages.registerDocumentFormattingEditProvider(xqueryDocSelector, xqueryFormattingEditProvider),
         languages.registerDocumentRangeFormattingEditProvider(xqueryDocSelector, xqueryFormattingEditProvider)
     );
 
+
+    symbols.activate(context);
+    hover.activate(context);
+    completion.activate(context);
+    //definition.activate(context);
     
-
-    // symbols
-    const symbols = new Symbols();
-    context.subscriptions.push(languages.registerDocumentSymbolProvider(constants.languageIds.xquery, symbols));
-   // hover
-   const hover = new XQueryHoverProvider();
-   context.subscriptions.push(languages.registerHoverProvider(constants.languageIds.xquery, hover));
-
     /* Linting Features */
     diagnosticCollectionXQuery = languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
     context.subscriptions.push(
@@ -94,7 +87,7 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(
         commands.registerTextEditorCommand(constants.commands.executeXQuery, executeXQuery)
     );
-   
+
 }
 
 export function deactivate() {
@@ -110,7 +103,7 @@ function _handleContextChange(editor: TextEditor): void {
 
     switch (editor.document.languageId) {
         case constants.languageIds.xquery:
-      diagnosticCollectionXQuery.set(editor.document.uri, new XQueryLinter().lint(editor.document.getText()));
+            diagnosticCollectionXQuery.set(editor.document.uri, new XQueryLinter().lint(editor.document));
             break;
     }
 }
@@ -119,6 +112,9 @@ function _handleChangeActiveTextEditor(editor: TextEditor): void {
     _handleContextChange(editor);
 }
 
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function _handleChangeTextEditorSelection(e: TextEditorSelectionChangeEvent): void {
+    console.log("ChangeTextEditorSelection: ",e.textEditor.document.uri);
     _handleContextChange(e.textEditor);
 }

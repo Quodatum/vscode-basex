@@ -1,39 +1,26 @@
 // convert xqlint markers 
-import { Diagnostic, DiagnosticSeverity, Position, Range } from "vscode";
+import { Diagnostic, DiagnosticSeverity, Position, Range,TextDocument }  from "vscode";
 import { Marker } from "@quodatum/xqlint";
 import { Configuration } from "../common";
-import  {factory} from "../common/xqlint";
-
-// [XQST0059] module "http://www.rave-tech.com/bloomsbury/config" not found
-// [XPST0008] "list-details#0": undeclared function
-function isSuppressed(msg: string): boolean {
-    const errs = Configuration.xquerySuppressErrors;
-    return errs.some((x) => msg.includes(x));
-}
+import  {Factory,importRange} from "../common/xqlint";
 
 export class XQueryLinter {
 
-    lint(text: string): Diagnostic[] {
-        const linter = factory.XQLint(text);
+    lint(document: TextDocument): Diagnostic[] {
+        const linter = Factory.XQLint(document,true); //refresh because changed
         const diagnostics = new Array<Diagnostic>();
 
         linter.getErrors().forEach((error: Marker) => {
             diagnostics.push(new Diagnostic(
-                new Range(
-                    new Position(error.pos.sl, error.pos.sc),
-                    new Position(error.pos.el, error.pos.ec)
-                ),
+                importRange(error.pos),
                 error.message,
                 isSuppressed(error.message) ? DiagnosticSeverity.Information : DiagnosticSeverity.Error
             ));
         });
 
-        linter.getWarnings().forEach((warning: any) => {
+        linter.getWarnings().forEach((warning: Marker) => {
             diagnostics.push(new Diagnostic(
-                new Range(
-                    new Position(warning.pos.sl, warning.pos.sc),
-                    new Position(warning.pos.el, warning.pos.ec)
-                ),
+                importRange(warning.pos),
                 warning.message,
                 DiagnosticSeverity.Warning
             ));
@@ -42,3 +29,10 @@ export class XQueryLinter {
 
     }
 }
+// [XQST0059] module "http://www.rave-tech.com/bloomsbury/config" not found
+// [XPST0008] "list-details#0": undeclared function
+function isSuppressed(msg: string): boolean {
+    const errs = Configuration.xquerySuppressErrors;
+    return errs.some((x) => msg.includes(x));
+}
+

@@ -1,12 +1,21 @@
-import { CompletionItem, CompletionItemKind, CompletionItemProvider, Position, TextDocument } from "vscode";
-import  {factory} from "../common/xqlint";
+import {
+    CompletionItem, CompletionItemKind, CompletionItemProvider,
+    Position, TextDocument, ExtensionContext, languages
+} from "vscode";
+import { Factory } from "../common/xqlint";
+import { languageIds } from "../constants";
 
+export function activate(context: ExtensionContext) {
+    context.subscriptions.push(languages.registerCompletionItemProvider(
+        { language: languageIds.xquery }, new XQueryCompletionItemProvider()
+    ));
+}
 
 export class XQueryCompletionItemProvider implements CompletionItemProvider {
 
     provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
         const completionItems = new Array<CompletionItem>();
-        const linter =  factory.XQLint(document.getText());
+        const linter = Factory.XQLint(document);
 
         linter.getCompletions(position).forEach((x: any) => {
             completionItems.push(this._getCompletionItem(x));
@@ -30,7 +39,7 @@ export class XQueryCompletionItemProvider implements CompletionItemProvider {
                 const funcEnd = xqLintCompletionItem.value.indexOf("(");
 
                 completionItem.insertText = xqLintCompletionItem.value.substring(funcStart, funcEnd);
-            break;
+                break;
 
             // variables and parameters (always qualified with a dollar sign)
             case "Let binding":
@@ -39,12 +48,12 @@ export class XQueryCompletionItemProvider implements CompletionItemProvider {
             case "Function parameter":
                 completionItem.kind = CompletionItemKind.Variable;
                 completionItem.insertText = xqLintCompletionItem.value.substring(1);
-            break;
+                break;
 
             // everything else
             default:
                 completionItem.kind = CompletionItemKind.Text;
-            break;
+                break;
         }
 
         return completionItem;

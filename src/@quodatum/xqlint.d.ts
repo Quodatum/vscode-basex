@@ -1,10 +1,10 @@
 
 declare module '@quodatum/xqlint'{
-  import { Position, Range } from "vscode";
+  import { Position} from "vscode";
     export class  XQLint{
         constructor(source :string, opts? :object);
         public getCompletions(pos :Position): [object];
-        public getXQDoc() :XQDoc;
+        public getXQDoc(withPos? :boolean) :XQDoc;
         public getAST(pos? :Position) :any;
         public getSctx(pos? :Position) :any;
         public getErrors() :[Marker];
@@ -34,21 +34,26 @@ declare module '@quodatum/xqlint'{
         name: string;
         type: string;
         occurrence?: string;
-        description: string;
-        pos: any;
+        comments: Comment;
+        pos: LintRange;
     }
-      
+ 
     export interface FunDecl  {
         name: string;
         arity: number;
         params: string[]; // name
-        description: string;
-        pos: boolean;
+        comments: Comment;
+        pos: LintRange;
     }   
-
+    export interface Comment {
+      description: string;
+      params :object;
+      errors :string[];
+      others :string[];
+    }  
    export function XQueryLexer() :any;
    export function createStaticContext(processor :string) :any;
    export function CodeFormatter(ast :object) :any;
    export function CodeFormatter(ast :object, newLinesEnabled :boolean, DEBUG :any) :any;
-
+  
 } 

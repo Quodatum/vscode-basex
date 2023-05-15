@@ -1,6 +1,7 @@
 name: "Release to Marketplace."
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*"

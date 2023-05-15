@@ -1,7 +1,12 @@
 # BaseX Tools for Visual Studio Code
 
-The vscode-basex extension adds features to support [BaseX](https://basex.org/) development on VSCode.
-A key feature is a parser for XQuery sources that supports all BaseX features, including XQuery update and Full text search syntax.  
+The `vscode-basex` extension adds features to support [BaseX](https://basex.org/) development on VSCode.
+A key feature is a parser for [XQuery](https://quodatum.github.io/basex-xqparse/) sources that supports all BaseX features, including XQuery Update and the Full text search syntax.  
+# Status
+__Work in progress. Errors and changes to be expected.__
+# Installation
+Published on [VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=quodatum.vscode-basex)
+and [open-vsx](https://open-vsx.org/extension/quodatum/vscode-basex)
 
 # Features
 ## XQuery
@@ -34,7 +39,7 @@ Run into a bug? Report it [here](https://github.com/Quodatum/vscode-basex/issues
 ```
 npm install
 npm install -g typescript #maybe
-npm install --global vsce
+npm install --global @vscode/vsce
 #
 npm run compile
 vsce package
@@ -42,13 +47,12 @@ vsce package
 
 # Inspiration
 ## VSCode
-This project was created from a fork of [DotJoshJohnson/vscode-xml](https://github.com/DotJoshJohnson/vscode-xml). Some of `DotJoshJohnson/vscode-xml` code dealing with XML has been removed and additional XQuery features added. 
+This project was created from a fork of [DotJoshJohnson/vscode-xml](https://github.com/DotJoshJohnson/vscode-xml). Some of the `DotJoshJohnson` code dealing with XML has been removed and additional XQuery features added. 
 ## XQuery parsing
-The code parsing uses [quodatum/xqlint] which is based on [wcandillon/xqlint].
-These both make use of tGunther Rademacher's [REx](https://www.bottlecaps.de/rex/) Parser Generator.
+The code parsing uses [quodatum/xqlint](https://github.com/Quodatum/xqlint) which a fork of [wcandillon/xqlint](https://github.com/wcandillon/xqlint).
+These both make use of Gunther Rademacher's [REx](https://www.bottlecaps.de/rex/) Parser Generator.
 
 ## Icon 
-XQuery file type icon by Roberto Huertas https://icon-icons.com/icon/file-type-xquery/130059 
 
 Icons used in the XML Tree View are used under the Creative Commons 3.0 BY license.
 * "Code" icon by Dave Gandy from www.flaticon.com

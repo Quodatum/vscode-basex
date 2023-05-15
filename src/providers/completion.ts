@@ -2,7 +2,7 @@ import {
     CompletionItem, CompletionItemKind, CompletionItemProvider,
     Position, TextDocument, ExtensionContext, languages
 } from "vscode";
-import { Factory } from "../common/xqlint";
+import { XQLintFactory } from "../common/xqlint";
 import { languageIds } from "../constants";
 
 export function activate(context: ExtensionContext) {
@@ -11,11 +11,11 @@ export function activate(context: ExtensionContext) {
     ));
 }
 
-export class XQueryCompletionItemProvider implements CompletionItemProvider {
+class XQueryCompletionItemProvider implements CompletionItemProvider {
 
     provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
         const completionItems = new Array<CompletionItem>();
-        const linter = Factory.XQLint(document);
+        const linter = XQLintFactory.XQLint(document);
 
         linter.getCompletions(position).forEach((x: any) => {
             completionItems.push(this._getCompletionItem(x));
@@ -26,7 +26,7 @@ export class XQueryCompletionItemProvider implements CompletionItemProvider {
 
     private _getCompletionItem(xqLintCompletionItem: any): CompletionItem {
         const completionItem = new CompletionItem(xqLintCompletionItem.name);
-        completionItem.insertText = xqLintCompletionItem.value;
+        completionItem.insertText = xqLintCompletionItem.snippet;
 
         switch (xqLintCompletionItem.meta) {
             // functions (always qualified with a colon)

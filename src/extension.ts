@@ -13,44 +13,26 @@ import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 import { executeXQuery } from "./xquery-execution/commands";
 
 import * as constants from "./constants";
-import { XQueryFormatter } from "./formatting/xquery-formatting-provider";
+import * as formatter from "./providers/formatting";
 import * as symbols from './providers/symbols';
-import  * as hover from './providers/hover';
-import  * as completion from './providers/completion';
+import * as hover from './providers/hover';
+import * as completion from './providers/completion';
+import * as documentLink from './providers/documentlink';
 
 let diagnosticCollectionXQuery: DiagnosticCollection;
 
 export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
     ExtensionState.configure(context);
+   
 
-    const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
-    const xqueryDocSelector = createDocumentSelector(constants.languageIds.xquery);
-
-
-    /* Formatting Features */
-    const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
-    const xqueryFormattingEditProvider = new XQueryFormatter();
-    context.subscriptions.push(
-        commands.registerTextEditorCommand(constants.commands.formatAsXml, formatAsXml),
-        commands.registerTextEditorCommand(constants.commands.xmlToText, xmlToText),
-        commands.registerTextEditorCommand(constants.commands.textToXml, textToXml),
-        commands.registerTextEditorCommand(constants.commands.minifyXml, minifyXml),
-        commands.registerTextEditorCommand(constants.commands.xqLintReport, xqLintReport),
-
-        languages.registerDocumentFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
-        languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
-
-        languages.registerDocumentFormattingEditProvider(xqueryDocSelector, xqueryFormattingEditProvider),
-        languages.registerDocumentRangeFormattingEditProvider(xqueryDocSelector, xqueryFormattingEditProvider)
-    );
-
-
+    /* activate XQuery handlers */
     symbols.activate(context);
     hover.activate(context);
     completion.activate(context);
-    //definition.activate(context);
-    
+    documentLink.activate(context);
+    formatter.activate(context);
+
     /* Linting Features */
     diagnosticCollectionXQuery = languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
     context.subscriptions.push(
@@ -59,6 +41,20 @@ export function activate(context: ExtensionContext) {
         window.onDidChangeTextEditorSelection(_handleChangeTextEditorSelection)
     );
 
+     /* XML Formatting Features */
+     const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
+     const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
+     context.subscriptions.push(
+         commands.registerTextEditorCommand(constants.commands.formatAsXml, formatAsXml),
+         commands.registerTextEditorCommand(constants.commands.xmlToText, xmlToText),
+         commands.registerTextEditorCommand(constants.commands.textToXml, textToXml),
+         commands.registerTextEditorCommand(constants.commands.minifyXml, minifyXml),
+         commands.registerTextEditorCommand(constants.commands.xqLintReport, xqLintReport),
+ 
+         languages.registerDocumentFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
+         languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
+ 
+     );
     /* Tree View Features */
     const treeViewDataProvider = new XmlTreeDataProvider(context);
     const treeView = window.createTreeView<Node>(constants.views.xmlTreeView, {
@@ -115,6 +111,6 @@ function _handleChangeActiveTextEditor(editor: TextEditor): void {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function _handleChangeTextEditorSelection(e: TextEditorSelectionChangeEvent): void {
-    console.log("ChangeTextEditorSelection: ",e.textEditor.document.uri);
+    console.log("ChangeTextEditorSelection: ", e.textEditor.document.uri);
     _handleContextChange(e.textEditor);
 }

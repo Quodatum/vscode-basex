@@ -5,6 +5,8 @@ A key feature is a parser for [XQuery](https://quodatum.github.io/basex-xqparse/
 # Status
 __Work in progress. Errors and changes to be expected.__
 # Installation
+[![Release to Marketplace](https://github.com/Quodatum/vscode-basex/actions/workflows/release.yml/badge.svg)](https://github.com/Quodatum/vscode-basex/actions/workflows/release.yml)
+
 Published on [VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=quodatum.vscode-basex)
 and [open-vsx](https://open-vsx.org/extension/quodatum/vscode-basex)
 

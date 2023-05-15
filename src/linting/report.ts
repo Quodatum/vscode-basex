@@ -1,10 +1,10 @@
 
 import {  TextEditor } from "vscode";
 import { channel,dump } from "../common/logger";
-import  {Factory} from "../common/xqlint";
+import  {XQLintFactory} from "../common/xqlint";
 
 export function xqLintReport(textEditor: TextEditor): void {
-    const linter = Factory.XQLint(textEditor.document);
+    const linter = XQLintFactory.XQLint(textEditor.document);
     
 
     textEditor.edit(textEdit => {

@@ -1,18 +1,18 @@
 // convert xqlint markers 
-import { Diagnostic, DiagnosticSeverity, Position, Range,TextDocument }  from "vscode";
+import { Diagnostic, DiagnosticSeverity, TextDocument }  from "vscode";
 import { Marker } from "@quodatum/xqlint";
 import { Configuration } from "../common";
-import  {Factory,importRange} from "../common/xqlint";
+import  {XQLintFactory,importRange} from "../common/xqlint";
 
 export class XQueryLinter {
 
     lint(document: TextDocument): Diagnostic[] {
-        const linter = Factory.XQLint(document,true); //refresh because changed
+        const linter = XQLintFactory.XQLint(document,true); //refresh because changed
         const diagnostics = new Array<Diagnostic>();
 
         linter.getErrors().forEach((error: Marker) => {
             diagnostics.push(new Diagnostic(
-                importRange(error.pos),
+                importRange( error.pos ),
                 error.message,
                 isSuppressed(error.message) ? DiagnosticSeverity.Information : DiagnosticSeverity.Error
             ));
@@ -20,7 +20,7 @@ export class XQueryLinter {
 
         linter.getWarnings().forEach((warning: Marker) => {
             diagnostics.push(new Diagnostic(
-                importRange(warning.pos),
+                importRange(warning.pos ),
                 warning.message,
                 DiagnosticSeverity.Warning
             ));

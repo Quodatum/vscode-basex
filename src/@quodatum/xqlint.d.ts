@@ -8,7 +8,8 @@ declare module '@quodatum/xqlint'{
         public getAST(pos? :Position) :any;
         public getSctx(pos? :Position) :any;
         public getErrors() :[Marker];
-        public getWarnings() :[Marker];   
+        public getWarnings() :[Marker];
+        public getDocLinks() :[[DocLink]];    
     }
 // 
     export class Marker{
@@ -17,7 +18,10 @@ declare module '@quodatum/xqlint'{
       level: string; //same as type??
       message: string; // '[code] ...'
     }
-  
+    export class DocLink{
+      range: LintRange;
+      uri: string; // uri after at    
+    }  
     export class  LintRange{
       sl: number;
       sc: number;

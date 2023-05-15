@@ -1,12 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // format xquery
 import { XQLint, CodeFormatter } from "@quodatum/xqlint";
 import { CancellationToken, DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider,
-         FormattingOptions, ProviderResult,Range,
+         FormattingOptions, ProviderResult,Range,ExtensionContext,languages,
          TextDocument, TextEdit} from "vscode";
-
+import { languageIds } from "../constants";
 import { channel } from "../common/logger";
 
+export function activate(context: ExtensionContext) {
+    context.subscriptions.push(languages.registerDocumentFormattingEditProvider(
+        { language: languageIds.xquery }, new XQueryFormatter()
+    ));
+    context.subscriptions.push(
+        languages.registerDocumentRangeFormattingEditProvider(
+        { language: languageIds.xquery }, new XQueryFormatter()),
+        
+    );
+}
 function format(xquery: string,document: TextDocument): string {
     channel.log("XQueryFormatter" + document.uri);
     const linter = new (XQLint as any)(xquery, { "styleCheck": false });

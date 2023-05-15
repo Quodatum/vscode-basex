@@ -6,7 +6,7 @@ import {
   ExtensionContext, languages, SymbolInformation
 } from 'vscode';
 import { channel } from "../common/logger";
-import { Factory, importRange } from "../common/xqlint";
+import { XQLintFactory, importRange } from "../common/xqlint";
 import { languageIds } from "../constants";
 //
 // This class handles XQuery Symbols
@@ -21,7 +21,7 @@ export function activate(context: ExtensionContext) {
   ));
 }
 // @TODO 
-export class WorkspaceSymbols implements WorkspaceSymbolProvider {
+class WorkspaceSymbols implements WorkspaceSymbolProvider {
   provideWorkspaceSymbols = async (query: string,
     token: CancellationToken): Promise<SymbolInformation[]> => {
 
@@ -46,7 +46,7 @@ export class DocumentSymbols implements DocumentSymbolProvider {
 
     channel.log("DocumentSymbols: " + document.uri);
     const symbols: DocumentSymbol[] = [];
-    const linter = Factory.XQLint(document);
+    const linter = XQLintFactory.XQLint(document);
 
     const xqdoc = linter.getXQDoc(true);
     channel.log("got xqdoc");
@@ -54,7 +54,7 @@ export class DocumentSymbols implements DocumentSymbolProvider {
       const name = "$" + v.name;
       const description = v?.comments?.description;
       //channel.log(name + v);
-      const range = importRange(v.pos);
+      const range = importRange( v.pos );
       const info = new DocumentSymbol(name, description, SymbolKind.Variable, range, range);
       symbols.push(info);
     });
@@ -63,7 +63,7 @@ export class DocumentSymbols implements DocumentSymbolProvider {
       const name = f.name + "#" + f.params.length;
       const description = f?.comments?.description;
       //channel.log(name );
-      const range = importRange(f.pos);
+      const range = importRange( f.pos );
       const info = new DocumentSymbol(name, description, SymbolKind.Function, range, range);
       // info.children=[];
       // f.params.forEach(function(paramName: string){

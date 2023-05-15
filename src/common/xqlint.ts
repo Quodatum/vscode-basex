@@ -10,26 +10,23 @@ type MapType = {
   [id: string]: ext.XQLint;
 }
 
-export class Factory {
+export class XQLintFactory {
 
   // return xqlint for document
   static XQLint(document: TextDocument, refresh = true): ext.XQLint {
     const key = document.uri.toString();
-    const xqlint = xlints[key];
+    let xqlint = xlints[key];
     const isNew = typeof xqlint === "undefined";
-    channel.log("XQLint for: " + key + ", isnew: " + isNew + ", refresh: " + refresh);
+    channel.log( (isNew ? "🆕":"")+ (refresh ? "🏃":"")+" XQLint@ " + key );
     if (isNew || refresh) {
       const processor = Configuration.xqueryProcessor;
-      const xqlint = new ext.XQLint(document.getText(), { "processor": processor, "styleCheck": false });
+      xqlint = new ext.XQLint(document.getText(), { "processor": processor, "styleCheck": false });
       xlints[key] = xqlint;
-      return xqlint;
-    } else {
-      return xqlint;
     }
+    return xqlint;
   }
 }
-export function importRange(lintRange: ext.LintRange): Range {
-  const spos = new Position(lintRange.sl, lintRange.sc);
-  const epos = new Position(lintRange.el, lintRange.ec);
-  return new Range(spos, epos)
+
+export function importRange( lintRange:  ext.LintRange): Range {
+  return new Range(lintRange.sl, lintRange.sc,lintRange.el, lintRange.ec)
 }

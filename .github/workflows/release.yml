@@ -1,6 +1,7 @@
-name: "Release to Marketplace"
+name: "Release to Marketplace."
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*"
@@ -22,8 +23,10 @@ jobs:
 
     - name: "Run Tests"
       run: "npm run test"
-
-    - name: "Publish to Marketplace"
-      uses: "sigma/vsce-publish-action@v0.0.2"
+      
+    - name: "Publish to Visual Studio Marketplace"
+      uses: "HaaLeo/publish-vscode-extension@v1"
       with:
-        vsce_token: ${{ secrets.VSCE_TOKEN }}
+          pat: "${{ secrets.VSCE_TOKEN }}"
+          registryUrl: "https://marketplace.visualstudio.com"
+   

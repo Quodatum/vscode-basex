@@ -1,6 +1,7 @@
 ---
 name: Bug report
-description: report a problem
+about: report a problem
+
 ---
 
 **Extension Version**

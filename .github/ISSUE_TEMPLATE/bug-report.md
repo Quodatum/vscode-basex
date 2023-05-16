@@ -1,3 +1,8 @@
+---
+name: Bug report
+description: report a problem
+---
+
 **Extension Version**
 What version of the Basex-Tools extension are you using?
 

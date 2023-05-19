@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -42,7 +42,11 @@
       },
       {
         "command": "basexTools.executeXQuery",
-        "title": "BaseX Tools: Execute XQuery"
+        "title": "BaseX Tools: Execute XQuery using standalone BaseX "
+      },
+      {
+        "command": "basexTools.executeXQueryJosh",
+        "title": "BaseX Tools: legacy Execute XQuery (Altova style) "
       },
       {
         "command": "basexTools.formatAsXml",
@@ -67,6 +71,10 @@
       {
         "command": "basexTools.xqLintReport",
         "title": "BaseX Tools: Analysis of current location in Xquery source"
+      },
+      {
+        "command": "basexTools.clearDiagnostics",
+        "title": "BaseX Tools: Clear the XQuery Diagnostics collection"
       }
     ],
     "configuration": [
@@ -335,8 +343,9 @@
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.0.0",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^14.18.12",
+    "@types/readable-stream": "^2.3.15",
     "@types/vscode": "^1.73.0",
     "@types/xmldom": "^0.1.31",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
@@ -351,6 +360,7 @@
   "dependencies": {
     "@quodatum/xqlint": "^0.2.3",
     "@xmldom/xmldom": "^0.8.1",
+    "bl": "^6.0.1",
     "xpath": "0.0.32"
   }
 }

@@ -2,7 +2,7 @@ import * as ext from "@quodatum/xqlint";
 import { TextDocument, Position, Range } from "vscode";
 
 import { Configuration } from ".";
-import { channel } from "../common/logger";
+import { channel } from "./channel-basex";
 
 // map of seen documents
 const xlints: MapType = {};

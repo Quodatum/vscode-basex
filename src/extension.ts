@@ -2,7 +2,7 @@ import {
     commands, languages, window, ExtensionContext,
     TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind, DiagnosticCollection
 } from "vscode";
-import { channel } from "./common/logger";
+import { channel } from "./common/channel-basex";
 
 import { createDocumentSelector, ExtensionState, Configuration } from "./common";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
@@ -10,7 +10,7 @@ import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/comma
 import { XQueryLinter, xqLintReport } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
-import { executeXQuery } from "./xquery-execution/commands";
+import { executeXQuery, executeXQueryJosh } from "./xquery-execution/commands";
 
 import * as constants from "./constants";
 import * as formatter from "./providers/formatting";
@@ -81,13 +81,20 @@ export function activate(context: ExtensionContext) {
 
     /* XQuery Features */
     context.subscriptions.push(
-        commands.registerTextEditorCommand(constants.commands.executeXQuery, executeXQuery)
+        commands.registerTextEditorCommand(constants.commands.executeXQuery, executeXQuery),
+        commands.registerTextEditorCommand(constants.commands.executeXQueryJosh, executeXQueryJosh),
+        commands.registerTextEditorCommand(constants.commands.clearDiagnostics, clearDiagnostics),
     );
 
 }
 
 export function deactivate() {
     // do nothing
+}
+
+function clearDiagnostics():void{
+    diagnosticCollectionXQuery.clear();
+    channel.log("diagnosticCollectionXQuery.clear()");
 }
 
 function _handleContextChange(editor: TextEditor): void {

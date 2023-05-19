@@ -1,6 +1,6 @@
 
 import {  TextEditor } from "vscode";
-import { channel,dump } from "../common/logger";
+import { channel,dump } from "../common/channel-basex";
 import  {XQLintFactory} from "../common/xqlint";
 
 export function xqLintReport(textEditor: TextEditor): void {

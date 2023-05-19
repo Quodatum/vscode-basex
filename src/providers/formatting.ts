@@ -4,7 +4,7 @@ import { CancellationToken, DocumentFormattingEditProvider, DocumentRangeFormatt
          FormattingOptions, ProviderResult,Range,ExtensionContext,languages,
          TextDocument, TextEdit} from "vscode";
 import { languageIds } from "../constants";
-import { channel } from "../common/logger";
+import { channel } from "../common/channel-basex";
 
 export function activate(context: ExtensionContext) {
     context.subscriptions.push(languages.registerDocumentFormattingEditProvider(

@@ -1,4 +1,9 @@
+# 0.1.8  (2023-05-17)
+* Add "command": "basexTools.clearDiagnostics"
+* rewrite XQuery execute to better fit running standalone BaseX query
+*  
 # 0.1.7  (2023-05-15)
+
 * Use xqlint 0.2.3 
 * Add documentlinkprovider
 * Change XQuery Icon

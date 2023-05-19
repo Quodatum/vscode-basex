@@ -5,7 +5,7 @@ import {
   Position, Location,Uri,TextDocument, CancellationToken,
   ExtensionContext, languages, SymbolInformation
 } from 'vscode';
-import { channel } from "../common/logger";
+import { channel } from "../common/channel-basex";
 import { XQLintFactory, importRange } from "../common/xqlint";
 import { languageIds } from "../constants";
 //

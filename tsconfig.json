@@ -10,8 +10,11 @@
         "sourceMap": true,
         "rootDir": "src",
         "strict": true,
-        "strictNullChecks": false
+        "strictNullChecks": false,
+        "esModuleInterop": true,
+        "resolveJsonModule": true
     },
+    
     "exclude": [
         "node_modules",
         ".vscode-test",

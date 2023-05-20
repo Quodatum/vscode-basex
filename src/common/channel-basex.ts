@@ -1,7 +1,9 @@
 // debug messages
-import { OutputChannel, window } from "vscode";
+import { OutputChannel, window,Uri } from "vscode";
+//import {version} from '../../package.json';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const verXQlint = require("@quodatum/xqlint").version;
+
 
 const _channel:OutputChannel = window.createOutputChannel("BaseX",{log:true});
 
@@ -39,6 +41,9 @@ export class channel {
     static show() :void{
         _channel.show
     }
+    static start(action:string,uri:Uri):void{
+      _channel.appendLine(`${ action}: ${uri.fsPath}`) 
+    }
 }
-channel.log(`Activate vscode-basex(${ '??' }) *****************  XQLint(${ verXQlint })`);
+channel.log(`Activate vscode-basex(${ 'version' }) *****************  XQLint(${ verXQlint })`);
 _channel.show

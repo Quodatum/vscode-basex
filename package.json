@@ -45,10 +45,6 @@
         "title": "BaseX Tools: Execute XQuery using standalone BaseX "
       },
       {
-        "command": "basexTools.executeXQueryJosh",
-        "title": "BaseX Tools: legacy Execute XQuery (Altova style) "
-      },
-      {
         "command": "basexTools.formatAsXml",
         "title": "BaseX Tools: Format as XML"
       },
@@ -107,7 +103,7 @@
               "[XQST0059]",
               "[XPST0008]"
             ],
-            "description": "Error messages including these strings are marked as info rather than error. TEMP HACK! "
+            "description": "Lint Error messages including these strings are marked as info rather than error. TEMP HACK! "
           }
         }
       },
@@ -118,35 +114,16 @@
         "properties": {
           "basexTools.xquery.executionArguments": {
             "type": "array",
-            "default": [
-              "-xquery",
-              "$(script)",
-              "-in",
-              "$(input)",
-              "-out",
-              "$(input).output.xml"
-            ],
+            "default": [],
             "description": "Arguments to be passed to the XQuery execution engine.",
             "scope": "window"
           },
           "basexTools.xquery.executionEngine": {
             "type": "string",
             "default": "",
-            "description": "The full path to the executable to run when executing XQuery scripts.",
+            "description": "The path to the executable to run when standalone BaseX. e.g ... \\basex.bat",
             "scope": "window"
-          },
-          "basexTools.xquery.executionInputLimit": {
-            "type": "integer",
-            "default": 100,
-            "description": "The maximum number of input files to enumerate when executing XQuery scripts.",
-            "scope": "window"
-          },
-          "basexTools.xquery.executionInputSearchPattern": {
-            "type": "string",
-            "default": "**/*.xml",
-            "description": "The pattern used to search for input XML files when executing XQuery scripts.",
-            "scope": "window"
-          }
+          } 
         }
       },
       {

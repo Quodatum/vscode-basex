@@ -10,7 +10,7 @@ import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/comma
 import { XQueryLinter, xqLintReport } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
-import { executeXQuery, executeXQueryJosh } from "./xquery-execution/commands";
+import { executeXQuery } from "./xquery-execution/commands";
 
 import * as constants from "./constants";
 import * as formatter from "./providers/formatting";
@@ -82,7 +82,6 @@ export function activate(context: ExtensionContext) {
     /* XQuery Features */
     context.subscriptions.push(
         commands.registerTextEditorCommand(constants.commands.executeXQuery, executeXQuery),
-        commands.registerTextEditorCommand(constants.commands.executeXQueryJosh, executeXQueryJosh),
         commands.registerTextEditorCommand(constants.commands.clearDiagnostics, clearDiagnostics),
     );
 

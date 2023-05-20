@@ -39,13 +39,6 @@ export class Configuration {
         return this._getForWindow<string>("xquery.executionEngine");
     }
 
-    static get xqueryExecutionInputLimit(): number {
-        return this._getForWindow<number>("xquery.executionInputLimit");
-    }
-
-    static get xqueryExecutionInputSearchPattern(): string {
-        return this._getForWindow<string>("xquery.executionInputSearchPattern");
-    }
     static get xqueryProcessor(): string {
         return this._getForWindow<string>("xquery.processor");
     }

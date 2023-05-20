@@ -22,7 +22,7 @@ export function activate(context: ExtensionContext) {
 }
 class XQueryDocumentLinks implements DocumentLinkProvider {
     provideDocumentLinks = async (doc: TextDocument, token: CancellationToken): Promise<DocumentLink[]> => {
-        channel.log("Doclinks: " + doc.uri);
+        channel.start("Doclinks" , doc.uri);
         const linter = XQLintFactory.XQLint(doc);
         const dlinks = linter.getDocLinks();
 

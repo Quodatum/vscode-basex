@@ -6,9 +6,7 @@ export namespace commands {
 
     export const getCurrentXPath = "basexTools.getCurrentXPath";        
     export const evaluateXPath = "basexTools.evaluateXPath";
-    // the original Altova targeted implementation
-    export const executeXQueryJosh = "basexTools.executeXQueryJosh";
-    
+     
     export const formatAsXml = "basexTools.formatAsXml";
     export const xmlToText = "basexTools.xmlToText";
     export const textToXml = "basexTools.textToXml";

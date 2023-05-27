@@ -1,4 +1,4 @@
-name: doc-pages
+name: "doc-pages"
 
 on:
   workflow_dispatch:

@@ -1,9 +1,9 @@
 name: doc-pages 
-  workflow_dispatch:
+workflow_dispatch:
   push:
     tags:
       - "v*"
-      
+
 permissions:
   contents: write
 jobs:

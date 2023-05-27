@@ -1,5 +1,7 @@
-name: doc-pages 
-workflow_dispatch:
+name: doc-pages
+
+on:
+  workflow_dispatch:
   push:
     tags:
       - "v*"

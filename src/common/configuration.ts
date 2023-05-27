@@ -40,7 +40,8 @@ export class Configuration {
     }
 
     static get xqueryProcessor(): string {
-        return this._getForWindow<string>("xquery.processor");
+      // @todo  return this._getForWindow<string>("xquery.processor");
+      return "basex"
     }
     static xqueryShowHovers(resource: Uri): boolean {
         return this._getForResource<boolean>("xquery.showHovers", resource);

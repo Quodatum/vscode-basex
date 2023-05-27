@@ -1,0 +1,1 @@
+![symbols](xquery-symbols.gif)

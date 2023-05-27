@@ -1,6 +1,7 @@
 node_modules
 #out/
 src/
+docs/
 tsconfig.json
 .github
 .gitignore

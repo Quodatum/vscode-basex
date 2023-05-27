@@ -81,13 +81,15 @@
         "properties": {
           "basexTools.xquery.processor": {
             "type": "string",
-            "default": "basex",
+            "default": "basex-9",
             "enum": [
-              "basex",
+              "basex-9",
+              "basex-10",
               "none"
             ],
             "enumDescriptions": [
-              "Currently targets BaseX 9.7.5 ",
+              "BaseX 9.7.5 modules",
+              "BaseX 10.6 ",
               "no custom libraries"
             ],
             "description": "The XQuery processor. Determines syntax and core module libraries."
@@ -267,6 +269,18 @@
           "dark": "./resources/xquery-file.png"
         },
         "configuration": "./languages/xquery/xquery.json"
+      },
+      {
+        "id": "basex-script",
+        "aliases": ["bxs"],
+        "extensions": [
+          ".bxs"
+        ],
+        "icon": {
+          "light": "./resources/bxs-file.png",
+          "dark": "./resources/bxs-file.png"
+        },
+        "configuration": "./languages/bxs/bxs.json"
       }
     ],
     "menus": {

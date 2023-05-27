@@ -1,7 +1,9 @@
-# 0.1.8  (2023-05-17)
+# 0.1.8  (2023-05-26)
+
 * Add "command": "basexTools.clearDiagnostics"
 * rewrite XQuery execute to better fit running standalone BaseX query
-*  
+* Add language type "bxs" for BaseX scripts, currently minimal functionality 
+
 # 0.1.7  (2023-05-15)
 
 * Use xqlint 0.2.3 

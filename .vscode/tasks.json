@@ -3,20 +3,41 @@
 {
     "version": "2.0.0",
     "tasks": [
-        {
-            "type": "npm",
-            "script": "watch",
-            "problemMatcher": "$tsc-watch",
-            "isBackground": true,
-            "presentation": {
-                "reveal": "never"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }
-    ],
+		{
+			"type": "npm",
+			"script": "watch",
+			"problemMatcher": "$tsc-watch",
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "basex server",
+			"type": "shell",
+			"command": "basexserver",
+			"isBackground": true,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			},
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		},
+		{
+			"label": "mkdocs server",
+			"type": "shell",
+			"command": "podman run -it  -p8000:8000 -v ./docs:/build quodatum-mkdocs:v1 serve  --dev-addr 0.0.0.0:8000 --config-file /build/mkdocs.yml",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	],
 	"inputs": [
 		/*
 		1. the specialist 'pickFile' command equivalents for the inputs defined here are:

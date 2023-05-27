@@ -1,4 +1,4 @@
-name: "doc-pages"
+name: "Generate Github pages with mkdocs."
 
 on:
   workflow_dispatch:

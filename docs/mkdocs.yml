@@ -1,3 +1,10 @@
 site_name: vscode-basex
+site_description: 'About vscode-basex'
+site_author: 'Andy Bunce'
+docs_dir: docs/
+repo_name: 'Quodatum/vscode-basex'
+repo_url: 'https://github.com/Quodatum/vscode-basex'
+nav:
+    - Home: index.md
 theme:
-    name: material
+  name: 'material'

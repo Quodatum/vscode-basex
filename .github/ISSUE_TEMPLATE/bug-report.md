@@ -1,7 +1,11 @@
 ---
-name: Bug Report
-About: Something is not working
+name: Bug report
+about: report a problem
+
 ---
+
+**Extension Version**
+What version of the Basex-Tools extension are you using?
 
 **Description**
 What seems to be the problem?
@@ -9,8 +13,6 @@ What seems to be the problem?
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Extension Version**
-What version of the Basex-Tools extension are you using?
 
 **VS Code Version**
 What version of VS Code are you using?

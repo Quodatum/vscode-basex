@@ -1,14 +1,15 @@
+[![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/quodatum.vscode-basex?style=for-the-badge&label=VS%20Marketplace&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=quodatum.vscode-basex)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/quodatum.vscode-basex?style=for-the-badge&logo=microsoft)](https://marketplace.visualstudio.com/items?itemName=quodatum.vscode-basex)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/quodatum/vscode-basex/CI.yaml?branch=main&style=for-the-badge&logo=github)](https://github.com/quodatum/vscode-basex/actions?query=workflow:CI)
+[![License](https://img.shields.io/github/license/quodatum/vscode-basex?style=for-the-badge)](https://github.com/quodatum/vscode-basex/blob/master/LICENSE)
+[![OpenVSX Registry](https://img.shields.io/open-vsx/dt/quodatum/vscode-basex?color=purple&label=OpenVSX%20Downloads&style=for-the-badge)](https://open-vsx.org/extension/quodatum/vscode-basex)
+
 # BaseX Tools for Visual Studio Code
 
 The `vscode-basex` extension adds features to support [BaseX](https://basex.org/) development on VSCode.
 A key feature is a parser for [XQuery](https://quodatum.github.io/basex-xqparse/) sources that supports all BaseX features, including XQuery Update and the Full text search syntax.  
 # Status
 __Work in progress. Errors and changes to be expected.__
-# Installation
-[![Release to Marketplace](https://github.com/Quodatum/vscode-basex/actions/workflows/release.yml/badge.svg)](https://github.com/Quodatum/vscode-basex/actions/workflows/release.yml)
-
-Published on [VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=quodatum.vscode-basex)
-and [open-vsx](https://open-vsx.org/extension/quodatum/vscode-basex)
 
 # Features
 ## XQuery
@@ -40,7 +41,7 @@ Run into a bug? Report it [here](https://github.com/Quodatum/vscode-basex/issues
 
 ```
 npm install
-npm install -g typescript #maybe
+npm install -g typescript #once
 npm install --global @vscode/vsce
 #
 npm run compile

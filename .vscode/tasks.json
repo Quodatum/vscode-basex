@@ -33,7 +33,11 @@
 		{
 			"label": "mkdocs server",
 			"type": "shell",
-			"command": "podman run -it  -p8000:8000 -v ./docs:/build quodatum-mkdocs:v1 serve  --dev-addr 0.0.0.0:8000 --config-file /build/mkdocs.yml",
+			"command": "docker",
+			"args": [
+				"run",  "-it", "-p8000:8000","-v./docs:/build quodatum-mkdocs:v1",
+				"serve","--dev-addr","0.0.0.0:8000", "--config-file","/build/mkdocs.yml"
+			],
 			"isBackground": true,
 			"problemMatcher": []
 		}

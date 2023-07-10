@@ -1,4 +1,11 @@
-
+---
+title: XQuery snippets
+summary: Features to prompt with completions when editing XQuery source.
+authors:
+    - Andy Bunce
+date: 2023-07-05
+some_url: https://example.com
+---
 ![snippets](xquery-snippets.gif)
 
 

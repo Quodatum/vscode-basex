@@ -1,20 +1,90 @@
 
-import {  TextEditor } from "vscode";
-import { channel,dump } from "../common/channel-basex";
-import  {XQLintFactory} from "../common/xqlint";
+import *  as vscode from "vscode";
+import { languageIds,commands } from "../constants";
+import { channel, dump } from "../common/channel-basex";
+import { XQLintFactory } from "../common/xqlint";
 
-export function xqLintReport(textEditor: TextEditor): void {
+
+export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) {
+
+    // register a content provider for the parse-scheme
+    const parseScheme =commands.xqParse;
+
+    const parseProvider = new class implements vscode.TextDocumentContentProvider {
+
+        // emitter and its event
+        onDidChangeEmitter = new vscode.EventEmitter<vscode.Uri>();
+        onDidChange = this.onDidChangeEmitter.event;
+
+        provideTextDocumentContent(uri: vscode.Uri): string {
+            // simply invoke cowsay, use uri-path as text
+            const document = xqueryDoc();
+            if (!document) return;
+            const linter = XQLintFactory.XQLint2(document.uri,document.getText())
+            return linter.printAST();
+        }
+    };
+    subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(parseScheme, parseProvider));
+
+    // register a command that opens a cowsay-document
+    subscriptions.push(vscode.commands.registerCommand(commands.xqParse, async () => {
+        const document = xqueryDoc();
+        if (!document) return;
+        const uri = vscode.Uri.parse(parseScheme + ':' + document.uri);
+        const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+        vscode.languages.setTextDocumentLanguage(doc, "xml");
+        await vscode.window.showTextDocument(doc, { preview: true });
+
+    }));
+
+    const xqdocScheme = commands.xqDoc;
+    const xqdocProvider = new class implements vscode.TextDocumentContentProvider {
+
+        // emitter and its event
+        onDidChangeEmitter = new vscode.EventEmitter<vscode.Uri>();
+        onDidChange = this.onDidChangeEmitter.event;
+
+        provideTextDocumentContent(uri: vscode.Uri): string {
+            const document = xqueryDoc();
+            if (!document) return;
+            const linter = XQLintFactory.XQLint2(document.uri,document.getText());
+            const xqdoc= linter.getXQDoc();
+            return JSON.stringify(xqdoc,undefined," ") ;
+        }
+    };
+    subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(xqdocScheme, xqdocProvider));
+
+    subscriptions.push(vscode.commands.registerCommand(commands.xqDoc, async () => {
+        const document = xqueryDoc();
+        if (!document) return;
+        const uri = vscode.Uri.parse(xqdocScheme + ':' + document.uri);
+        const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+        vscode.languages.setTextDocumentLanguage(doc, "json");
+        await vscode.window.showTextDocument(doc, { preview: true });
+    }));
+}
+// dump node to console
+export function xqLintReport(textEditor: vscode.TextEditor): void {
     const linter = XQLintFactory.XQLint(textEditor.document);
-    
+
 
     textEditor.edit(textEdit => {
         const selections = textEditor.selections;
         selections.forEach(selection => {
-            const pos=selection.start.translate(1,1); //@TODO
-            const node=linter.getAST(pos);
-            const sctx=linter.getCompletions(pos);
-            const dx=dump(node);
+            const pos = selection.start.translate(1, 1); //@TODO
+            const node = linter.getAST(pos);
+            const sctx = linter.getCompletions(pos);
+            const dx = dump(node);
             channel.appendLine(dx);
         });
     });
-}
+};
+
+// the active xquery doc or null
+function xqueryDoc(): vscode.TextDocument {
+    if (!vscode.window.activeTextEditor) {
+        return null; // no editor
+    }
+    const { document } = vscode.window.activeTextEditor;
+    return (document.languageId === languageIds.xquery) ? document : null;
+};

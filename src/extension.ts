@@ -7,7 +7,7 @@ import { channel } from "./common/channel-basex";
 import { createDocumentSelector, ExtensionState, Configuration } from "./common";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
 import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
-import { XQueryLinter, xqLintReport } from "./linting";
+import { XQueryLinter, xqLintReport,activateVirtualDocs } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 import { executeXQuery } from "./xquery-execution/commands";
@@ -25,7 +25,6 @@ export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
     ExtensionState.configure(context);
    
-
     /* activate XQuery handlers */
     symbols.activate(context);
     hover.activate(context);
@@ -33,6 +32,8 @@ export function activate(context: ExtensionContext) {
     documentLink.activate(context);
     formatter.activate(context);
 
+    activateVirtualDocs(context);
+    
     /* Linting Features */
     diagnosticCollectionXQuery = languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
     context.subscriptions.push(

@@ -6,6 +6,7 @@ declare module '@quodatum/xqlint'{
         public getCompletions(pos :Position): [object];
         public getXQDoc(withPos? :boolean) :XQDoc;
         public getAST(pos? :Position) :any;
+        public printAST() :string;
         public getSctx(pos? :Position) :any;
         public getErrors() :[Marker];
         public getWarnings() :[Marker];

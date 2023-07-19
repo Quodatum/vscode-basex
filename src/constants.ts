@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace commands {
     export const executeXQuery = "basexTools.executeXQuery";
+    export const xqDoc = "basexTools.xqDoc";  // used as url scheme
+    export const xqParse = "basexTools.xqParse"; // used as url scheme
+    
     export const xqLintReport = "basexTools.xqLintReport";
     export const clearDiagnostics ="basexTools.clearDiagnostics"
 

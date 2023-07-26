@@ -1,13 +1,14 @@
 import {
     commands, languages, window, ExtensionContext,
-    TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind, DiagnosticCollection
+    TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind,
+    DiagnosticCollection, workspace
 } from "vscode";
-import { channel } from "./common/channel-basex";
 
-import { createDocumentSelector, ExtensionState, Configuration } from "./common";
+
+import { channel, createDocumentSelector, ExtensionState, Configuration } from "./common";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
 import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
-import { XQueryLinter, xqLintReport,activateVirtualDocs } from "./linting";
+import { XQueryLinter, xqLintReport, activateVirtualDocs } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 import { executeXQuery } from "./xquery-execution/commands";
@@ -24,7 +25,7 @@ let diagnosticCollectionXQuery: DiagnosticCollection;
 export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
     ExtensionState.configure(context);
-   
+
     /* activate XQuery handlers */
     symbols.activate(context);
     hover.activate(context);
@@ -33,7 +34,7 @@ export function activate(context: ExtensionContext) {
     formatter.activate(context);
 
     activateVirtualDocs(context);
-    
+
     /* Linting Features */
     diagnosticCollectionXQuery = languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
     context.subscriptions.push(
@@ -42,20 +43,20 @@ export function activate(context: ExtensionContext) {
         window.onDidChangeTextEditorSelection(_handleChangeTextEditorSelection)
     );
 
-     /* XML Formatting Features */
-     const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
-     const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
-     context.subscriptions.push(
-         commands.registerTextEditorCommand(constants.commands.formatAsXml, formatAsXml),
-         commands.registerTextEditorCommand(constants.commands.xmlToText, xmlToText),
-         commands.registerTextEditorCommand(constants.commands.textToXml, textToXml),
-         commands.registerTextEditorCommand(constants.commands.minifyXml, minifyXml),
-         commands.registerTextEditorCommand(constants.commands.xqLintReport, xqLintReport),
- 
-         languages.registerDocumentFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
-         languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
- 
-     );
+    /* XML Formatting Features */
+    const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
+    const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
+    context.subscriptions.push(
+        commands.registerTextEditorCommand(constants.commands.formatAsXml, formatAsXml),
+        commands.registerTextEditorCommand(constants.commands.xmlToText, xmlToText),
+        commands.registerTextEditorCommand(constants.commands.textToXml, textToXml),
+        commands.registerTextEditorCommand(constants.commands.minifyXml, minifyXml),
+        commands.registerTextEditorCommand(constants.commands.xqLintReport, xqLintReport),
+
+        languages.registerDocumentFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
+        languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
+
+    );
     /* Tree View Features */
     const treeViewDataProvider = new XmlTreeDataProvider(context);
     const treeView = window.createTreeView<Node>(constants.views.xmlTreeView, {
@@ -85,6 +86,14 @@ export function activate(context: ExtensionContext) {
         commands.registerTextEditorCommand(constants.commands.executeXQuery, executeXQuery),
         commands.registerTextEditorCommand(constants.commands.clearDiagnostics, clearDiagnostics),
     );
+    // if processor changed clear diagnostics
+    //
+    workspace.onDidChangeConfiguration(event => {
+        if (event.affectsConfiguration("basexTools.xquery.processor")) {
+            clearDiagnostics();
+            window.showInformationMessage("Processor now: " + Configuration.xqueryProcessor);
+        }
+    })
 
 }
 
@@ -92,7 +101,7 @@ export function deactivate() {
     // do nothing
 }
 
-function clearDiagnostics():void{
+function clearDiagnostics(): void {
     diagnosticCollectionXQuery.clear();
     channel.log("diagnosticCollectionXQuery.clear()");
 }

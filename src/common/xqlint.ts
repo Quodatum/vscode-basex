@@ -1,5 +1,5 @@
 import * as ext from "@quodatum/xqlint";
-import { TextDocument, Position, Range, Uri } from "vscode";
+import { TextDocument,  Range, Uri } from "vscode";
 
 import { Configuration } from ".";
 import { channel } from "./channel-basex";
@@ -23,7 +23,7 @@ export class XQLintFactory {
     const key = uri.toString();
     let xqlint = xlints[key];
     const isNew = typeof xqlint === "undefined";
-    channel.log((isNew ? "🆕" : "") + (refresh ? "🏃" : "") + " XQLint@ " + key);
+    channel.log((isNew ? "🆕" : "") + (refresh ? "♻️": "") + " XQLint@ " + key);
     if (isNew || refresh) {
       const processor = Configuration.xqueryProcessor;
       xqlint = new ext.XQLint(document, { "processor": processor, "styleCheck": false });

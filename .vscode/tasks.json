@@ -19,7 +19,7 @@
 		{
 			"label": "basex server",
 			"type": "shell",
-			"command": "C:/Users/andy/basex.home/basex.106/bin/basexserver.bat",
+			"command": "${USERPROFILE}/basex.home/basex.106/bin/basexserver.bat",
 			"isBackground": true,
 			"group": "test",
 			"presentation": {

@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -21,7 +21,7 @@
     "url": "https://github.com/Quodatum/vscode-basex/issues"
   },
   "engines": {
-    "vscode": "^1.73.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Formatters",
@@ -31,7 +31,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:xsl"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -39,13 +38,15 @@
       {
         "command": "basexTools.xqParse",
         "title": "BaseX Tools: Parse of XQuery source (xml)",
-        "shortTitle": "BaseX Tools: Parse current",
+        "shortTitle": "Parse tree XML",
+        "icon": "$(list-tree)",
         "enablement": "editorLangId == xquery"
       },
       {
         "command": "basexTools.xqDoc",
         "title": "BaseX Tools: XQdoc of XQuery source (json)",
         "shortTitle": "BaseX Tools: XQdoc for current",
+        "icon": "$(bracket-dot)",
         "enablement": "editorLangId == xquery"
       },
       {
@@ -79,7 +80,8 @@
       },
       {
         "command": "basexTools.xqLintReport",
-        "title": "BaseX Tools: Analysis of current location in Xquery source"
+        "title": "BaseX Tools: Analysis of current location in Xquery source",
+        "shortTitle": "Posinfo"
       },
       {
         "command": "basexTools.clearDiagnostics",
@@ -94,7 +96,7 @@
         "properties": {
           "basexTools.xquery.processor": {
             "type": "string",
-            "default": "basex-9",
+            "default": "basex-10",
             "enum": [
               "basex-9",
               "basex-10",
@@ -105,7 +107,7 @@
               "BaseX 10.6 ",
               "no custom libraries"
             ],
-            "description": "The XQuery processor. Determines syntax and core module libraries."
+            "description": "Identifier for the XQuery processor. Determines available modules"
           },
           "basexTools.xquery.showHovers": {
             "type": "boolean",
@@ -320,57 +322,69 @@
           "command": "basexTools.xqLintReport",
           "when": "editorLangId == xquery"
         }
-        ],
-        "editor/context": [
-          {
-            "command": "basexTools.minifyXml",
-            "group": "1_modification@100",
-            "when": "editorLangId == 'xml'"
-          }
-        ]
-      },
-      "views": {
-        "explorer": [
-          {
-            "id": "xmlTreeView",
-            "name": "XML Document",
-            "when": "xmlTreeViewEnabled"
-          }
-        ]
-      }
+      ],
+      "editor/title": [
+        {
+          "command": "basexTools.xqParse",
+          "group": "navigation",
+          "when": "editorLangId == xquery"
+        },
+        {
+          "command": "basexTools.xqDoc",
+          "group": "navigation",
+          "when": "editorLangId == xquery"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "basexTools.minifyXml",
+          "group": "1_modification@100",
+          "when": "editorLangId == 'xml'"
+        }
+      ]
     },
-    "scripts": {
-      "vscode:prepublish": "npm run esbuild-base -- --minify",
-      "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
-      "esbuild": "npm run esbuild-base -- --sourcemap",
-      "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
-      "test-compile": "tsc -p ./",
-      "compile": "tsc -p ./",
-      "watch": "tsc -watch -p ./",
-      "pretest": "npm run compile && npm run lint",
-      "lint": "eslint src --ext ts",
-      "test": "npm run compile && mocha './out/test/**/*.js'"
-    },
-    "devDependencies": {
-      "@types/glob": "^7.2.0",
-      "@types/mocha": "^10.0.1",
-      "@types/node": "^14.18.12",
-      "@types/readable-stream": "^2.3.15",
-      "@types/vscode": "^1.73.0",
-      "@types/xmldom": "^0.1.31",
-      "@typescript-eslint/eslint-plugin": "^5.13.0",
-      "@typescript-eslint/parser": "^5.13.0",
-      "@vscode/test-electron": "^2.1.3",
-      "esbuild": "^0.14.25",
-      "eslint": "^8.10.0",
-      "glob": "^7.2.0",
-      "mocha": "^9.2.1",
-      "typescript": "^4.7.3"
-    },
-    "dependencies": {
-      "@quodatum/xqlint": "^0.2.3",
-      "@xmldom/xmldom": "^0.8.1",
-      "bl": "^6.0.1",
-      "xpath": "0.0.32"
+    "views": {
+      "explorer": [
+        {
+          "id": "xmlTreeView",
+          "name": "XML Document",
+          "when": "xmlTreeViewEnabled"
+        }
+      ]
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --packages=external --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "test-compile": "tsc -p ./",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "npm run compile && mocha './out/test/**/*.js'"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^14.18.12",
+    "@types/readable-stream": "^2.3.15",
+    "@types/vscode": "^1.73.0",
+    "@types/xmldom": "^0.1.31",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "@vscode/test-electron": "^2.1.3",
+    "esbuild": "^0.14.25",
+    "eslint": "^8.10.0",
+    "glob": "^7.2.0",
+    "mocha": "^9.2.1",
+    "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "@quodatum/xqlint": "^0.2.5",
+    "@xmldom/xmldom": "^0.8.1",
+    "bl": "^6.0.1",
+    "xpath": "0.0.32"
   }
+}

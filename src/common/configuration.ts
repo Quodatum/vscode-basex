@@ -40,11 +40,10 @@ export class Configuration {
     }
 
     static get xqueryProcessor(): string {
-      // @todo  return this._getForWindow<string>("xquery.processor");
-      return "basex"
+      return this._getForWindow<string>("xquery.processor");
     }
-    static xqueryShowHovers(resource: Uri): boolean {
-        return this._getForResource<boolean>("xquery.showHovers", resource);
+    static xqueryShowHovers(): boolean {
+        return this._getForWindow<boolean>("xquery.showHovers");
     }
 
     static enforcePrettySelfClosingTagOnFormat(resource: Uri): boolean {

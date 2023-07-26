@@ -1,4 +1,5 @@
-
+// todo 
+// see https://github.com/microsoft/vscode-extension-samples/tree/main/contentprovider-sample
 import *  as vscode from "vscode";
 import { languageIds,commands } from "../constants";
 import { channel, dump } from "../common/channel-basex";
@@ -27,13 +28,13 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
     subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(parseScheme, parseProvider));
 
     // register a command that opens a cowsay-document
-    subscriptions.push(vscode.commands.registerCommand(commands.xqParse, async () => {
-        const document = xqueryDoc();
+    subscriptions.push(vscode.commands.registerTextEditorCommand(commands.xqParse, async editor => {
+  
         if (!document) return;
-        const uri = vscode.Uri.parse(parseScheme + ':' + document.uri);
+        const uri = vscode.Uri.parse(`${parseScheme}:${editor.document.uri}.xml`);
         const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
         vscode.languages.setTextDocumentLanguage(doc, "xml");
-        await vscode.window.showTextDocument(doc, { preview: true });
+        await vscode.window.showTextDocument(doc, editor.viewColumn! + 1);
 
     }));
 
@@ -54,15 +55,16 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
     };
     subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(xqdocScheme, xqdocProvider));
 
-    subscriptions.push(vscode.commands.registerCommand(commands.xqDoc, async () => {
-        const document = xqueryDoc();
-        if (!document) return;
-        const uri = vscode.Uri.parse(xqdocScheme + ':' + document.uri);
+    subscriptions.push(vscode.commands.registerTextEditorCommand(commands.xqDoc, async editor => {
+  
+        const uri = vscode.Uri.parse(`${xqdocScheme}:${editor.document.uri}.json`);
         const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
         vscode.languages.setTextDocumentLanguage(doc, "json");
-        await vscode.window.showTextDocument(doc, { preview: true });
+        await vscode.window.showTextDocument(doc, editor.viewColumn! + 1);
     }));
 }
+
+
 // dump node to console
 export function xqLintReport(textEditor: vscode.TextEditor): void {
     const linter = XQLintFactory.XQLint(textEditor.document);
@@ -78,7 +80,7 @@ export function xqLintReport(textEditor: vscode.TextEditor): void {
             channel.appendLine(dx);
         });
     });
-};
+}
 
 // the active xquery doc or null
 function xqueryDoc(): vscode.TextDocument {
@@ -87,4 +89,4 @@ function xqueryDoc(): vscode.TextDocument {
     }
     const { document } = vscode.window.activeTextEditor;
     return (document.languageId === languageIds.xquery) ? document : null;
-};
+}

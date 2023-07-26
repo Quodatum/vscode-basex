@@ -26,7 +26,7 @@
 		"body": "some $${1:varname} in ${2:expr} satisfies ${3:expr}"
 	},
 	"function": {
-		"prefix": "df",
+		"prefix": "dec",
 		"body": [
 			"(:~ $${2:name} :)",
 			"declare function ${1:ns}:${2:name}(){",
@@ -36,7 +36,7 @@
 		"description": "declare  function"
 	},
 	"declare variable": {
-		"prefix": "dv",
+		"prefix": "dec",
 		"body": [
 			"(:~ $${1:varname} :)",
 			"declare variable $${1:varname} := ${2:expr};",

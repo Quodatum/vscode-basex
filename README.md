@@ -47,7 +47,8 @@ npm install --global @vscode/vsce
 npm run compile
 vsce package
 ```
-
+## Documentation
+Uses https://github.com/squidfunk/mkdocs-material 
 # Inspiration
 ## VSCode
 This project was created from a fork of [DotJoshJohnson/vscode-xml](https://github.com/DotJoshJohnson/vscode-xml). Some of the `DotJoshJohnson` code dealing with XML has been removed and additional XQuery features added. 

@@ -19,11 +19,11 @@
 		{
 			"label": "basex server",
 			"type": "shell",
-			"command": "${USERPROFILE}/basex.home/basex.106/bin/basexserver.bat",
+			"command": "%USERPROFILE%/Desktop/basex.home/basex10.7b/bin/basexserver.bat",
 			"isBackground": true,
 			"group": "test",
 			"presentation": {
-				"reveal": "always",
+				"revealProblems": "onProblem",
 				"panel": "new"
 			},
 			"runOptions": {

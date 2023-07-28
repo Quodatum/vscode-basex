@@ -16,7 +16,7 @@ class XQueryHoverProvider implements vscode.HoverProvider {
         position: vscode.Position,
         token: vscode.CancellationToken
     ): vscode.Hover | null {
-        if (!Configuration.xqueryShowHovers(document.uri)) return null;
+        if (!Configuration.xqueryShowHovers()) return null;
         const range = document.getWordRangeAtPosition(position);
         if(!range) return null
         const word = document.getText(range);

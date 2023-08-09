@@ -27,10 +27,8 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
     };
     subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(parseScheme, parseProvider));
 
-    // register a command that opens a cowsay-document
+    // register a command that opens a xqparse-document
     subscriptions.push(vscode.commands.registerTextEditorCommand(commands.xqParse, async editor => {
-  
-        if (!document) return;
         const uri = vscode.Uri.parse(`${parseScheme}:${editor.document.uri}.xml`);
         const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
         vscode.languages.setTextDocumentLanguage(doc, "xml");
@@ -56,7 +54,6 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
     subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(xqdocScheme, xqdocProvider));
 
     subscriptions.push(vscode.commands.registerTextEditorCommand(commands.xqDoc, async editor => {
-  
         const uri = vscode.Uri.parse(`${xqdocScheme}:${editor.document.uri}.json`);
         const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
         vscode.languages.setTextDocumentLanguage(doc, "json");

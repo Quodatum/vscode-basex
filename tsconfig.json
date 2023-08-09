@@ -12,12 +12,12 @@
         "strict": true,
         "strictNullChecks": false,
         "esModuleInterop": true,
-        "resolveJsonModule": false
+        "resolveJsonModule": true
     },
 
     "exclude": [
-        
+        "node_modules",
         ".vscode-test",
-        "out/**/*"
+        "out"
     ]
 }

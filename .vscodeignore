@@ -1,9 +1,14 @@
 node_modules
-#out/
+!node_modules/@quodatum/xq-catalogs/**/*
+out
+!out/extension.js
 src/
 docs/
 tsconfig.json
 .github
 .gitignore
 .vscode
+mkdocs.yml
+tslint.json
+notes.md
 

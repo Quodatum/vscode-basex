@@ -1,7 +1,11 @@
-# 0.1.8  (2023-05-26)
+# 0.1.11  (2023-08-08)
+* rewrite subscriptions
 
+# 0.1.8  (2023-05-26)
+* extract namespace library data to `xq-catalogs` component
+* update to `xqlint` [v0.2.6](https://github.com/Quodatum/xqlint/releases/tag/v0.2.6)
 * rewrite XQuery execute to better fit running standalone BaseX query
-* Add language type "bxs" for BaseX scripts, currently minimal functionality 
+* Add language type "bxs" for BaseX scripts,  minimal functionality currently.
 * Documentation moved from wiki to gh-pages and mkdocs
 * Add "command": "basexTools.clearDiagnostics"
 

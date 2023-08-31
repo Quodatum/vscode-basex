@@ -1,0 +1,36 @@
+site_name: vscode-basex
+site_description: "About vscode-basex"
+site_author: "Andy Bunce"
+docs_dir: docs/
+repo_name: "Quodatum/vscode-basex"
+repo_url: "https://github.com/Quodatum/vscode-basex"
+
+nav:
+  - Home: index.md
+  - Working with XQuery: xquery/index.md
+  - Commands: commands.md
+  - Settings: settings.md
+  - About: mkdocs.md
+
+theme:
+  name: "material"
+  favicon: basex.png
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+
+plugins:
+  - tags
+  -  search
+extra:
+  version:
+    provider: mike
+

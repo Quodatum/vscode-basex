@@ -1,4 +1,5 @@
 out
+site
 node_modules
 .vscode-test/
 /*.vsix

@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.1.7",
+  "version": "0.1.14",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -21,7 +21,7 @@
     "url": "https://github.com/Quodatum/vscode-basex/issues"
   },
   "engines": {
-    "vscode": "^1.73.0"
+    "vscode": "^1.76.0"
   },
   "categories": [
     "Formatters",
@@ -30,19 +30,35 @@
     "Snippets",
     "Other"
   ],
-  "activationEvents": [
-    "onLanguage:xsl"
-  ],
+  "activationEvents": [],
   "main": "./out/extension.js",
+  "files": [
+    "node_modules/@quodatum/xq-catalogs"
+  ],
   "contributes": {
     "commands": [
       {
+        "command": "basexTools.xqParse",
+        "title": "BaseX Tools: Parse of XQuery source (xml)",
+        "shortTitle": "Parse tree XML",
+        "icon": "$(list-tree)",
+        "enablement": "editorLangId == xquery"
+      },
+      {
+        "command": "basexTools.xqDoc",
+        "title": "BaseX Tools: XQdoc of XQuery source (json)",
+        "shortTitle": "BaseX Tools: XQdoc for current",
+        "icon": "$(bracket-dot)",
+        "enablement": "editorLangId == xquery"
+      },
+      {
         "command": "basexTools.evaluateXPath",
-        "title": "BaseX Tools: Evaluate XPath"
+        "title": "BaseX Tools: Evaluate XPath long title",
+        "shortTitle": "BaseX Tools: Evaluate XPath"
       },
       {
         "command": "basexTools.executeXQuery",
-        "title": "BaseX Tools: Execute XQuery"
+        "title": "BaseX Tools: Execute XQuery using standalone BaseX "
       },
       {
         "command": "basexTools.formatAsXml",
@@ -66,7 +82,12 @@
       },
       {
         "command": "basexTools.xqLintReport",
-        "title": "BaseX Tools: Analysis of current location in Xquery source"
+        "title": "BaseX Tools: Analysis of current location in Xquery source",
+        "shortTitle": "Posinfo"
+      },
+      {
+        "command": "basexTools.clearDiagnostics",
+        "title": "BaseX Tools: Clear the XQuery Diagnostics collection"
       }
     ],
     "configuration": [
@@ -77,16 +98,18 @@
         "properties": {
           "basexTools.xquery.processor": {
             "type": "string",
-            "default": "basex",
+            "default": "basex-10",
             "enum": [
-              "basex",
-              "none"
+              "basex-9",
+              "basex-10",
+              ""
             ],
             "enumDescriptions": [
-              "Currently targets BaseX 9.7.5 ",
+              "BaseX 9.7.5 modules",
+              "BaseX 10.6 ",
               "no custom libraries"
             ],
-            "description": "The XQuery processor. Determines syntax and core module libraries."
+            "description": "Identifier for the XQuery processor. Determines available modules"
           },
           "basexTools.xquery.showHovers": {
             "type": "boolean",
@@ -99,7 +122,7 @@
               "[XQST0059]",
               "[XPST0008]"
             ],
-            "description": "Error messages including these strings are marked as info rather than error. TEMP HACK! "
+            "description": "Lint Error messages including these strings are marked as info rather than error. TEMP HACK! "
           }
         }
       },
@@ -110,33 +133,14 @@
         "properties": {
           "basexTools.xquery.executionArguments": {
             "type": "array",
-            "default": [
-              "-xquery",
-              "$(script)",
-              "-in",
-              "$(input)",
-              "-out",
-              "$(input).output.xml"
-            ],
+            "default": [],
             "description": "Arguments to be passed to the XQuery execution engine.",
             "scope": "window"
           },
           "basexTools.xquery.executionEngine": {
             "type": "string",
             "default": "",
-            "description": "The full path to the executable to run when executing XQuery scripts.",
-            "scope": "window"
-          },
-          "basexTools.xquery.executionInputLimit": {
-            "type": "integer",
-            "default": 100,
-            "description": "The maximum number of input files to enumerate when executing XQuery scripts.",
-            "scope": "window"
-          },
-          "basexTools.xquery.executionInputSearchPattern": {
-            "type": "string",
-            "default": "**/*.xml",
-            "description": "The pattern used to search for input XML files when executing XQuery scripts.",
+            "description": "The path to the executable to run when standalone BaseX. e.g ... \\basex.bat",
             "scope": "window"
           }
         }
@@ -282,6 +286,20 @@
           "dark": "./resources/xquery-file.png"
         },
         "configuration": "./languages/xquery/xquery.json"
+      },
+      {
+        "id": "basex-script",
+        "aliases": [
+          "bxs"
+        ],
+        "extensions": [
+          ".bxs"
+        ],
+        "icon": {
+          "light": "./resources/bxs-file.png",
+          "dark": "./resources/bxs-file.png"
+        },
+        "configuration": "./languages/bxs/bxs.json"
       }
     ],
     "menus": {
@@ -301,6 +319,22 @@
         {
           "command": "basexTools.minifyXml",
           "when": "editorLangId == xml"
+        },
+        {
+          "command": "basexTools.xqLintReport",
+          "when": "editorLangId == xquery"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "basexTools.xqParse",
+          "group": "navigation",
+          "when": "editorLangId == xquery"
+        },
+        {
+          "command": "basexTools.xqDoc",
+          "group": "navigation",
+          "when": "editorLangId == xquery"
         }
       ],
       "editor/context": [
@@ -323,7 +357,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run esbuild-base -- --minify",
-    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle  --outfile=out/extension.js --external:vscode --external:@quodatum/xq-catalogs --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
     "test-compile": "tsc -p ./",
@@ -335,22 +369,24 @@
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.0.0",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^14.18.12",
+    "@types/readable-stream": "^2.3.15",
     "@types/vscode": "^1.73.0",
     "@types/xmldom": "^0.1.31",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "@vscode/test-electron": "^2.1.3",
-    "esbuild": "^0.14.25",
+    "esbuild": "^0.18.17",
     "eslint": "^8.10.0",
     "glob": "^7.2.0",
     "mocha": "^9.2.1",
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@quodatum/xqlint": "^0.2.3",
-    "@xmldom/xmldom": "^0.8.1",
-    "xpath": "0.0.32"
+    "@quodatum/xqlint": "^0.3.3",
+    "@xmldom/xmldom": "^0.8.10",
+    "bl": "^6.0.4",
+    "xpath": "^0.0.33"
   }
 }

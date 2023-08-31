@@ -1,13 +1,20 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace commands {
-    export const evaluateXPath = "basexTools.evaluateXPath";
     export const executeXQuery = "basexTools.executeXQuery";
+    export const xqDoc = "basexTools.xqDoc";  // used as url scheme
+    export const xqParse = "basexTools.xqParse"; // used as url scheme
+    
+    export const xqLintReport = "basexTools.xqLintReport";
+    export const clearDiagnostics ="basexTools.clearDiagnostics"
+
+    export const getCurrentXPath = "basexTools.getCurrentXPath";        
+    export const evaluateXPath = "basexTools.evaluateXPath";
+     
     export const formatAsXml = "basexTools.formatAsXml";
     export const xmlToText = "basexTools.xmlToText";
     export const textToXml = "basexTools.textToXml";
-    export const getCurrentXPath = "basexTools.getCurrentXPath";
+
     export const minifyXml = "basexTools.minifyXml";
-    export const xqLintReport = "basexTools.xqLintReport";
 }
 
 export namespace contextKeys {

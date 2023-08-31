@@ -1,22 +1,54 @@
 // See https://go.microsoft.com/fwlink/?LinkId=733558
 // for the documentation about the tasks.json format
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "type": "npm",
-            "script": "watch",
-            "problemMatcher": "$tsc-watch",
-            "isBackground": true,
-            "presentation": {
-                "reveal": "never"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }
-    ],
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "watch",
+			"problemMatcher": "$tsc-watch",
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "basex server",
+			"type": "shell",
+			"command": "%USERPROFILE%/Desktop/basex.home/basex10.7b/bin/basexserver.bat",
+			"isBackground": true,
+			"group": "test",
+			"presentation": {
+				"revealProblems": "onProblem",
+				"panel": "new"
+			},
+			"runOptions": {
+				"runOn": "default"
+			}
+		},
+		{
+			"label": "mkdocs server",
+			"type": "shell",
+			"command": "docker",
+			"args": [
+				"run",
+				"--rm",
+				"-it",
+				"-p8000:8000",
+				"-v%cd%:/docs", 
+				"squidfunk/mkdocs-material:9",
+				"serve",
+				"--dev-addr",
+				"0.0.0.0:8000"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	],
 	"inputs": [
 		/*
 		1. the specialist 'pickFile' command equivalents for the inputs defined here are:
@@ -35,7 +67,14 @@
 			"id": "xmlFile",
 			"type": "command",
 			"command": "xslt-xpath.pickFile",
-			"args": {"label": "Select XML File", "extensions": ["xml", "xhtml", "svg"] }
+			"args": {
+				"label": "Select XML File",
+				"extensions": [
+					"xml",
+					"xhtml",
+					"svg"
+				]
+			}
 		},
 		{
 			/* --- Usage: ---
@@ -44,7 +83,16 @@
 			"id": "xmlFile2",
 			"type": "command",
 			"command": "xslt-xpath.pickFile",
-			"args": {"label": "Select Stage1 XML File", "extensions": ["xml", "xhtml", "svg"], "prevStageLabel": "Select Result File", "prevStageGroup": "recent files from previous stage" }
+			"args": {
+				"label": "Select Stage1 XML File",
+				"extensions": [
+					"xml",
+					"xhtml",
+					"svg"
+				],
+				"prevStageLabel": "Select Result File",
+				"prevStageGroup": "recent files from previous stage"
+			}
 		},
 		{
 			/* --- Usage: ---
@@ -53,7 +101,13 @@
 			"id": "xsltFile",
 			"type": "command",
 			"command": "xslt-xpath.pickFile",
-			"args": {"label": "Select XSLT Stylesheet", "extensions": ["xsl", "xslt"] }
+			"args": {
+				"label": "Select XSLT Stylesheet",
+				"extensions": [
+					"xsl",
+					"xslt"
+				]
+			}
 		},
 		{
 			/* --- Usage: ---
@@ -62,7 +116,10 @@
 			"id": "resultFile",
 			"type": "command",
 			"command": "xslt-xpath.pickFile",
-			"args": {"label": "Select Result File", "isResult": true }
+			"args": {
+				"label": "Select Result File",
+				"isResult": true
+			}
 		}
 	]
 }

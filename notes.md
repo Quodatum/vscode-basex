@@ -1,3 +1,7 @@
+# mkdocs
+```
+podman run -it  -p8000:8000 -v ./docs:/build quodatum-mkdocs:v1 serve  --dev-addr 0.0.0.0:8000 --config-file /build/mkdocs.yml
+```
 # Debugging 2022-02-12...
 ## apb.js
 ```javascript

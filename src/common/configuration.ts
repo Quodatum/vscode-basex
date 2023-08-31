@@ -39,18 +39,11 @@ export class Configuration {
         return this._getForWindow<string>("xquery.executionEngine");
     }
 
-    static get xqueryExecutionInputLimit(): number {
-        return this._getForWindow<number>("xquery.executionInputLimit");
-    }
-
-    static get xqueryExecutionInputSearchPattern(): string {
-        return this._getForWindow<string>("xquery.executionInputSearchPattern");
-    }
     static get xqueryProcessor(): string {
-        return this._getForWindow<string>("xquery.processor");
+      return this._getForWindow<string>("xquery.processor");
     }
-    static xqueryShowHovers(resource: Uri): boolean {
-        return this._getForResource<boolean>("xquery.showHovers", resource);
+    static xqueryShowHovers(): boolean {
+        return this._getForWindow<boolean>("xquery.showHovers");
     }
 
     static enforcePrettySelfClosingTagOnFormat(resource: Uri): boolean {

@@ -1,13 +1,15 @@
 import {
     commands, languages, window, ExtensionContext,
-    TextEditor, TextEditorSelectionChangeEvent, TextEditorSelectionChangeKind, DiagnosticCollection
+    TextEditorSelectionChangeKind, workspace
 } from "vscode";
-import { channel } from "./common/logger";
 
-import { createDocumentSelector, ExtensionState, Configuration } from "./common";
+import { channel, createDocumentSelector, ExtensionState, Configuration } from "./common";
+
+import { XQueryDiagnostics, subscribeToDocumentChanges } from "./xqdiagnostics"
+
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
 import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
-import { XQueryLinter, xqLintReport } from "./linting";
+import { xqLintReport, activateVirtualDocs } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 import { executeXQuery } from "./xquery-execution/commands";
@@ -19,12 +21,11 @@ import * as hover from './providers/hover';
 import * as completion from './providers/completion';
 import * as documentLink from './providers/documentlink';
 
-let diagnosticCollectionXQuery: DiagnosticCollection;
+let diagnosticCollectionXQuery: XQueryDiagnostics;
 
 export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
     ExtensionState.configure(context);
-   
 
     /* activate XQuery handlers */
     symbols.activate(context);
@@ -33,28 +34,27 @@ export function activate(context: ExtensionContext) {
     documentLink.activate(context);
     formatter.activate(context);
 
-    /* Linting Features */
-    diagnosticCollectionXQuery = languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
-    context.subscriptions.push(
-        diagnosticCollectionXQuery,
-        window.onDidChangeActiveTextEditor(_handleChangeActiveTextEditor),
-        window.onDidChangeTextEditorSelection(_handleChangeTextEditorSelection)
-    );
+    activateVirtualDocs(context);
 
-     /* XML Formatting Features */
-     const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
-     const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
-     context.subscriptions.push(
-         commands.registerTextEditorCommand(constants.commands.formatAsXml, formatAsXml),
-         commands.registerTextEditorCommand(constants.commands.xmlToText, xmlToText),
-         commands.registerTextEditorCommand(constants.commands.textToXml, textToXml),
-         commands.registerTextEditorCommand(constants.commands.minifyXml, minifyXml),
-         commands.registerTextEditorCommand(constants.commands.xqLintReport, xqLintReport),
- 
-         languages.registerDocumentFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
-         languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
- 
-     );
+    /* Linting Features */
+    diagnosticCollectionXQuery = new XQueryDiagnostics();
+    subscribeToDocumentChanges(context, diagnosticCollectionXQuery);
+
+
+    /* XML Formatting Features */
+    const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
+    const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
+    context.subscriptions.push(
+        commands.registerTextEditorCommand(constants.commands.formatAsXml, formatAsXml),
+        commands.registerTextEditorCommand(constants.commands.xmlToText, xmlToText),
+        commands.registerTextEditorCommand(constants.commands.textToXml, textToXml),
+        commands.registerTextEditorCommand(constants.commands.minifyXml, minifyXml),
+        commands.registerTextEditorCommand(constants.commands.xqLintReport, xqLintReport),
+
+        languages.registerDocumentFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
+        languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
+
+    );
     /* Tree View Features */
     const treeViewDataProvider = new XmlTreeDataProvider(context);
     const treeView = window.createTreeView<Node>(constants.views.xmlTreeView, {
@@ -81,36 +81,24 @@ export function activate(context: ExtensionContext) {
 
     /* XQuery Features */
     context.subscriptions.push(
-        commands.registerTextEditorCommand(constants.commands.executeXQuery, executeXQuery)
+        commands.registerTextEditorCommand(constants.commands.executeXQuery, executeXQuery),
+        commands.registerTextEditorCommand(constants.commands.clearDiagnostics, diagnosticCollectionXQuery.clear),
     );
+    // if processor changed clear diagnostics
+    //
+    workspace.onDidChangeConfiguration(event => {
+        if (event.affectsConfiguration("basexTools.xquery.processor")) {
+            diagnosticCollectionXQuery.clear();
+            window.showInformationMessage("Processor now: " + Configuration.xqueryProcessor);
+        }
+    })
 
 }
 
 export function deactivate() {
-    // do nothing
-}
-
-function _handleContextChange(editor: TextEditor): void {
-    const supportedSchemes = [constants.uriSchemes.file, constants.uriSchemes.untitled];
-
-    if (!editor || !editor.document || supportedSchemes.indexOf(editor.document.uri.scheme) === -1) {
-        return;
-    }
-
-    switch (editor.document.languageId) {
-        case constants.languageIds.xquery:
-            diagnosticCollectionXQuery.set(editor.document.uri, new XQueryLinter().lint(editor.document));
-            break;
-    }
-}
-
-function _handleChangeActiveTextEditor(editor: TextEditor): void {
-    _handleContextChange(editor);
+    channel.log("deactivate");
 }
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function _handleChangeTextEditorSelection(e: TextEditorSelectionChangeEvent): void {
-    console.log("ChangeTextEditorSelection: ", e.textEditor.document.uri);
-    _handleContextChange(e.textEditor);
-}
+
+

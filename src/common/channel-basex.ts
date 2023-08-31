@@ -1,11 +1,14 @@
 // debug messages
-import { OutputChannel, window } from "vscode";
+import { OutputChannel, window,Uri } from "vscode";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const ver = require("@quodatum/xqlint").version;
+const version = require('../../package.json');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const verXQlint = require("@quodatum/xqlint").version;
 
-const _channel:OutputChannel = window.createOutputChannel("BaseX");
 
-function logdate(){
+const _channel:OutputChannel = window.createOutputChannel("BaseX",{log:true});
+
+export function logdate(){
     return (new Date()).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
 }
 const replacerFunc = () => {
@@ -28,7 +31,7 @@ export function dump(obj :object) {
 
 export class channel {
     static log(msg: string) :void{
-        _channel.appendLine("["+logdate()+"] "+msg) 
+        _channel.appendLine(msg) 
     }
     static appendLine(msg: string) :void{
         _channel.appendLine(msg)
@@ -39,6 +42,9 @@ export class channel {
     static show() :void{
         _channel.show
     }
+    static start(action:string,uri:Uri):void{
+      _channel.appendLine(`${ action}: ${uri.fsPath}`) 
+    }
 }
-channel.log("started, XQLint version: "+ver);
+channel.log(`Activate vscode-basex(${ version }) *****************  XQLint(${ verXQlint })`);
 _channel.show

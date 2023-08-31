@@ -26,7 +26,8 @@ export class XQLintFactory {
     channel.log((isNew ? "🆕" : "") + (refresh ? "♻️": "") + " XQLint@ " + key);
     if (isNew || refresh) {
       const processor = Configuration.xqueryProcessor;
-      xqlint = new ext.XQLint(document, { "processor": processor, "styleCheck": false });
+      const opts={ "processor": processor, "fileName": uri.fsPath };
+      xqlint = new ext.XQLint(document, opts);
       xlints[key] = xqlint;
     }
     return xqlint;
@@ -35,5 +36,7 @@ export class XQLintFactory {
 
 
 export function importRange(lintRange: ext.LintRange): Range {
-  return new Range(lintRange.sl, lintRange.sc, lintRange.el, lintRange.ec)
+  return lintRange?
+                  new Range(lintRange.sl, lintRange.sc, lintRange.el, lintRange.ec)
+                  :new Range(0,0,0,0);
 }

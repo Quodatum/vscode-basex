@@ -8,11 +8,13 @@ repo_url: "https://github.com/Quodatum/vscode-basex"
 nav:
   - Home: index.md
   - Working with XQuery: xquery/index.md
-  - Extension settings: settings.md
+  - Commands: commands.md
+  - Settings: settings.md
   - About: mkdocs.md
 
 theme:
   name: "material"
+  favicon: basex.png
 
 markdown_extensions:
   - pymdownx.highlight:

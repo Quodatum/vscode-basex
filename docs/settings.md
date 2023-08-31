@@ -1,57 +1,86 @@
 ---
-title: Extension settings
+title: Settings
 summary: Describes settings of the vscode-basex extension
 authors:
     - Andy Bunce
 date: 2023-07-23
 
 ---
+
 # Settings (15)
+Settings can be viewed and set from the extensions view.
+![image](settings.png)
+## XQuery
+### processor	
+The XQuery processor. Determines syntax and core module libraries.
 
-## xquery.processor	
-The XQuery processor. Determines syntax and core module libraries.	basex-9
+default: `basex-9`
 
-## xquery.showHovers
-Show hovers in XQuery source. Currently these show just Diagnostic info	false
+### showHovers
+Show hovers in XQuery source. Currently these show just Diagnostic info.
 
-## xquery.suppressErrors
+default: `false`
+
+### suppressErrors
 Lint Error messages including these strings are marked as info rather than error. 
 TEMP HACK!	[XQST0059],[XPST0008]
 
-## xquery.executionArguments
+### executionArguments
 Arguments to be passed to the XQuery execution engine.
 
-## xquery.executionEngine
+### executionEngine
 The path to the executable to run when standalone BaseX. e.g ... \basex.bat	
 
-xpath.ignoreDefaultNamespace	
-Ignore default xmlns attributes when evaluating XPath.	true
+## XPath
+### ignoreDefaultNamespace	
+Ignore default xmlns attributes when evaluating XPath.
+
+default: `true`
 
 
-xpath.persistXPathQuery	
-Remember the last XPath query used.	true
+### persistXPathQuery	
+Remember the last XPath query used.
 
-xml.enforcePrettySelfClosingTagOnFormat
-Enforces a space before the forward slash at the end of a self-closing XML tag.	
-false
+default: `true`
 
-xml.removeCommentsOnMinify	
-Remove XML comments during minification.	false
+## XML
+### enforcePrettySelfClosingTagOnFormat
+Enforces a space before the forward slash at the end of a self-closing XML tag.
 
-xml.splitAttributesOnFormat	
-Put each attribute on a new line when formatting XML. Overrides `splitXmlnsOnFormat` if set to `true`.	false
+default: `false`
 
-xml.splitXmlnsOnFormat	
-Put each xmlns attribute on a new line when formatting XML.	true
+### removeCommentsOnMinify	
+Remove XML comments during minification.
 
-xml.FormatterImplementation	
-Supported XML Formatters: classic	v2
+default: `false`
 
-xmlTree.enableTreeView	
-Enables the XML Document view in the explorer for XML documents.	false
+### splitAttributesOnFormat	
+Put each attribute on a new line when formatting  Overrides `splitXmlnsOnFormat` if set to `true`.
 
-xmlTree.enableViewMetadata
-Enables attribute and child element counts in the XML Document view.	true
+default: `false`
 
-xmlTree.enableViewCursorSync
-Enables auto-reveal of elements in the XML Document view when a start tag is clicked in the editor.	false
+### splitXmlnsOnFormat	
+Put each xmlns attribute on a new line when formatting XML.
+
+default: `true`
+
+### FormatterImplementation	
+Supported XML Formatters: 
+* classic	
+* v2
+
+## XML Treeview
+### enableTreeView	
+Enables the XML Document view in the explorer for XML documents.
+
+default: `false`
+
+### enableViewMetadata
+Enables attribute and child element counts in the XML Document view.
+
+default: `true`
+
+### enableViewCursorSync
+Enables auto-reveal of elements in the XML Document view when a start tag is clicked in the editor.
+
+default: `false`

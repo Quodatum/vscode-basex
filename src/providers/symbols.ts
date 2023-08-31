@@ -52,7 +52,7 @@ export class DocumentSymbols implements DocumentSymbolProvider {
     channel.log("got xqdoc");
     xqdoc.variables.forEach(function (v: VarDecl): void {
       const name = "$" + v.name;
-      const description = v?.comments?.description;
+      const description = v?.description;
       //channel.log(name + v);
       const range = importRange( v.pos );
       const info = new DocumentSymbol(name, description, SymbolKind.Variable, range, range);
@@ -61,7 +61,7 @@ export class DocumentSymbols implements DocumentSymbolProvider {
 
     xqdoc.functions.forEach(function (f: FunDecl) {
       const name = f.name + "#" + f.params.length;
-      const description = f?.comments?.description;
+      const description = f?.description;
       //channel.log(name );
       const range = importRange( f.pos );
       const info = new DocumentSymbol(name, description, SymbolKind.Function, range, range);
@@ -71,7 +71,11 @@ export class DocumentSymbols implements DocumentSymbolProvider {
       // });
       symbols.push(info);
     });
-
+    if(xqdoc.queryBody){
+      const range= importRange( xqdoc.queryBody );
+      const q = new DocumentSymbol("querybody", "", SymbolKind.Package, range, range);
+      symbols.push(q);
+    }
     channel.log("Symbols done " + document.uri);
     return symbols;
   };

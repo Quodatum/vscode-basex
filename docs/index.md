@@ -16,7 +16,7 @@ For information about installing this extension see [here](installation.md).
 
 ## Working with XQuery sources
 * [XQuery coding](xquery/)
-* [Run XQuery code](xquery/xquery-script-execution.md)
+
 ## Working with XML sources
 * [Formating](xml/xml-formatting.md)
 * [Tree view](xml/xml-tree-view.md)

@@ -1,5 +1,7 @@
-# 0.1.11  (2023-08-08)
-* rewrite subscriptions
+
+# 0.1.14  (2023-08-26)
+* [mod] Use xqlint 0.3.3 
+* [mod] rewrite event subscriptions
 
 # 0.1.8  (2023-05-26)
 * extract namespace library data to `xq-catalogs` component

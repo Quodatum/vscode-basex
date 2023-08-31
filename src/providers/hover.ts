@@ -3,7 +3,7 @@
 import * as vscode from "vscode";
 import { XQLintFactory } from "../common/xqlint";
 import { Configuration } from "../common";
-import {languageIds} from "../constants";
+import { languageIds } from "../constants";
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.languages.registerHoverProvider(
@@ -18,24 +18,32 @@ class XQueryHoverProvider implements vscode.HoverProvider {
     ): vscode.Hover | null {
         if (!Configuration.xqueryShowHovers()) return null;
         const range = document.getWordRangeAtPosition(position);
-        if(!range) return null
+        if (!range) return null
         const word = document.getText(range);
-        
+
         const linter = XQLintFactory.XQLint(document);
         const node = linter.getAST(position);
-        if(node.name === 'WS') return null;
+        if (node.name === 'WS') return null;
 
-        let n2=node;
-        const path=[node.name]
+        let n2 = node;
+        const path = [node.name]
         while (n2.getParent !== null) {
-            n2=n2.getParent;
-            path.unshift(n2.name)    
+            n2 = n2.getParent;
+            path.push(n2.name);
         }
-  
+        const ps=path.join('/');
+        const isfuncall="EQName/FunctionEQName/FunctionCall/";
+        const fc=ps.startsWith(isfuncall);
+        const parsePath = new vscode.MarkdownString(
+            '<a href="https://quodatum.github.io/basex-xqparse/i-BaseX.xhtml#'+path[0]+'">Path:<a>');
+        parsePath.appendText(ps);
+        parsePath.supportHtml = true;
+        parsePath.isTrusted = true;
+
         return new vscode.Hover([
             `[${position.line},${position.character}] Type: ${node.name}, Word: ${word}`,
-            `value: ${node.value}`,
-            `path: ${path.join('/') }`
+            `value: ${node.value}, fc: ${fc}`,
+            parsePath
         ]);
     }
 }

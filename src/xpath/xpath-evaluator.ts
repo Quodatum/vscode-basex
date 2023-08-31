@@ -36,7 +36,7 @@ export class XPathEvaluator {
         const nodes = new Array<Node>();
         const xdoc: Document = new DOMParser().parseFromString(xml, "text/xml");
         const resolver = (xpath as any).createNSResolver(xdoc);
-        const xPathResult = xpath.evaluate(query, xdoc, resolver, 0, null);
+        const xPathResult = xpath.select1(query, xdoc, resolver, 0, null);
 
         const evaluatorResult = new EvaluatorResult();
         evaluatorResult.type = EvaluatorResultType.SCALAR_TYPE;

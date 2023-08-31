@@ -5,4 +5,7 @@ authors:
     - Andy Bunce
 date: 2023-07-05
 ---
+!!! warning
+    currently somewhat broken.
+![doclink](code-folding.gif)
 

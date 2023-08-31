@@ -2,6 +2,7 @@ node_modules
 !node_modules/@quodatum/xq-catalogs/**/*
 out
 !out/extension.js
+site/
 src/
 docs/
 tsconfig.json

@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.1.11",
+  "version": "0.1.14",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -30,11 +30,11 @@
     "Snippets",
     "Other"
   ],
-  "activationEvents": [
-    "onLanguage:xquery"
-  ],
+  "activationEvents": [],
   "main": "./out/extension.js",
-  "files": ["node_modules/@quodatum/xq-catalogs"],
+  "files": [
+    "node_modules/@quodatum/xq-catalogs"
+  ],
   "contributes": {
     "commands": [
       {
@@ -384,9 +384,9 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@quodatum/xqlint": "^0.2.6",
-    "@xmldom/xmldom": "^0.8.1",
-    "bl": "^6.0.1",
-    "xpath": "0.0.32"
+    "@quodatum/xqlint": "^0.3.3",
+    "@xmldom/xmldom": "^0.8.10",
+    "bl": "^6.0.4",
+    "xpath": "^0.0.33"
   }
 }

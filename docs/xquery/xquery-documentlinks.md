@@ -5,6 +5,6 @@ authors:
     - Andy Bunce
 date: 2023-07-05
 ---
-For XQuery module imports with an **at** location, the location string has a link function the the imported source.
+When an XQuery module imports with an **at** location, the location string has a link function to the imported source.
  
 ![doclink](xquery-documentlinks.gif)

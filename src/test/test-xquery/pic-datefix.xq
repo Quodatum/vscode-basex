@@ -33,17 +33,19 @@ as map(*)*
 
 (:~  move a file, create folder if needed :)
 declare function local:move($src as xs:string, $dest as xs:string)
-{
+as empty-sequence(){
   file:create-dir(file:parent($dest)),
   file:move($src,$dest)
 };
 
 declare function local:print($src as xs:string, $dest as xs:string)
-{
+as xs:string{
  concat($src,"->", $dest)
 };
 
-declare function local:do($actions){
+declare function local:do($actions as function(*)*)
+as item()*
+{
   for $date-folder in $folders
   for $target in local:date-wrong( $date-folder, $year),
       $f in $target?files

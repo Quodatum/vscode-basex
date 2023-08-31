@@ -8,7 +8,6 @@ some_url: https://example.com
 ---
 # General
 !!! note
-
     currently this page is just used to test mkdocs features.
 * Gif images are 960x540
 
@@ -55,4 +54,11 @@ declare namespace xqdoc="http://www.xqdoc.org/1.0";
 
 ```
 
+# Mermaid
 
+```mermaid
+graph LR
+    hello --> world
+    world --> again
+    again --> hello
+```

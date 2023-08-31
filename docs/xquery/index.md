@@ -12,7 +12,12 @@ Available features include:
 * [Linting](xquery-linting.md)
 * [Code completion](xquery-code-completion.md)
 * [Code folding](xquery-code-folding.md)
-* [Linked documents](/xquery-documentlinks.md)
+* [Linked documents](xquery-documentlinks.md)
 * [Snippets](xquery-snippets.md)
 * [Source formatting](xquery-source-formating.md)
 * [Symbols](xquery-symbols.md)
+
+# Running XQuery
+* [Run XQuery code](xquery-script-execution.md)
+# BXS scripts
+* recognized but not otherwise handled yet.

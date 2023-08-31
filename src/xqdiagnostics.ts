@@ -23,7 +23,7 @@ export class XQueryDiagnostics implements vscode.DiagnosticCollection,
     }
 
     set(uri: unknown, diagnostics?: unknown): void {
-        channel.log("xqueryDiagnostics set");
+        channel.log("xqueryDiagnostics set: "+ uri);
         if (uri instanceof Array) {
             this.diagnosticCollectionXQuery.set(uri);
         } else {
@@ -31,7 +31,7 @@ export class XQueryDiagnostics implements vscode.DiagnosticCollection,
         }
     }
     delete(uri: vscode.Uri): void {
-        channel.log("xqueryDiagnostics delete");
+        channel.log("xqueryDiagnostics delete: " +uri);
         this.diagnosticCollectionXQuery.delete(uri);
         this.xqlintCollectionXQuery.delete(uri);
     }
@@ -46,7 +46,7 @@ export class XQueryDiagnostics implements vscode.DiagnosticCollection,
         this.diagnosticCollectionXQuery.forEach(callback);
     }
     get(uri: vscode.Uri): readonly vscode.Diagnostic[] {
-        channel.log("xqueryDiagnostics get");
+        channel.log("xqueryDiagnostics get: " + uri);
         return this.diagnosticCollectionXQuery.get(uri);
     }
     has(uri: vscode.Uri): boolean {

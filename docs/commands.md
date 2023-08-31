@@ -4,7 +4,6 @@ summary: The commands of the vscode-basex extension
 authors:
     - Andy Bunce
 date: 2023-07-23
-
 ---
 
 # Commands 

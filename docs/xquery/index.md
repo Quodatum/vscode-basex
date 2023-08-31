@@ -6,7 +6,8 @@ authors:
 date: 2023-07-05
 some_url: https://example.com
 ---
-# Working with XQuery sources
+# XQuery
+## Working with XQuery sources
 Available features include:
 
 * [Linting](xquery-linting.md)
@@ -17,7 +18,12 @@ Available features include:
 * [Source formatting](xquery-source-formating.md)
 * [Symbols](xquery-symbols.md)
 
-# Running XQuery
+## Running XQuery
 * [Run XQuery code](xquery-script-execution.md)
-# BXS scripts
+## BXS scripts
 * recognized but not otherwise handled yet.
+## Extension debugging
+Virtual documents showing the XML parse tree and the XQDoc data can be created when the active document is
+of type XQuery. These may help analysing problems with the extension.
+
+![doclink](xquery-analysis.gif)

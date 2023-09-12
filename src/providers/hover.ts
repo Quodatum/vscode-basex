@@ -1,9 +1,10 @@
 // xquery hover
 
 import * as vscode from "vscode";
-import { XQLintFactory } from "../common/xqlint";
+
 import { Configuration } from "../common";
 import { languageIds } from "../constants";
+import { diagnosticCollectionXQuery } from "../extension";
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.languages.registerHoverProvider(
@@ -20,8 +21,8 @@ class XQueryHoverProvider implements vscode.HoverProvider {
         const range = document.getWordRangeAtPosition(position);
         if (!range) return null
         const word = document.getText(range);
+        const linter =   diagnosticCollectionXQuery.xqlint(document.uri); 
 
-        const linter = XQLintFactory.XQLint(document);
         const node = linter.getAST(position);
         if (node.name === 'WS') return null;
 

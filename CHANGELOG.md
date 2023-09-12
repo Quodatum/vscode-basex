@@ -1,4 +1,8 @@
-
+# 0.1.16 (2023-09-10)
+* [mod] virtual docs updates
+# 0.1.15 (2023-09-09)
+* [ADD] set processor and selectDeclaration commands
+* [mod] rework event handlers
 # 0.1.14  (2023-08-26)
 * [mod] Use xqlint 0.3.3 
 * [mod] rewrite event subscriptions
@@ -23,7 +27,7 @@
 * Add XQuery icon
 
 # 0.1.4 (2023-03-18)
-* [fix] use xqlint 0.2.1, was using 0.2.0
+* [fix] use xqlint 0.2.1, was using 0.2.0 in error
 
 # 0.1.3 (2023-02-27)
 * Rename setting `platform` to `processor`

@@ -42,6 +42,9 @@ export class Configuration {
     static get xqueryProcessor(): string {
       return this._getForWindow<string>("xquery.processor");
     }
+    static set xqueryProcessor(value: string) {
+       this._setForWindow("xquery.processor",value);
+      }
     static xqueryShowHovers(): boolean {
         return this._getForWindow<boolean>("xquery.showHovers");
     }
@@ -68,5 +71,8 @@ export class Configuration {
 
     private static _getForWindow<T>(section: string): T  {
         return workspace.getConfiguration(ExtensionTopLevelSection).get<T>(section);
+    }
+    private static _setForWindow(section: string,value:string)  {
+         workspace.getConfiguration(ExtensionTopLevelSection).update(section,value);
     }
 }

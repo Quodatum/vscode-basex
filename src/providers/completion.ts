@@ -2,8 +2,9 @@ import {
     CompletionItem, CompletionItemKind, CompletionItemProvider,
     Position, TextDocument, ExtensionContext, languages
 } from "vscode";
-import { XQLintFactory } from "../common/xqlint";
+
 import { languageIds } from "../constants";
+import { diagnosticCollectionXQuery } from "../extension";
 
 export function activate(context: ExtensionContext) {
     context.subscriptions.push(languages.registerCompletionItemProvider(
@@ -15,7 +16,7 @@ class XQueryCompletionItemProvider implements CompletionItemProvider {
 
     provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
         const completionItems = new Array<CompletionItem>();
-        const linter = XQLintFactory.XQLint(document);
+        const linter = diagnosticCollectionXQuery.xqlint(document.uri);
 
         linter.getCompletions(position).forEach((x: any) => {
             completionItems.push(this._getCompletionItem(x));

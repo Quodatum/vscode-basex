@@ -12,7 +12,8 @@ import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/comma
 import { xqLintReport, activateVirtualDocs } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
-import { executeXQuery } from "./xquery-execution/commands";
+
+import { setProcessor, selectDeclaration, executeXQuery } from "./xquery-cmds";
 
 import * as constants from "./constants";
 import * as formatter from "./providers/formatting";
@@ -21,11 +22,14 @@ import * as hover from './providers/hover';
 import * as completion from './providers/completion';
 import * as documentLink from './providers/documentlink';
 
-let diagnosticCollectionXQuery: XQueryDiagnostics;
+export const diagnosticCollectionXQuery=new XQueryDiagnostics();
 
 export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
     ExtensionState.configure(context);
+
+    /* Linting Features */
+    subscribeToDocumentChanges(context, diagnosticCollectionXQuery);
 
     /* activate XQuery handlers */
     symbols.activate(context);
@@ -36,9 +40,7 @@ export function activate(context: ExtensionContext) {
 
     activateVirtualDocs(context);
 
-    /* Linting Features */
-    diagnosticCollectionXQuery = new XQueryDiagnostics();
-    subscribeToDocumentChanges(context, diagnosticCollectionXQuery);
+
 
 
     /* XML Formatting Features */
@@ -81,18 +83,20 @@ export function activate(context: ExtensionContext) {
 
     /* XQuery Features */
     context.subscriptions.push(
-        commands.registerTextEditorCommand(constants.commands.executeXQuery, executeXQuery),
-        commands.registerTextEditorCommand(constants.commands.clearDiagnostics, diagnosticCollectionXQuery.clear),
+        commands.registerTextEditorCommand(constants.commands.xqExecute, executeXQuery),
+        commands.registerTextEditorCommand(constants.commands.xqSelectDeclaration, selectDeclaration),
+        commands.registerCommand(constants.commands.xqProcessor, setProcessor),
+        commands.registerCommand(constants.commands.xqClearDiagnostics, diagnosticCollectionXQuery.clear),
     );
-    // if processor changed clear diagnostics
-    //
+
+    // if changes to processor  then clear diagnostics
     workspace.onDidChangeConfiguration(event => {
         if (event.affectsConfiguration("basexTools.xquery.processor")) {
             diagnosticCollectionXQuery.clear();
             window.showInformationMessage("Processor now: " + Configuration.xqueryProcessor);
         }
     })
-
+    window.showInformationMessage("XQuery processor: " + Configuration.xqueryProcessor);
 }
 
 export function deactivate() {

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace commands {
-    export const executeXQuery = "basexTools.executeXQuery";
+    export const xqExecute = "basexTools.executeXQuery";
     export const xqDoc = "basexTools.xqDoc";  // used as url scheme
     export const xqParse = "basexTools.xqParse"; // used as url scheme
-    
+    export const xqProcessor = "basexTools.processor"; 
+    export const xqSelectDeclaration = "basexTools.selectDeclaration";      
     export const xqLintReport = "basexTools.xqLintReport";
-    export const clearDiagnostics ="basexTools.clearDiagnostics"
+    export const xqClearDiagnostics ="basexTools.clearDiagnostics"
 
     export const getCurrentXPath = "basexTools.getCurrentXPath";        
     export const evaluateXPath = "basexTools.evaluateXPath";

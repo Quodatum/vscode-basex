@@ -5,7 +5,8 @@
         "outDir": "out",
         "lib": [
             "dom",
-            "es6"
+            "es6",
+            "es2019"
         ],
         "sourceMap": true,
         "rootDir": "src",

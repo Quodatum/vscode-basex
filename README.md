@@ -31,7 +31,7 @@ See the [documentation](https://quodatum.github.io/vscode-basex/) for more detai
 
 
 # Requirements
-* VS Code `1.73.0` or higher
+* VS Code `1.76.0` or higher
 
 # Release Notes
 Detailed release notes are available [here](https://github.com/Quodatum/vscode-basex/releases).

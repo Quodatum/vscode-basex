@@ -46,5 +46,5 @@ export class channel {
       _channel.appendLine(`${ action}: ${uri.fsPath}`) 
     }
 }
-channel.log(`Activate vscode-basex(${ version }) *****************  XQLint(${ verXQlint })`);
+channel.log(`Activate vscode-basex(${ version.version }) *****************  XQLint(${ verXQlint })`);
 _channel.show

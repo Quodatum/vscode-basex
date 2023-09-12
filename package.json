@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.1.14",
+  "version": "0.1.16",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -38,6 +38,11 @@
   "contributes": {
     "commands": [
       {
+        "command": "basexTools.processor",
+        "title": "BaseX Tools: get/set XQuery processor",
+        "shortTitle": "XQuery processor"
+      },
+      {
         "command": "basexTools.xqParse",
         "title": "BaseX Tools: Parse of XQuery source (xml)",
         "shortTitle": "Parse tree XML",
@@ -52,14 +57,34 @@
         "enablement": "editorLangId == xquery"
       },
       {
-        "command": "basexTools.evaluateXPath",
-        "title": "BaseX Tools: Evaluate XPath long title",
-        "shortTitle": "BaseX Tools: Evaluate XPath"
+        "command": "basexTools.xqLintReport",
+        "title": "BaseX Tools: Analysis of current location in Xquery source",
+        "shortTitle": "Posinfo"
+      },
+      {
+        "command": "basexTools.clearDiagnostics",
+        "title": "BaseX Tools: Clear the XQuery Diagnostics collection"
       },
       {
         "command": "basexTools.executeXQuery",
-        "title": "BaseX Tools: Execute XQuery using standalone BaseX "
+        "title": "BaseX Tools: Execute XQuery using standalone BaseX"
       },
+      {
+        "command": "basexTools.selectDeclaration",
+        "title": "BaseX Tools: Select current declaration",
+        "enablement": "editorLangId == xquery"
+      },
+
+      {
+        "command": "basexTools.getCurrentXPath",
+        "title": "BaseX Tools: Get Current XPath"
+      },
+      {
+        "command": "basexTools.evaluateXPath",
+        "title": "BaseX Tools: Evaluate XPath ",
+        "shortTitle": "BaseX Tools: Evaluate XPath"
+      },
+      
       {
         "command": "basexTools.formatAsXml",
         "title": "BaseX Tools: Format as XML"
@@ -72,22 +97,10 @@
         "command": "basexTools.xmlToText",
         "title": "BaseX Tools: Convert XML to text  (<> -> &lt;&gt;)"
       },
-      {
-        "command": "basexTools.getCurrentXPath",
-        "title": "BaseX Tools: Get Current XPath"
-      },
+     
       {
         "command": "basexTools.minifyXml",
         "title": "BaseX Tools: Minify XML"
-      },
-      {
-        "command": "basexTools.xqLintReport",
-        "title": "BaseX Tools: Analysis of current location in Xquery source",
-        "shortTitle": "Posinfo"
-      },
-      {
-        "command": "basexTools.clearDiagnostics",
-        "title": "BaseX Tools: Clear the XQuery Diagnostics collection"
       }
     ],
     "configuration": [

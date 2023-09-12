@@ -10,8 +10,8 @@ import {
     ExtensionContext, languages, TextDocument, CancellationToken,
     DocumentLink, DocumentLinkProvider,Uri
 } from 'vscode';
-import { channel } from "../common/channel-basex";
-import { XQLintFactory, importRange } from "../common/xqlint";
+import { channel,importRange } from "../common";
+import { diagnosticCollectionXQuery } from "../extension";
 import { languageIds } from "../constants";
 
 
@@ -21,9 +21,10 @@ export function activate(context: ExtensionContext) {
     );
 }
 class XQueryDocumentLinks implements DocumentLinkProvider {
-    provideDocumentLinks = async (doc: TextDocument, token: CancellationToken): Promise<DocumentLink[]> => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    provideDocumentLinks = async (doc: TextDocument, _token: CancellationToken): Promise<DocumentLink[]> => {
         channel.start("Doclinks" , doc.uri);
-        const linter = XQLintFactory.XQLint(doc);
+        const linter =   diagnosticCollectionXQuery.xqlint(doc.uri); 
         const dlinks = linter.getDocLinks();
 
         const links: DocumentLink[] = [];

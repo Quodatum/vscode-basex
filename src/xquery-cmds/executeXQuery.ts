@@ -1,10 +1,10 @@
-import { OutputChannel, window, workspace } from "vscode";
-import { Disposable, Range, TextEditor, TextEditorEdit, Uri } from "vscode";
+import { OutputChannel, window } from "vscode";
+import { TextEditor, TextEditorEdit } from "vscode";
 
-import * as constants from "../../constants";
-import { channel,logdate } from "../../common/channel-basex";
-import { ChildProcess } from "../child-process";
-import { Configuration, NativeCommands } from "../../common";
+import * as constants from "../constants";
+import { channel,logdate } from "../common/channel-basex";
+import { ChildProcess } from "../common/child-process";
+import { Configuration, NativeCommands } from "../common";
 
 let outputChannel:OutputChannel;
 

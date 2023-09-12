@@ -5,9 +5,9 @@ import {
   Position, Location,Uri,TextDocument, CancellationToken,
   ExtensionContext, languages, SymbolInformation
 } from 'vscode';
-import { channel } from "../common/channel-basex";
-import { XQLintFactory, importRange } from "../common/xqlint";
+import { channel,importRange } from "../common";
 import { languageIds } from "../constants";
+import { diagnosticCollectionXQuery } from "../extension";
 //
 // This class handles XQuery Symbols
 //
@@ -46,7 +46,8 @@ export class DocumentSymbols implements DocumentSymbolProvider {
 
     channel.log("DocumentSymbols: " + document.uri);
     const symbols: DocumentSymbol[] = [];
-    const linter = XQLintFactory.XQLint(document);
+
+    const linter =   diagnosticCollectionXQuery.xqlint(document.uri); 
 
     const xqdoc = linter.getXQDoc(true);
     channel.log("got xqdoc");

@@ -1,15 +1,14 @@
 import * as vscode from 'vscode';
 import * as constants from "./constants";
-import { XQLint } from '@quodatum/xqlint';
-import { XQueryLinter } from "./linting";
-import { channel } from "./common";
+import { XQLint, Marker } from '@quodatum/xqlint';
+
+import { channel, isNotXQDoc, unsupportedScheme, Configuration, importRange } from "./common";
+
 
 // DiagnosticCollection for XQuery documents
-export class XQueryDiagnostics implements vscode.DiagnosticCollection,
-    Iterable<[uri: vscode.Uri, diagnostics: readonly vscode.Diagnostic[]]>
-{
+export class XQueryDiagnostics {
     diagnosticCollectionXQuery: vscode.DiagnosticCollection;
-    xqlintCollectionXQuery: Map<vscode.Uri, XQLint>;
+    xqlintCollectionXQuery: Map<string, XQLint>;
 
     constructor() {
         this.diagnosticCollectionXQuery = vscode.languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
@@ -18,22 +17,12 @@ export class XQueryDiagnostics implements vscode.DiagnosticCollection,
     }
 
 
-    get name() {
-        return this.diagnosticCollectionXQuery.name;
-    }
-
-    set(uri: unknown, diagnostics?: unknown): void {
-        channel.log("xqueryDiagnostics set: "+ uri);
-        if (uri instanceof Array) {
-            this.diagnosticCollectionXQuery.set(uri);
-        } else {
-            this.diagnosticCollectionXQuery.set(uri as vscode.Uri, diagnostics as vscode.Diagnostic[]);
-        }
-    }
     delete(uri: vscode.Uri): void {
-        channel.log("xqueryDiagnostics delete: " +uri);
-        this.diagnosticCollectionXQuery.delete(uri);
-        this.xqlintCollectionXQuery.delete(uri);
+        if (this.diagnosticCollectionXQuery.has(uri)) {
+            channel.log("xqueryDiagnostics delete: " + uri);
+            this.diagnosticCollectionXQuery.delete(uri);
+            this.xqlintCollectionXQuery.delete(uri.toString());
+        }
     }
 
     clear(): void {
@@ -42,9 +31,6 @@ export class XQueryDiagnostics implements vscode.DiagnosticCollection,
         this.xqlintCollectionXQuery.clear();
     }
 
-    forEach(callback: (uri: vscode.Uri, diagnostics: readonly vscode.Diagnostic[], collection: vscode.DiagnosticCollection) => any, thisArg?: any): void {
-        this.diagnosticCollectionXQuery.forEach(callback);
-    }
     get(uri: vscode.Uri): readonly vscode.Diagnostic[] {
         channel.log("xqueryDiagnostics get: " + uri);
         return this.diagnosticCollectionXQuery.get(uri);
@@ -52,14 +38,25 @@ export class XQueryDiagnostics implements vscode.DiagnosticCollection,
     has(uri: vscode.Uri): boolean {
         return this.diagnosticCollectionXQuery.has(uri);
     }
-    dispose(): void {
-        this.clear();
+    update(uri: vscode.Uri, document: string) {
+
+        const processor = Configuration.xqueryProcessor;
+        const opts = { "processor": processor, "fileName": uri.fsPath };
+        const xqlint = new XQLint(document, opts);
+        const diags = getDiagnostics(xqlint);
+        this.xqlintCollectionXQuery.set(uri.toString(), xqlint);
+        this.diagnosticCollectionXQuery.set(uri, diags)
     }
-    // really? https://blog.logrocket.com/understanding-typescript-generators/
-    [Symbol.iterator](): Iterator<[uri: vscode.Uri, diagnostics: readonly vscode.Diagnostic[]], any, undefined> {
-        const it: Iterator<[uri: vscode.Uri, diagnostics: readonly vscode.Diagnostic[]], any, undefined> = this.diagnosticCollectionXQuery[Symbol.iterator]();
-        return it;
+    xqlint(uri: vscode.Uri): XQLint {
+        const k=uri.toString();
+        const xq= this.xqlintCollectionXQuery.get(k);
+        if(xq){
+            return xq;
+        } else{
+           console.log("ERROR");
+        }
     }
+
 }
 
 /**
@@ -67,36 +64,68 @@ export class XQueryDiagnostics implements vscode.DiagnosticCollection,
  * @param doc xquery document to analyze
  * @param xqueryDiagnostics diagnostic collection
  */
-export function refreshDiagnostics(doc: vscode.TextDocument, xqueryDiagnostics: XQueryDiagnostics): void {
-    const supportedSchemes = [constants.uriSchemes.file, constants.uriSchemes.untitled];
-
-    if(doc.languageId !== constants.languageIds.xquery ||  supportedSchemes.indexOf(doc.uri.scheme) === -1){
-        return;
+export function refreshDiagnostics(doc: vscode.TextDocument,
+    xqueryDiagnostics: XQueryDiagnostics,
+    reason: string): void {
+    if (isNotXQDoc(doc)) return;
+    const isNew = !xqueryDiagnostics.has(doc.uri);
+    const refresh = reason === "change";
+    channel.log((isNew ? "🆕" : "") + (refresh ? "♻️" : "") + "refreshDiagnostics " + reason + " " + doc.uri.toString());
+    if (isNew || refresh) {
+        xqueryDiagnostics.update(doc.uri, doc.getText());
     }
-    channel.log("refreshDiagnostics" + doc.uri.toString());
-    const diagnostics = new XQueryLinter().lint(doc)
-
-    xqueryDiagnostics.set(doc.uri, diagnostics);
 }
-
 
 // forward doc changes
 export function subscribeToDocumentChanges(context: vscode.ExtensionContext, xqueryDiagnostics: XQueryDiagnostics): void {
-    if (vscode.window.activeTextEditor) {
-        refreshDiagnostics(vscode.window.activeTextEditor.document, xqueryDiagnostics);
+    const ed = vscode.window.activeTextEditor;
+    if (ed && !unsupportedScheme(ed.document.uri)) {
+        refreshDiagnostics(ed.document, xqueryDiagnostics, "current");
     }
-    context.subscriptions.push(
-        vscode.window.onDidChangeActiveTextEditor(editor => {
-            if (editor)  refreshDiagnostics(editor.document, xqueryDiagnostics);         
-        })
+
+    const onDidClose = vscode.workspace.onDidCloseTextDocument(
+        doc => xqueryDiagnostics.delete(doc.uri)
+    );
+    const onDidChange = vscode.workspace.onDidChangeTextDocument(
+        e => refreshDiagnostics(e.document, xqueryDiagnostics, "change")
     );
 
-    context.subscriptions.push(
-        vscode.workspace.onDidChangeTextDocument(e => refreshDiagnostics(e.document, xqueryDiagnostics))
+    // https://stackoverflow.com/questions/68518501/vscode-workspace-ondidchangetextdocument-is-called-even-when-there-is-no-conte
+    const onDidOpen = vscode.workspace.onDidOpenTextDocument(
+        doc => refreshDiagnostics(doc, xqueryDiagnostics, "open")
     );
 
-    context.subscriptions.push(
-        vscode.workspace.onDidCloseTextDocument(doc => xqueryDiagnostics.delete(doc.uri))
+    const onDidActive = vscode.window.onDidChangeActiveTextEditor(
+        editor => {
+            if (editor) refreshDiagnostics(editor.document, xqueryDiagnostics, "active");
+        }
     );
+    context.subscriptions.push(onDidOpen, onDidChange, onDidClose, onDidActive);
+}
 
+function getDiagnostics(linter: XQLint): vscode.Diagnostic[] {
+    const diagnostics = new Array<vscode.Diagnostic>();
+
+    linter.getErrors().forEach((error: Marker) => {
+        diagnostics.push(new vscode.Diagnostic(
+            importRange(error.pos),
+            error.message,
+            isSuppressed(error.message) ? vscode.DiagnosticSeverity.Information : vscode.DiagnosticSeverity.Error
+        ));
+    });
+
+    linter.getWarnings().forEach((warning: Marker) => {
+        diagnostics.push(new vscode.Diagnostic(
+            importRange(warning.pos),
+            warning.message,
+            vscode.DiagnosticSeverity.Warning
+        ));
+    });
+    return diagnostics;
+}
+// [XQST0059] module "http://config" not found
+// [XPST0008] "list-details#0": undeclared function
+function isSuppressed(msg: string): boolean {
+    const errs = Configuration.xquerySuppressErrors;
+    return errs.some((x) => msg.includes(x));
 }

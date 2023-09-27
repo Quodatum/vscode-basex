@@ -5,3 +5,4 @@ export * from "./extension-state";
 export * from "./native-commands";
 export * from "./xml-traverser";
 export * from "./channel-basex";
+export * from "./document";

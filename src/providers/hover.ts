@@ -22,7 +22,7 @@ class XQueryHoverProvider implements vscode.HoverProvider {
         if (!range) return null
         const word = document.getText(range);
         const linter =   diagnosticCollectionXQuery.xqlint(document.uri); 
-
+        const sctx = linter.getSctx(position);
         const node = linter.getAST(position);
         if (node.name === 'WS') return null;
 

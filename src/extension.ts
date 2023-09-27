@@ -6,23 +6,21 @@ import {
 import { channel, createDocumentSelector, ExtensionState, Configuration } from "./common";
 
 import { XQueryDiagnostics, subscribeToDocumentChanges } from "./xqdiagnostics"
-
+//import { activate  as activateActions} from "./xquery-cmds/xqactions";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
 import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
 import { xqLintReport, activateVirtualDocs } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 
-import { setProcessor, selectDeclaration, executeXQuery } from "./xquery-cmds";
+import { setProcessor , selectDeclaration, executeXQuery, libraryInfo } from "./xquery-cmds";
 
 import * as constants from "./constants";
-import * as formatter from "./providers/formatting";
-import * as symbols from './providers/symbols';
-import * as hover from './providers/hover';
-import * as completion from './providers/completion';
-import * as documentLink from './providers/documentlink';
+import * as providers from "./providers/activate";
+
 
 export const diagnosticCollectionXQuery=new XQueryDiagnostics();
+//const actionDiagnostics = languages.createDiagnosticCollection(constants.diagnosticCollections.xqActions);
 
 export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
@@ -30,18 +28,11 @@ export function activate(context: ExtensionContext) {
 
     /* Linting Features */
     subscribeToDocumentChanges(context, diagnosticCollectionXQuery);
-
+    //activateActions(context,actionDiagnostics);
     /* activate XQuery handlers */
-    symbols.activate(context);
-    hover.activate(context);
-    completion.activate(context);
-    documentLink.activate(context);
-    formatter.activate(context);
-
+    providers.activate(context,diagnosticCollectionXQuery);
+   
     activateVirtualDocs(context);
-
-
-
 
     /* XML Formatting Features */
     const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
@@ -85,6 +76,7 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(
         commands.registerTextEditorCommand(constants.commands.xqExecute, executeXQuery),
         commands.registerTextEditorCommand(constants.commands.xqSelectDeclaration, selectDeclaration),
+        commands.registerTextEditorCommand(constants.commands.xqLibrary, libraryInfo),
         commands.registerCommand(constants.commands.xqProcessor, setProcessor),
         commands.registerCommand(constants.commands.xqClearDiagnostics, diagnosticCollectionXQuery.clear),
     );

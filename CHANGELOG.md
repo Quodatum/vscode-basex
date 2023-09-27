@@ -1,11 +1,15 @@
+# 0.1.18 (2023-09-21)
+* error decorator
+* empty codeaction hint
 # 0.1.16 (2023-09-10)
-* [mod] virtual docs updates
+* virtual docs updates
+* add command basexTools.xqLibrary
 # 0.1.15 (2023-09-09)
-* [ADD] set processor and selectDeclaration commands
-* [mod] rework event handlers
+*  Add commands: set processor and selectDeclaration.
+*  rework event handlers
 # 0.1.14  (2023-08-26)
-* [mod] Use xqlint 0.3.3 
-* [mod] rewrite event subscriptions
+*  Use xqlint 0.3.3 
+*  rewrite event subscriptions
 
 # 0.1.8  (2023-05-26)
 * extract namespace library data to `xq-catalogs` component

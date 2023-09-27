@@ -4,7 +4,8 @@ export namespace commands {
     export const xqDoc = "basexTools.xqDoc";  // used as url scheme
     export const xqParse = "basexTools.xqParse"; // used as url scheme
     export const xqProcessor = "basexTools.processor"; 
-    export const xqSelectDeclaration = "basexTools.selectDeclaration";      
+    export const xqSelectDeclaration = "basexTools.selectDeclaration";
+    export const xqLibrary = "basexTools.xqLibrary";           
     export const xqLintReport = "basexTools.xqLintReport";
     export const xqClearDiagnostics ="basexTools.clearDiagnostics"
 
@@ -24,6 +25,7 @@ export namespace contextKeys {
 
 export namespace diagnosticCollections {
     export const xquery = "XQueryDiagnostics";
+    export const xqActions = "XQueryActions";
 }
 
 export namespace languageIds {

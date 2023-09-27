@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.1.16",
+  "version": "0.1.18",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -54,6 +54,12 @@
         "title": "BaseX Tools: XQdoc of XQuery source (json)",
         "shortTitle": "BaseX Tools: XQdoc for current",
         "icon": "$(bracket-dot)",
+        "enablement": "editorLangId == xquery"
+      },
+      {
+        "command": "basexTools.xqLibrary",
+        "title": "BaseX Tools: About known namespaces",
+        "shortTitle": "BaseX Tools: library",
         "enablement": "editorLangId == xquery"
       },
       {
@@ -132,8 +138,6 @@
           "basexTools.xquery.suppressErrors": {
             "type": "array",
             "default": [
-              "[XQST0059]",
-              "[XPST0008]"
             ],
             "description": "Lint Error messages including these strings are marked as info rather than error. TEMP HACK! "
           }
@@ -302,6 +306,7 @@
       },
       {
         "id": "basex-script",
+        
         "aliases": [
           "bxs"
         ],

@@ -1,0 +1,17 @@
+import { ExtensionContext} from "vscode";
+import {XQueryDiagnostics} from "../xqdiagnostics";
+import * as formatter from "./formatting";
+import * as symbols from './symbols';
+import * as hover from './hover';
+import * as codeAction from './codeaction';
+import * as completion from './completion';
+import * as documentLink from './documentlink';
+
+export function activate(context: ExtensionContext,diagnosticCollectionXQuery:XQueryDiagnostics) {
+    symbols.activate(context);
+    hover.activate(context);
+    codeAction.activate(context,diagnosticCollectionXQuery);
+    completion.activate(context);
+    documentLink.activate(context);
+    formatter.activate(context);   
+}

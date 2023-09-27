@@ -1,5 +1,4 @@
 import { Position } from "vscode";
-import { DOMParser } from "xmldom";
 
 export class XmlTraverser {
 

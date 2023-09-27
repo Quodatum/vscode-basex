@@ -1,5 +1,10 @@
+/*
+
+*/
 import * as vscode from 'vscode';
 import * as constants from "./constants";
+import {IXQParsedEvent,XQParsedEvent as ParsedEvent} from "./xqdiagEvents";
+
 import { XQLint, Marker } from '@quodatum/xqlint';
 
 import { channel, isNotXQDoc, unsupportedScheme, Configuration, importRange } from "./common";
@@ -9,6 +14,9 @@ import { channel, isNotXQDoc, unsupportedScheme, Configuration, importRange } fr
 export class XQueryDiagnostics {
     diagnosticCollectionXQuery: vscode.DiagnosticCollection;
     xqlintCollectionXQuery: Map<string, XQLint>;
+
+    private diagEmitter = new vscode.EventEmitter<IXQParsedEvent>();
+	onDidDiag: vscode.Event<IXQParsedEvent> = this.diagEmitter.event;
 
     constructor() {
         this.diagnosticCollectionXQuery = vscode.languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
@@ -22,6 +30,7 @@ export class XQueryDiagnostics {
             channel.log("xqueryDiagnostics delete: " + uri);
             this.diagnosticCollectionXQuery.delete(uri);
             this.xqlintCollectionXQuery.delete(uri.toString());
+            this.diagEmitter.fire(new ParsedEvent(uri));
         }
     }
 
@@ -35,28 +44,33 @@ export class XQueryDiagnostics {
         channel.log("xqueryDiagnostics get: " + uri);
         return this.diagnosticCollectionXQuery.get(uri);
     }
+    set(uri: vscode.Uri, diagnostics: vscode.Diagnostic[]) {
+        this.diagnosticCollectionXQuery.set(uri, diagnostics);
+    }
     has(uri: vscode.Uri): boolean {
         return this.diagnosticCollectionXQuery.has(uri);
     }
-    update(uri: vscode.Uri, document: string) {
 
-        const processor = Configuration.xqueryProcessor;
-        const opts = { "processor": processor, "fileName": uri.fsPath };
-        const xqlint = new XQLint(document, opts);
-        const diags = getDiagnostics(xqlint);
+    update(uri: vscode.Uri, document: string) {
+        const xqlint = linter(uri, document);
         this.xqlintCollectionXQuery.set(uri.toString(), xqlint);
-        this.diagnosticCollectionXQuery.set(uri, diags)
+        this.diagEmitter.fire(new ParsedEvent(uri,xqlint))
     }
+
     xqlint(uri: vscode.Uri): XQLint {
-        const k=uri.toString();
-        const xq= this.xqlintCollectionXQuery.get(k);
-        if(xq){
+        const xq = this.xqlintCollectionXQuery.get(uri.toString());
+        if (xq) {
             return xq;
-        } else{
-           console.log("ERROR");
+        } else {
+            throw { name: "NOXQLINT", message: "should not happen" };
         }
     }
 
+}
+function linter(uri: vscode.Uri, document: string) {
+    const processor = Configuration.xqueryProcessor;
+    const opts = { "processor": processor, "fileName": uri.fsPath };
+    return new XQLint(document, opts);
 }
 
 /**
@@ -68,14 +82,32 @@ export function refreshDiagnostics(doc: vscode.TextDocument,
     xqueryDiagnostics: XQueryDiagnostics,
     reason: string): void {
     if (isNotXQDoc(doc)) return;
+    const editor = vscode.window.visibleTextEditors.find(
+        (editor) => editor.document === doc
+     );
     const isNew = !xqueryDiagnostics.has(doc.uri);
     const refresh = reason === "change";
     channel.log((isNew ? "🆕" : "") + (refresh ? "♻️" : "") + "refreshDiagnostics " + reason + " " + doc.uri.toString());
     if (isNew || refresh) {
-        xqueryDiagnostics.update(doc.uri, doc.getText());
+        const text = doc.getText();
+        xqueryDiagnostics.update(doc.uri, text);
+        const xqlint = xqueryDiagnostics.xqlint(doc.uri);
+        const diagnostics = new Array<vscode.Diagnostic>();
+        diagnostics.push(new vscode.Diagnostic(
+            importRange(),
+            "A Test",
+            vscode.DiagnosticSeverity.Information
+)),
+        pushDiagnostics(xqlint, diagnostics);
+        
+        xqueryDiagnostics.set(doc.uri, diagnostics);
+        channel.log("DD:" + diagnostics.length);
+    }
+    if (editor) {
+        const xqlint = xqueryDiagnostics.xqlint(doc.uri);
+        decorate(editor, xqlint);
     }
 }
-
 // forward doc changes
 export function subscribeToDocumentChanges(context: vscode.ExtensionContext, xqueryDiagnostics: XQueryDiagnostics): void {
     const ed = vscode.window.activeTextEditor;
@@ -103,8 +135,7 @@ export function subscribeToDocumentChanges(context: vscode.ExtensionContext, xqu
     context.subscriptions.push(onDidOpen, onDidChange, onDidClose, onDidActive);
 }
 
-function getDiagnostics(linter: XQLint): vscode.Diagnostic[] {
-    const diagnostics = new Array<vscode.Diagnostic>();
+function pushDiagnostics(linter: XQLint, diagnostics: vscode.Diagnostic[]) {
 
     linter.getErrors().forEach((error: Marker) => {
         diagnostics.push(new vscode.Diagnostic(
@@ -123,9 +154,38 @@ function getDiagnostics(linter: XQLint): vscode.Diagnostic[] {
     });
     return diagnostics;
 }
+
 // [XQST0059] module "http://config" not found
 // [XPST0008] "list-details#0": undeclared function
 function isSuppressed(msg: string): boolean {
     const errs = Configuration.xquerySuppressErrors;
     return errs.some((x) => msg.includes(x));
+}
+const parseFailedDecorationType = vscode.window.createTextEditorDecorationType({
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    overviewRulerColor: 'red',
+    overviewRulerLane: vscode.OverviewRulerLane.Right,
+    light: {
+        // this color will be used in light color themes
+        borderColor: 'darkred'
+    },
+    dark: {
+        // this color will be used in dark color themes
+        borderColor: 'lightred'
+    }
+});
+
+
+function decorate(editor: vscode.TextEditor, xqlint: XQLint) {
+    const smallNumbers: vscode.DecorationOptions[] = [];
+    if (xqlint.hasSyntaxError()) {
+        const r=xqlint.getErrors();
+        const range1=importRange(r[r.length-1].pos);
+        const  lastLine = editor.document.lineAt(editor.document.lineCount - 1);
+        const range=range1.with(range1.start,lastLine.range.end)
+        const decoration = { range: range, hoverMessage: 'Parse failed' };
+        smallNumbers.push(decoration);
+    }
+    editor.setDecorations(parseFailedDecorationType, smallNumbers);
 }

@@ -1,5 +1,15 @@
 {
-	
+	"new library module": {
+		"prefix": "xquery",
+		"body": [
+			"xquery version '3.1';",
+			"(:~",
+			":)",
+			"module namespace ${1:ns} = '${2:http://www.example.com/}';",
+			""
+		],
+		"description": "Library template"
+	},
 	"for": {
 		"prefix": "for",
 		"body": "for $${1:item} in ${2:expr}"
@@ -48,7 +58,7 @@
 		"prefix": "sw",
 		"body": [
 			"switch(${1:foo})",
-            "case ${2:foo} return ${3:true}",
+			"case ${2:foo} return ${3:true}",
 			"default return ${4:false}"
 		],
 		"description": "switch statement"
@@ -57,7 +67,7 @@
 		"prefix": "type",
 		"body": [
 			"typeswitch(${1:foo})",
-            "case ${2:foo} return ${3:true}",
+			"case ${2:foo} return ${3:true}",
 			"default return ${4:false}"
 		],
 		"description": "typeswitch statement"
@@ -74,9 +84,9 @@
 		"prefix": "tumbling",
 		"body": [
 			"for tumbling window $${1:varname} in ${2:expr}",
-            "start at $${3:start} when ${4:expr}",
-            "end at $${5:end} when ${6:expr}",
-            "return ${7:expr}"
+			"start at $${3:start} when ${4:expr}",
+			"end at $${5:end} when ${6:expr}",
+			"return ${7:expr}"
 		],
 		"description": "tumbling window"
 	},
@@ -84,19 +94,16 @@
 		"prefix": "sliding",
 		"body": [
 			"for sliding window $${1:varname} in ${2:expr}",
-            "start at $${3:start} when ${4:expr}",
-            "end at $${5:end} when ${6:expr}",
-            "return ${7:expr}"
+			"start at $${3:start} when ${4:expr}",
+			"end at $${5:end} when ${6:expr}",
+			"return ${7:expr}"
 		],
 		"description": "sliding window"
 	}
 }
 //snippet if
 //	if(${1:true}) then ${2:expr} else ${3:true}
-
 //	default return ${4:false}
-
-
 //snippet let
 //	let $${1:varname} := ${2:expr}
 //snippet group
@@ -117,4 +124,3 @@
 //	castable as ${1:atomicType}
 //snippet cast
 //	cast as ${1:atomicType}
-

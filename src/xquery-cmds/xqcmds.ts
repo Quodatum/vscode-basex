@@ -34,10 +34,13 @@ export function selectDeclaration(textEditor: TextEditor): void {
 
 }
 
-// select enclosing declaration and trailing ;
-export function xmlnsInfo(): void {
+// about the library ;
+export function libraryInfo(textEditor: TextEditor): void {
+ const linter =   diagnosticCollectionXQuery.xqlint(textEditor.document.uri); 
   console.log("todo");
+  window.showInformationMessage("libraryInfo @todo")
 }
+
 // return 1st ancestor node with name or undefined
 function findNode(node :any,nodeName :string):any{
     let n2 = node;  

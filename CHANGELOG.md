@@ -1,8 +1,17 @@
+# 0.2.4 (2023-10-28)
+* Improve autocomplete
+* Improve builtin snippets
+* add statusbar
+# 0.2.3 (2023-10-23)
+* xsl extension conflict #18
+* Use xqlint 0.4.5
+# 0.1.19 (2023-10-06)
+* Use xqlint 0.4.1
 # 0.1.18 (2023-09-21)
-* error decorator
+* parseError decorator
 * empty codeaction hint
 # 0.1.16 (2023-09-10)
-* virtual docs updates
+* virtual docs fixes
 * add command basexTools.xqLibrary
 # 0.1.15 (2023-09-09)
 *  Add commands: set processor and selectDeclaration.

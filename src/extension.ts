@@ -4,8 +4,8 @@ import {
 } from "vscode";
 
 import { channel, createDocumentSelector, ExtensionState, Configuration } from "./common";
-
-import { XQueryDiagnostics, subscribeToDocumentChanges } from "./xqdiagnostics"
+import { activate as statusbar } from "./statusbar";
+import { XQLinter, subscribeToDocumentChanges } from "./xqlints"
 //import { activate  as activateActions} from "./xquery-cmds/xqactions";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
 import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
@@ -19,23 +19,24 @@ import * as constants from "./constants";
 import * as providers from "./providers/activate";
 
 
-export const diagnosticCollectionXQuery=new XQueryDiagnostics();
+export const diagnosticCollectionXQuery=new XQLinter();
 //const actionDiagnostics = languages.createDiagnosticCollection(constants.diagnosticCollections.xqActions);
 
 export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
     ExtensionState.configure(context);
-
-    /* Linting Features */
-    subscribeToDocumentChanges(context, diagnosticCollectionXQuery);
+    statusbar(context,diagnosticCollectionXQuery); 
     //activateActions(context,actionDiagnostics);
     /* activate XQuery handlers */
-    providers.activate(context,diagnosticCollectionXQuery);
-   
+    providers.activate(context,diagnosticCollectionXQuery);  
     activateVirtualDocs(context);
+    /* Linting Features */
+    subscribeToDocumentChanges(context, diagnosticCollectionXQuery);
 
     /* XML Formatting Features */
-    const xmlXsdDocSelector = [...createDocumentSelector(constants.languageIds.xml), ...createDocumentSelector(constants.languageIds.xsd)];
+    const xmlXsdDocSelector = [
+        ...createDocumentSelector(constants.languageIds.xml),
+         ...createDocumentSelector(constants.languageIds.xsd)];
     const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
     context.subscriptions.push(
         commands.registerTextEditorCommand(constants.commands.formatAsXml, formatAsXml),
@@ -83,18 +84,13 @@ export function activate(context: ExtensionContext) {
 
     // if changes to processor  then clear diagnostics
     workspace.onDidChangeConfiguration(event => {
-        if (event.affectsConfiguration("basexTools.xquery.processor")) {
+        if (event.affectsConfiguration(constants.commands.xqProcessor)) {
             diagnosticCollectionXQuery.clear();
             window.showInformationMessage("Processor now: " + Configuration.xqueryProcessor);
         }
     })
-    window.showInformationMessage("XQuery processor: " + Configuration.xqueryProcessor);
 }
 
 export function deactivate() {
     channel.log("deactivate");
 }
-
-
-
-

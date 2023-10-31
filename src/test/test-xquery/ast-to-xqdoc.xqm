@@ -5,7 +5,7 @@ create xqdoc from parse tree
  @author Andy Bunce, Quodatum, License: Apache-2.0
  @TODO refs
 :)
- module namespace xqdc = 'quodatum:xqdoca.model.xqdoc';
+ module namespace xqdc = 'quodatum:xqdoca.model.xqdoc'; 
 
 import module namespace xqcom = 'quodatum:xqdoca.model.comment' at "comment-to-xqdoc.xqm";
 declare namespace xqdoc="http://www.xqdoc.org/1.0"; 

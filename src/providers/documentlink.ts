@@ -26,14 +26,11 @@ class XQueryDocumentLinks implements DocumentLinkProvider {
         channel.start("Doclinks" , doc.uri);
         const linter =   diagnosticCollectionXQuery.xqlint(doc.uri); 
         const dlinks = linter.getDocLinks();
-
         const links: DocumentLink[] = [];
-        dlinks.forEach((d2:[DocLink])=>{
-            const link:DocLink=d2[0]
-            const range=importRange(link.range );
-              
-            const uri=Uri.joinPath(doc.uri,"../"+ link.uri);
-            links.push(new DocumentLink(range, uri));
+        dlinks.forEach((dl)=>{
+            const range=importRange(dl.pos );            
+            //const uri=Uri.joinPath(doc.uri,"../"+ dl.uri);
+            links.push(new DocumentLink(range, Uri.file(dl.path)));
         });
         return links;
     };

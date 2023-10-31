@@ -1,21 +1,37 @@
 {
 	"new library module": {
-		"prefix": "xquery",
+		"isFileTemplate": true,
+		"prefix": "library module",
+		"body": [
+			"xquery version '3.1';",
+			"(:~",
+			"@author: ",
+			"@date: $CURRENT_YEAR/$CURRENT_MONTH/$CURRENT_DATE",
+			":)",
+			"module namespace ${1:prefix} = '${2:http://www.example.com/}';",
+			""
+		],
+		"description": "new library module template"
+	},
+	"new main module": {
+		"isFileTemplate": true,
+		"prefix": "main module",
 		"body": [
 			"xquery version '3.1';",
 			"(:~",
 			":)",
-			"module namespace ${1:ns} = '${2:http://www.example.com/}';",
+			"${1:expr}",
 			""
 		],
-		"description": "Library template"
-	},
-	"for": {
+		"description": "new main module template"
+	}
+	,
+	"for in": {
 		"prefix": "for",
-		"body": "for $${1:item} in ${2:expr}"
+		"body": "for \\$${1:item} in ${2:expr}"
 	},
 	"return": {
-		"prefix": "ret",
+		"prefix": "return",
 		"body": "return ${1:expr}"
 	},
 	"import": {
@@ -23,22 +39,31 @@
 		"body": "import module namespace ${1:ns} = '${2:http://www.example.com/}';",
 		"description": "Import module"
 	},
+	"if":{
+		"prefix": "if",
+		"body":[ 
+			"if (${1:boolean})",
+			"then ${2:expr1}",
+			"else ${3:expr2}"
+		],
+		"description": "If then else expression"
+	},
 	"module": {
 		"prefix": "module",
 		"body": "module namespace ${1:ns} = '${2:http://www.example.com}';"
 	},
 	"every": {
 		"prefix": "every",
-		"body": "every $${1:varname} in ${2:expr} satisfies ${3:expr}"
+		"body": "every \\$${1:varname} in ${2:expr} satisfies ${3:expr}"
 	},
 	"some": {
 		"prefix": "some",
-		"body": "some $${1:varname} in ${2:expr} satisfies ${3:expr}"
+		"body": "some \\$${1:varname} in ${2:expr} satisfies ${3:expr}"
 	},
-	"function": {
-		"prefix": "dec",
+	"declare function": {
+		"prefix": ["declare","function"],
 		"body": [
-			"(:~ $${2:name} :)",
+			"(:~ ${2:name} :)",
 			"declare function ${1:ns}:${2:name}(){",
 			"${3:expr}",
 			"};"
@@ -46,16 +71,16 @@
 		"description": "declare  function"
 	},
 	"declare variable": {
-		"prefix": "dec",
+		"prefix": ["declare","variable"],
 		"body": [
-			"(:~ $${1:varname} :)",
-			"declare variable $${1:varname} := ${2:expr};",
+			"(:~ \\$${1:varname} :)",
+			"declare variable \\$${1:varname} := ${2:expr};",
 			""
 		],
 		"description": "declare variable"
 	},
 	"switch": {
-		"prefix": "sw",
+		"prefix": "switch",
 		"body": [
 			"switch(${1:foo})",
 			"case ${2:foo} return ${3:true}",
@@ -75,37 +100,42 @@
 	"try": {
 		"prefix": "try",
 		"body": [
-			"try { ${1:expr} } ",
-			"catch ${2:*} { ${3:expr} }"
+			"try {",
+			"  ${1:expr}",
+			"} catch ${2:*}",
+			"  { ${3:expr}",
+			"}"
 		],
-		"description": "switch statement"
+		"description": "try catch"
 	},
 	"tumbling": {
-		"prefix": "tumbling",
+		"prefix": ["for","tumbling","window"],
 		"body": [
-			"for tumbling window $${1:varname} in ${2:expr}",
-			"start at $${3:start} when ${4:expr}",
-			"end at $${5:end} when ${6:expr}",
+			"for tumbling window \\$${1:varname} in ${2:expr}",
+			"start at \\$${3:start} when ${4:expr}",
+			"end at \\$${5:end} when ${6:expr}",
 			"return ${7:expr}"
 		],
 		"description": "tumbling window"
 	},
 	"sliding": {
-		"prefix": "sliding",
+		"prefix": ["for","sliding","window"],
 		"body": [
-			"for sliding window $${1:varname} in ${2:expr}",
-			"start at $${3:start} when ${4:expr}",
-			"end at $${5:end} when ${6:expr}",
+			"for sliding window \\$${1:varname} in ${2:expr}",
+			"start at \\$${3:start} when ${4:expr}",
+			"end at \\$${5:end} when ${6:expr}",
 			"return ${7:expr}"
 		],
 		"description": "sliding window"
-	}
+	},
+
+	"let":{
+		"prefix":"let",
+		"body": "let \\$${1:varname} := ${2:expr}"
+	} 
 }
-//snippet if
-//	if(${1:true}) then ${2:expr} else ${3:true}
-//	default return ${4:false}
-//snippet let
-//	let $${1:varname} := ${2:expr}
+
+
 //snippet group
 //	group by $${1:varname} := ${2:expr}
 //snippet order

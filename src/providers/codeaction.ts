@@ -3,22 +3,32 @@
  *--------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { subscribeToDocumentChanges, XQ_ACTION } from './codeactions-diagnostics';
+import { XQ_ACTION } from './codeactions-diagnostics';
 import { languageIds } from "../constants";
-import { XQueryDiagnostics } from "../xqdiagnostics";
+import { XQLinter } from "../xqlints";
 import { isEmpty } from '../common'
 import { IXQParsedEvent } from '../xqdiagEvents';
-const COMMAND = 'code-actions-sample.command';
+const COMMAND = 'code-actions-basex.command';
 
-export function activate(context: vscode.ExtensionContext, diagnosticCollectionXQuery: XQueryDiagnostics) {
+export function activate(context: vscode.ExtensionContext, diagnosticCollectionXQuery: XQLinter) {
     context.subscriptions.push(
-        vscode.languages.registerCodeActionsProvider(languageIds.xquery, new XQAction(), {
-            providedCodeActionKinds: XQAction.providedCodeActionKinds
+        vscode.languages.registerCodeActionsProvider(languageIds.xquery, new XQActionProvider(), {
+            providedCodeActionKinds: XQActionProvider.providedCodeActionKinds
         }));
 
     const xqActionsDiagnostics = vscode.languages.createDiagnosticCollection("xq-actions");
+    
     context.subscriptions.push(xqActionsDiagnostics);
-    diagnosticCollectionXQuery.onDidDiag(update);
+    const update=function(event: IXQParsedEvent) {
+        if (event.xqlint) {
+            console.log("Parsed: " + event.uri.toString());
+            xqActionsDiagnostics
+        } else {
+            console.log("Dropped: " + event.uri.toString());
+        }
+
+    };
+    diagnosticCollectionXQuery.onXQParsed(update);
     //subscribeToDocumentChanges(context, xqActionsDiagnostics);
 
     context.subscriptions.push(
@@ -31,17 +41,11 @@ export function activate(context: vscode.ExtensionContext, diagnosticCollectionX
         vscode.commands.registerCommand(COMMAND, () => vscode.env.openExternal(vscode.Uri.parse('https://unicode.org/emoji/charts-12.0/full-emoji-list.html')))
     );
 }
-function update(event: IXQParsedEvent) {
-    if (event.xqlint) {
-        console.log("Parsed: " + event.uri.toJSON())
-    } else {
-        console.log("Dropped: "+event.uri.toString())
-    }
-}
+
 /**
  * Provides code actions for converting :) to a smiley emoji.
  */
-export class XQAction implements vscode.CodeActionProvider {
+export class XQActionProvider implements vscode.CodeActionProvider {
 
     public static readonly providedCodeActionKinds = [
         vscode.CodeActionKind.QuickFix

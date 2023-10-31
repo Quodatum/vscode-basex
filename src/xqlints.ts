@@ -7,16 +7,17 @@ import {IXQParsedEvent,XQParsedEvent as ParsedEvent} from "./xqdiagEvents";
 
 import { XQLint, Marker } from '@quodatum/xqlint';
 
-import { channel, isNotXQDoc, unsupportedScheme, Configuration, importRange } from "./common";
+import { channel, isNotXQDoc, unsupportedScheme, 
+    Configuration, importRange, findEditor } from "./common";
 
 
 // DiagnosticCollection for XQuery documents
-export class XQueryDiagnostics {
+export class XQLinter {
     diagnosticCollectionXQuery: vscode.DiagnosticCollection;
     xqlintCollectionXQuery: Map<string, XQLint>;
 
     private diagEmitter = new vscode.EventEmitter<IXQParsedEvent>();
-	onDidDiag: vscode.Event<IXQParsedEvent> = this.diagEmitter.event;
+	onXQParsed: vscode.Event<IXQParsedEvent> = this.diagEmitter.event;
 
     constructor() {
         this.diagnosticCollectionXQuery = vscode.languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
@@ -79,12 +80,11 @@ function linter(uri: vscode.Uri, document: string) {
  * @param xqueryDiagnostics diagnostic collection
  */
 export function refreshDiagnostics(doc: vscode.TextDocument,
-    xqueryDiagnostics: XQueryDiagnostics,
+    xqueryDiagnostics: XQLinter,
     reason: string): void {
     if (isNotXQDoc(doc)) return;
-    const editor = vscode.window.visibleTextEditors.find(
-        (editor) => editor.document === doc
-     );
+    const editor =findEditor ( doc);
+
     const isNew = !xqueryDiagnostics.has(doc.uri);
     const refresh = reason === "change";
     channel.log((isNew ? "🆕" : "") + (refresh ? "♻️" : "") + "refreshDiagnostics " + reason + " " + doc.uri.toString());
@@ -101,7 +101,7 @@ export function refreshDiagnostics(doc: vscode.TextDocument,
         pushDiagnostics(xqlint, diagnostics);
         
         xqueryDiagnostics.set(doc.uri, diagnostics);
-        channel.log("DD:" + diagnostics.length);
+        channel.log("diagnostics.length: " + diagnostics.length);
     }
     if (editor) {
         const xqlint = xqueryDiagnostics.xqlint(doc.uri);
@@ -109,7 +109,7 @@ export function refreshDiagnostics(doc: vscode.TextDocument,
     }
 }
 // forward doc changes
-export function subscribeToDocumentChanges(context: vscode.ExtensionContext, xqueryDiagnostics: XQueryDiagnostics): void {
+export function subscribeToDocumentChanges(context: vscode.ExtensionContext, xqueryDiagnostics: XQLinter): void {
     const ed = vscode.window.activeTextEditor;
     if (ed && !unsupportedScheme(ed.document.uri)) {
         refreshDiagnostics(ed.document, xqueryDiagnostics, "current");
@@ -164,28 +164,32 @@ function isSuppressed(msg: string): boolean {
 const parseFailedDecorationType = vscode.window.createTextEditorDecorationType({
     borderWidth: '1px',
     borderStyle: 'solid',
+    
     overviewRulerColor: 'red',
     overviewRulerLane: vscode.OverviewRulerLane.Right,
+ 
     light: {
         // this color will be used in light color themes
-        borderColor: 'darkred'
+        borderColor: 'darkred',
+        backgroundColor: 'lightpink',
     },
     dark: {
         // this color will be used in dark color themes
-        borderColor: 'lightred'
+        borderColor: 'lightred',
+        backgroundColor: 'deeppink',
     }
 });
 
 
 function decorate(editor: vscode.TextEditor, xqlint: XQLint) {
-    const smallNumbers: vscode.DecorationOptions[] = [];
+    const theDecorations: vscode.DecorationOptions[] = [];
     if (xqlint.hasSyntaxError()) {
         const r=xqlint.getErrors();
-        const range1=importRange(r[r.length-1].pos);
+        const range1=importRange(r[0].pos);
         const  lastLine = editor.document.lineAt(editor.document.lineCount - 1);
-        const range=range1.with(range1.start,lastLine.range.end)
-        const decoration = { range: range, hoverMessage: 'Parse failed' };
-        smallNumbers.push(decoration);
+        const range=range1.with(range1.end,lastLine.range.end)
+        const decoration = { range: range, hoverMessage: 'Parse failed at line:' +range1.end.line};
+        theDecorations.push(decoration);
     }
-    editor.setDecorations(parseFailedDecorationType, smallNumbers);
+    editor.setDecorations(parseFailedDecorationType, theDecorations);
 }

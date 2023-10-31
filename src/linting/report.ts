@@ -89,7 +89,6 @@ export function xqLintReport(textEditor: vscode.TextEditor): void {
         selections.forEach(selection => {
             const pos = selection.start.translate(1, 1); //@TODO
             const node = linter.getAST(pos);
-            const sctx = linter.getCompletions(pos);
             const dx = dump(node);
             channel.appendLine(dx);
         });

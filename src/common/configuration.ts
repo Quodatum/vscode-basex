@@ -1,6 +1,6 @@
 import { workspace, Uri } from "vscode";
 
-const ExtensionTopLevelSection = "basexTools";
+export const ExtensionTopLevelSection = "basexTools";
 
 export class Configuration {
     static get enableXmlTreeView(): boolean {
@@ -34,7 +34,7 @@ export class Configuration {
     static get xquerySuppressErrors(): string[] {
         return this._getForWindow<string[]>("xquery.suppressErrors");
     }
-    
+    // path to executable
     static get xqueryExecutionEngine(): string {
         return this._getForWindow<string>("xquery.executionEngine");
     }

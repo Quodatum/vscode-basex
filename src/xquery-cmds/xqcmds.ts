@@ -1,20 +1,19 @@
 
-import { TextEditor, Selection, window } from "vscode";
+import { TextEditor, Selection, window, QuickPickItem } from "vscode";
 import { channel } from "../common/channel-basex";
 import { Configuration, importRange } from "../common";
 import { diagnosticCollectionXQuery } from "../extension";
 import { findNode } from "../common/xqlint";
+import { profiles, Profile} from '@quodatum/xqlint';
 
 export async function setProcessor(): Promise<void> {
     const processor = Configuration.xqueryProcessor;
-    const name = await window.showInputBox({
-        prompt: "processor",
-        value: processor
-    });
-    if (name) {
-        channel.log("setProcessor:" + name);
-        Configuration.xqueryProcessor = name;
-    }
+    const items:PickProfile[]=profiles().map(item =>  new PickProfile(item,processor));
+    const pick=await window.showQuickPick(items,{title:"Select XQuery profile: "+processor});
+    if(pick) {
+        channel.log("setProcessor:" + pick.id);
+        Configuration.xqueryProcessor = pick.id;
+    }  
 }
 
 // select enclosing declaration 
@@ -43,3 +42,16 @@ export function libraryInfo(textEditor: TextEditor): void {
     window.showInformationMessage("libraryInfo @todo")
 }
 
+class PickProfile implements QuickPickItem {
+    label: string;
+    description = '';
+    picked: boolean;
+    id: string;
+
+    constructor(item:Profile,current :string) {
+      this.label = `$(package) ${item.id}`;
+      this.description=item.description;
+      this.id=item.id
+      this.picked=item.id===current; // not supported?
+    }
+  }

@@ -34,9 +34,10 @@ export function inspectAst(linter: XQLint, position: Position) {
     const r = {
         path: path,
         type: 'other',
-        name: node.name,
-        value: node.value
+        name: node?.name,
+        value: node?.value
     };
+    if(!node) return r;
     if (node.name === 'WS') {
         r.type = 'WS';
     } else {

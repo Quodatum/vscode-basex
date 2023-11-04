@@ -3,12 +3,14 @@
 */
 import * as vscode from 'vscode';
 import * as constants from "./constants";
-import {IXQParsedEvent,XQParsedEvent as ParsedEvent} from "./xqdiagEvents";
+import { IXQParsedEvent, XQParsedEvent as ParsedEvent } from "./xqdiagEvents";
 
 import { XQLint, Marker } from '@quodatum/xqlint';
 
-import { channel, isNotXQDoc, unsupportedScheme, 
-    Configuration, importRange, findEditor } from "./common";
+import {
+    channel, isNotXQDoc, unsupportedScheme,
+    Configuration, importRange, findEditor
+} from "./common";
 
 
 // DiagnosticCollection for XQuery documents
@@ -17,7 +19,7 @@ export class XQLinter {
     xqlintCollectionXQuery: Map<string, XQLint>;
 
     private diagEmitter = new vscode.EventEmitter<IXQParsedEvent>();
-	onXQParsed: vscode.Event<IXQParsedEvent> = this.diagEmitter.event;
+    onXQParsed: vscode.Event<IXQParsedEvent> = this.diagEmitter.event;
 
     constructor() {
         this.diagnosticCollectionXQuery = vscode.languages.createDiagnosticCollection(constants.diagnosticCollections.xquery);
@@ -55,7 +57,7 @@ export class XQLinter {
     update(uri: vscode.Uri, document: string) {
         const xqlint = linter(uri, document);
         this.xqlintCollectionXQuery.set(uri.toString(), xqlint);
-        this.diagEmitter.fire(new ParsedEvent(uri,xqlint))
+        this.diagEmitter.fire(new ParsedEvent(uri, xqlint))
     }
 
     xqlint(uri: vscode.Uri): XQLint {
@@ -83,7 +85,7 @@ export function refreshDiagnostics(doc: vscode.TextDocument,
     xqueryDiagnostics: XQLinter,
     reason: string): void {
     if (isNotXQDoc(doc)) return;
-    const editor =findEditor ( doc);
+    const editor = findEditor(doc);
 
     const isNew = !xqueryDiagnostics.has(doc.uri);
     const refresh = reason === "change";
@@ -93,13 +95,9 @@ export function refreshDiagnostics(doc: vscode.TextDocument,
         xqueryDiagnostics.update(doc.uri, text);
         const xqlint = xqueryDiagnostics.xqlint(doc.uri);
         const diagnostics = new Array<vscode.Diagnostic>();
-        diagnostics.push(new vscode.Diagnostic(
-            importRange(),
-            "A Test",
-            vscode.DiagnosticSeverity.Information
-)),
-        pushDiagnostics(xqlint, diagnostics);
-        
+       
+        pushXQLintDiagnostics(diagnostics, xqlint);
+
         xqueryDiagnostics.set(doc.uri, diagnostics);
         channel.log("diagnostics.length: " + diagnostics.length);
     }
@@ -135,7 +133,9 @@ export function subscribeToDocumentChanges(context: vscode.ExtensionContext, xqu
     context.subscriptions.push(onDidOpen, onDidChange, onDidClose, onDidActive);
 }
 
-function pushDiagnostics(linter: XQLint, diagnostics: vscode.Diagnostic[]) {
+function pushXQLintDiagnostics(
+    diagnostics: vscode.Diagnostic[],
+    linter: XQLint): vscode.Diagnostic[] {
 
     linter.getErrors().forEach((error: Marker) => {
         diagnostics.push(new vscode.Diagnostic(
@@ -155,6 +155,7 @@ function pushDiagnostics(linter: XQLint, diagnostics: vscode.Diagnostic[]) {
     return diagnostics;
 }
 
+
 // [XQST0059] module "http://config" not found
 // [XPST0008] "list-details#0": undeclared function
 function isSuppressed(msg: string): boolean {
@@ -164,10 +165,10 @@ function isSuppressed(msg: string): boolean {
 const parseFailedDecorationType = vscode.window.createTextEditorDecorationType({
     borderWidth: '1px',
     borderStyle: 'solid',
-    
+
     overviewRulerColor: 'red',
     overviewRulerLane: vscode.OverviewRulerLane.Right,
- 
+
     light: {
         // this color will be used in light color themes
         borderColor: 'darkred',
@@ -184,11 +185,11 @@ const parseFailedDecorationType = vscode.window.createTextEditorDecorationType({
 function decorate(editor: vscode.TextEditor, xqlint: XQLint) {
     const theDecorations: vscode.DecorationOptions[] = [];
     if (xqlint.hasSyntaxError()) {
-        const r=xqlint.getErrors();
-        const range1=importRange(r[0].pos);
-        const  lastLine = editor.document.lineAt(editor.document.lineCount - 1);
-        const range=range1.with(range1.end,lastLine.range.end)
-        const decoration = { range: range, hoverMessage: 'Parse failed at line:' +range1.end.line};
+        const r = xqlint.getErrors();
+        const range1 = importRange(r[0].pos);
+        const lastLine = editor.document.lineAt(editor.document.lineCount - 1);
+        const range = range1.with(range1.end, lastLine.range.end)
+        const decoration = { range: range, hoverMessage: 'Parse failed at line:' + range1.end.line };
         theDecorations.push(decoration);
     }
     editor.setDecorations(parseFailedDecorationType, theDecorations);

@@ -1,7 +1,7 @@
 //  statusbar: show profile when xq active
 import * as vscode from 'vscode';
-import { commands } from "./constants";
-import { isXqEditor,Configuration } from "./common";
+import {commands} from "./constants";
+import { isXqEditor,Configuration, affectsConfiguration} from "./common";
 import { XQLinter } from './xqlints';
 
 let myStatusBarItem: vscode.StatusBarItem;
@@ -20,7 +20,8 @@ export function activate({ subscriptions }: vscode.ExtensionContext,
     subscriptions.push(onDidActive);
 
     vscode.workspace.onDidChangeConfiguration(event => {
-        if (event.affectsConfiguration(commands.xqProcessor)) {
+        //@todo scope?
+        if (affectsConfiguration(event,'xquery.processor')) {
             updateStatusBarItem(vscode.window.activeTextEditor);
          }
     })
@@ -30,7 +31,7 @@ function updateStatusBarItem(active: vscode.TextEditor): void {
     if (isXqEditor(active)) {
         const profile = Configuration.xqueryProcessor;
         myStatusBarItem.text = `$(package) ${profile}`;
-        myStatusBarItem.tooltip = "select active XQuery profile"
+        myStatusBarItem.tooltip = "Active XQuery profile, click to change"
         myStatusBarItem.show();
     } else {
         myStatusBarItem.hide();

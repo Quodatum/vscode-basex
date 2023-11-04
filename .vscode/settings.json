@@ -9,5 +9,5 @@
     "yaml.schemas": {
         "https://json.schemastore.org/mkdocs-1.0.json": "file:///c%3A/Users/mrwhe/git/vscode-basex/mkdocs.yml"
     },
-    "basexTools.xquery.processor": "basex-9"
+    "basexTools.xquery.processor": "basex-10"
 }

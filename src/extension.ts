@@ -3,7 +3,8 @@ import {
     TextEditorSelectionChangeKind, workspace
 } from "vscode";
 
-import { channel, createDocumentSelector, ExtensionState, Configuration } from "./common";
+import { channel, createDocumentSelector, ExtensionState, 
+    Configuration, affectsConfiguration } from "./common";
 import { activate as statusbar } from "./statusbar";
 import { XQLinter, subscribeToDocumentChanges } from "./xqlints"
 //import { activate  as activateActions} from "./xquery-cmds/xqactions";
@@ -13,22 +14,22 @@ import { xqLintReport, activateVirtualDocs } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 
-import { setProcessor , selectDeclaration, executeXQuery, libraryInfo } from "./xquery-cmds";
+import { setProcessor, selectDeclaration, executeXQuery, libraryInfo } from "./xquery-cmds";
 
 import * as constants from "./constants";
 import * as providers from "./providers/activate";
 
 
-export const diagnosticCollectionXQuery=new XQLinter();
+export const diagnosticCollectionXQuery = new XQLinter();
 //const actionDiagnostics = languages.createDiagnosticCollection(constants.diagnosticCollections.xqActions);
 
 export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
     ExtensionState.configure(context);
-    statusbar(context,diagnosticCollectionXQuery); 
+    statusbar(context, diagnosticCollectionXQuery);
     //activateActions(context,actionDiagnostics);
     /* activate XQuery handlers */
-    providers.activate(context,diagnosticCollectionXQuery);  
+    providers.activate(context, diagnosticCollectionXQuery);
     activateVirtualDocs(context);
     /* Linting Features */
     subscribeToDocumentChanges(context, diagnosticCollectionXQuery);
@@ -36,7 +37,7 @@ export function activate(context: ExtensionContext) {
     /* XML Formatting Features */
     const xmlXsdDocSelector = [
         ...createDocumentSelector(constants.languageIds.xml),
-         ...createDocumentSelector(constants.languageIds.xsd)];
+        ...createDocumentSelector(constants.languageIds.xsd)];
     const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
     context.subscriptions.push(
         commands.registerTextEditorCommand(constants.commands.formatAsXml, formatAsXml),
@@ -84,9 +85,9 @@ export function activate(context: ExtensionContext) {
 
     // if changes to processor  then clear diagnostics
     workspace.onDidChangeConfiguration(event => {
-        if (event.affectsConfiguration(constants.commands.xqProcessor)) {
+        if (affectsConfiguration(event,'xquery.processor')) {
             diagnosticCollectionXQuery.clear();
-            window.showInformationMessage("Processor now: " + Configuration.xqueryProcessor);
+            window.showInformationMessage("XQuery profile now: " + Configuration.xqueryProcessor);
         }
     })
 }

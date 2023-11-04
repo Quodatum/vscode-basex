@@ -11,7 +11,7 @@
 			"module namespace ${1:prefix} = '${2:http://www.example.com/}';",
 			""
 		],
-		"description": "new library module template"
+		"description": "New library module template"
 	},
 	"new main module": {
 		"isFileTemplate": true,
@@ -23,12 +23,21 @@
 			"${1:expr}",
 			""
 		],
-		"description": "new main module template"
-	}
-	,
-	"for in": {
-		"prefix": "for",
-		"body": "for \\$${1:item} in ${2:expr}"
+		"description": "New main module template"
+	},
+	"flowr": {
+		"prefix": [
+			"for",
+			"flowr"
+		],
+		"body": [
+			"for \\$${1:var} at \\$${2:pos} in ${3:expr}",
+			"let \\$$4:var2} := ${5:expr}",
+			"where ${6:boolean}",
+			"order by ${7:expr}",
+			"return ${8:expr2}"
+		],
+		"description": "Full FLOWR expression"
 	},
 	"return": {
 		"prefix": "return",
@@ -39,9 +48,9 @@
 		"body": "import module namespace ${1:ns} = '${2:http://www.example.com/}';",
 		"description": "Import module"
 	},
-	"if":{
+	"if": {
 		"prefix": "if",
-		"body":[ 
+		"body": [
 			"if (${1:boolean})",
 			"then ${2:expr1}",
 			"else ${3:expr2}"
@@ -61,7 +70,10 @@
 		"body": "some \\$${1:varname} in ${2:expr} satisfies ${3:expr}"
 	},
 	"declare function": {
-		"prefix": ["declare","function"],
+		"prefix": [
+			"declare",
+			"function"
+		],
 		"body": [
 			"(:~ ${2:name} :)",
 			"declare function ${1:ns}:${2:name}(){",
@@ -71,7 +83,10 @@
 		"description": "declare  function"
 	},
 	"declare variable": {
-		"prefix": ["declare","variable"],
+		"prefix": [
+			"declare",
+			"variable"
+		],
 		"body": [
 			"(:~ \\$${1:varname} :)",
 			"declare variable \\$${1:varname} := ${2:expr};",
@@ -109,7 +124,11 @@
 		"description": "try catch"
 	},
 	"tumbling": {
-		"prefix": ["for","tumbling","window"],
+		"prefix": [
+			"for",
+			"tumbling",
+			"window"
+		],
 		"body": [
 			"for tumbling window \\$${1:varname} in ${2:expr}",
 			"start at \\$${3:start} when ${4:expr}",
@@ -119,7 +138,11 @@
 		"description": "tumbling window"
 	},
 	"sliding": {
-		"prefix": ["for","sliding","window"],
+		"prefix": [
+			"for",
+			"sliding",
+			"window"
+		],
 		"body": [
 			"for sliding window \\$${1:varname} in ${2:expr}",
 			"start at \\$${3:start} when ${4:expr}",
@@ -128,14 +151,17 @@
 		],
 		"description": "sliding window"
 	},
-
-	"let":{
-		"prefix":"let",
+	"let": {
+		"prefix": "let",
 		"body": "let \\$${1:varname} := ${2:expr}"
-	} 
+	},
+	"castable": {
+		"body": "castable as ${1:atomicType}"
+	},
+	"cast": {
+		"body": "cast as ${1:atomicType}"
+	}
 }
-
-
 //snippet group
 //	group by $${1:varname} := ${2:expr}
 //snippet order

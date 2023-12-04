@@ -6,7 +6,7 @@ import {
 import { channel, createDocumentSelector, ExtensionState, 
     Configuration, affectsConfiguration } from "./common";
 import { activate as statusbar } from "./statusbar";
-import { XQLinter, subscribeToDocumentChanges } from "./xqlints"
+import { XQLinters, subscribeToDocumentChanges } from "./xqlints"
 //import { activate  as activateActions} from "./xquery-cmds/xqactions";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
 import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
@@ -20,19 +20,19 @@ import * as constants from "./constants";
 import * as providers from "./providers/activate";
 
 
-export const diagnosticCollectionXQuery = new XQLinter();
+export const xqLinters = new XQLinters();
 //const actionDiagnostics = languages.createDiagnosticCollection(constants.diagnosticCollections.xqActions);
 
 export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
     ExtensionState.configure(context);
-    statusbar(context, diagnosticCollectionXQuery);
+    statusbar(context, xqLinters);
     //activateActions(context,actionDiagnostics);
     /* activate XQuery handlers */
-    providers.activate(context, diagnosticCollectionXQuery);
+    providers.activate(context, xqLinters);
     activateVirtualDocs(context);
     /* Linting Features */
-    subscribeToDocumentChanges(context, diagnosticCollectionXQuery);
+    subscribeToDocumentChanges(context, xqLinters);
 
     /* XML Formatting Features */
     const xmlXsdDocSelector = [
@@ -80,13 +80,13 @@ export function activate(context: ExtensionContext) {
         commands.registerTextEditorCommand(constants.commands.xqSelectDeclaration, selectDeclaration),
         commands.registerTextEditorCommand(constants.commands.xqLibrary, libraryInfo),
         commands.registerCommand(constants.commands.xqProcessor, setProcessor),
-        commands.registerCommand(constants.commands.xqClearDiagnostics, diagnosticCollectionXQuery.clear),
+        commands.registerCommand(constants.commands.xqClearDiagnostics, xqLinters.clear),
     );
 
     // if changes to processor  then clear diagnostics
     workspace.onDidChangeConfiguration(event => {
         if (affectsConfiguration(event,'xquery.processor')) {
-            diagnosticCollectionXQuery.clear();
+            xqLinters.clear();
             window.showInformationMessage("XQuery profile now: " + Configuration.xqueryProcessor);
         }
     })

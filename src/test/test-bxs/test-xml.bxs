@@ -1,0 +1,9 @@
+<commands>
+  <create-db name='test'/>
+  <add path='embedded.xml'><root>embedded</root></add>
+  <!-- run query -->
+  <xquery><![CDATA[
+    <hits>{ count(//text()) }</hits>
+  ]]></xquery>
+  <close/>
+</commands>

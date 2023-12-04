@@ -2,25 +2,25 @@
 import { TextEditor, Selection, window, QuickPickItem } from "vscode";
 import { channel } from "../common/channel-basex";
 import { Configuration, importRange } from "../common";
-import { diagnosticCollectionXQuery } from "../extension";
+import { xqLinters } from "../extension";
 import { findNode } from "../common/xqlint";
-import { profiles, Profile} from '@quodatum/xqlint';
+import { profiles, Profile } from '@quodatum/xqlint';
 
 export async function setProcessor(): Promise<void> {
     const processor = Configuration.xqueryProcessor;
-    const items:PickProfile[]=profiles().map(item =>  new PickProfile(item,processor));
-    const pick=await window.showQuickPick(items,{title:"Select XQuery profile: "+processor});
-    if(pick) {
+    const items: PickProfile[] = profiles().map(item => new PickProfile(item, processor));
+    const pick = await window.showQuickPick(items, { title: "Select XQuery profile: " + processor });
+    if (pick) {
         channel.log("setProcessor:" + pick.id);
         Configuration.xqueryProcessor = pick.id;
-    }  
+    }
 }
 
 // select enclosing declaration 
 export function selectDeclaration(textEditor: TextEditor): void {
     channel.log("selectDeclaration:");
 
-    const linter = diagnosticCollectionXQuery.xqlint(textEditor.document.uri);
+    const linter = xqLinters.xqlint(textEditor.document.uri);
     const pos = textEditor.selection.start;
     const node = linter.getAST(pos);
     const n2 = findNode(node, "AnnotatedDecl");
@@ -35,11 +35,16 @@ export function selectDeclaration(textEditor: TextEditor): void {
 }
 
 // about the library ;
-export function libraryInfo(textEditor: TextEditor): void {
-    const linter = diagnosticCollectionXQuery.xqlint(textEditor.document.uri);
-    const lib=linter.getLibrary();
-    console.log("todo: ", lib );
-    window.showInformationMessage("libraryInfo @todo")
+export async function libraryInfo(textEditor: TextEditor): Promise<void> {
+    const linter = xqLinters.xqlint(textEditor.document.uri);
+    const lib = linter.getLibrary();
+    const pick = await window.showQuickPick(Object.keys(lib), 
+                      { title: "Select namespace from profile library" });
+    if (pick) {
+        //lib[pick].functions["http://basex.org/modules/admin#logs#0"]
+        console.log("todo: ", (lib as any)[pick ]);
+        window.showInformationMessage("libraryInfo: " + pick);
+    }
 }
 
 class PickProfile implements QuickPickItem {
@@ -48,10 +53,10 @@ class PickProfile implements QuickPickItem {
     picked: boolean;
     id: string;
 
-    constructor(item:Profile,current :string) {
-      this.label = `$(package) ${item.id}`;
-      this.description=item.description;
-      this.id=item.id
-      this.picked=item.id===current; // not supported?
+    constructor(item: Profile, current: string) {
+        this.label = `$(package) ${item.id}`;
+        this.description = item.description;
+        this.id = item.id
+        this.picked = item.id === current; // not supported?
     }
-  }
+}

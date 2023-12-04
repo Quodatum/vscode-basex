@@ -2,13 +2,13 @@
 import * as vscode from 'vscode';
 import {commands} from "./constants";
 import { isXqEditor,Configuration, affectsConfiguration} from "./common";
-import { XQLinter } from './xqlints';
+import { XQLinters } from './xqlints';
 
 let myStatusBarItem: vscode.StatusBarItem;
 
 export function activate({ subscriptions }: vscode.ExtensionContext,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    diagnostics: XQLinter) {
+    diagnostics: XQLinters) {
     // create a new status bar item that we can now manage
     myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
     myStatusBarItem.command = commands.xqProcessor;

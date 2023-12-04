@@ -32,7 +32,7 @@
 		],
 		"body": [
 			"for \\$${1:var} at \\$${2:pos} in ${3:expr}",
-			"let \\$$4:var2} := ${5:expr}",
+			"let \\$${4:var2} := ${5:expr}",
 			"where ${6:boolean}",
 			"order by ${7:expr}",
 			"return ${8:expr2}"

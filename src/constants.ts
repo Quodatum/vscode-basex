@@ -29,9 +29,12 @@ export namespace diagnosticCollections {
 }
 
 export namespace languageIds {
+    export const bxsCmd = "basexscript.cmd";
+    export const bxsXml = "basexscript.xml";
+    export const xquery = "xquery";
+    
     export const xml = "xml";
     export const xsd = "xsd";
-    export const xquery = "xquery";
 }
 
 export namespace nativeCommands {

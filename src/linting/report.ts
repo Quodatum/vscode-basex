@@ -3,7 +3,7 @@
 import  * as vscode from "vscode";
 import { commands } from "../constants";
 import { channel, dump,closeFileIfOpen, unsupportedScheme } from "../common";
-import { diagnosticCollectionXQuery } from "../extension";
+import { xqLinters } from "../extension";
 
 export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) {
 
@@ -14,7 +14,7 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
         provideTextDocumentContent(uri: vscode.Uri): string {
             const orig=sourceUri(uri);
             if(unsupportedScheme(orig)) return;
-            return diagnosticCollectionXQuery.xqlint(orig).printAST(); 
+            return xqLinters.xqlint(orig).printAST(); 
         }
     };
     subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(parseScheme, parseProvider));
@@ -45,7 +45,7 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
         provideTextDocumentContent(uri: vscode.Uri): string {
             const orig=sourceUri(uri);
             if(unsupportedScheme(orig)) return;
-            const xqdoc=diagnosticCollectionXQuery.xqlint(orig).getXQDoc(); 
+            const xqdoc=xqLinters.xqlint(orig).getXQDoc(); 
             return JSON.stringify(xqdoc,undefined," ") ;
         }
     };
@@ -83,7 +83,7 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
 
 // dump node to console
 export function xqLintReport(textEditor: vscode.TextEditor): void {
-    const linter = diagnosticCollectionXQuery.xqlint(textEditor.document.uri);
+    const linter = xqLinters.xqlint(textEditor.document.uri);
     textEditor.edit(textEdit => {
         const selections = textEditor.selections;
         selections.forEach(selection => {

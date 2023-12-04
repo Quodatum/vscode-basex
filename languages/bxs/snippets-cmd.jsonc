@@ -1,0 +1,36 @@
+{
+	"new basex script": {
+		"isFileTemplate": true,
+		"prefix": "BXS (cmd) Script",
+		"body": [
+			"# A BaseX script https://docs.basex.org/wiki/Commands#Command_Scripts",
+			""
+		],
+		"description": "New BXS (cmd)"
+	},
+    "create db":{
+        "prefix":"create",
+        "body": "CREATE DB ${1:name} ([input])",
+        "description": "create a database"
+    },
+    "open db":{
+        "prefix":"open",
+        "body": "OPEN ${1:name}",
+        "description": "open a database"
+    },
+    "check db":{
+        "prefix":"check",
+        "body": "CHECK ${1:name}",
+        "description": "open or create a database"
+    },
+    "close db":{
+        "prefix":"close",
+        "body": "CLOSE",
+        "description": "close database"
+    },
+    "list":{
+        "prefix":"list",
+        "body": "LIST ${1:name}",
+        "description": "Lists all available databases. If name is specified, the resources of a database are listed. The output can be further restricted to the resources matching the specified path. If database resources are listed, the size is either the number of nodes (for XML resources) or the number of bytes (for binary resources)."
+    }
+}

@@ -1,7 +1,15 @@
+# 0.2.6 (2023-12-05)
+* Improve hovers
+* goto definition (current file only)
+# 0.2.5 (2023-11-20)
+* support otherwise/ ?:
+* xqlint 0.5.0
+* replace parseError decorator with standard error
 # 0.2.4 (2023-10-28)
-* Improve autocomplete
-* Improve builtin snippets
+* Improve autocomplete (but not much)
+* Improve XQuery snippets
 * add statusbar
+* create bxs (cmd) and bxs (xml) language ids and snippets
 # 0.2.3 (2023-10-23)
 * xsl extension conflict #18
 * Use xqlint 0.4.5

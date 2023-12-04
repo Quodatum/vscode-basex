@@ -5,12 +5,12 @@
 import * as vscode from 'vscode';
 import { XQ_ACTION } from './codeactions-diagnostics';
 import { languageIds } from "../constants";
-import { XQLinter } from "../xqlints";
+import { XQLinters } from "../xqlints";
 import { isEmpty } from '../common'
 import { IXQParsedEvent } from '../xqdiagEvents';
 const COMMAND = 'code-actions-basex.command';
 
-export function activate(context: vscode.ExtensionContext, diagnosticCollectionXQuery: XQLinter) {
+export function activate(context: vscode.ExtensionContext, diagnosticCollectionXQuery: XQLinters) {
     context.subscriptions.push(
         vscode.languages.registerCodeActionsProvider(languageIds.xquery, new XQActionProvider(), {
             providedCodeActionKinds: XQActionProvider.providedCodeActionKinds

@@ -1,0 +1,5 @@
+CREATE DB test
+ADD TO embedded.xml <root>embedded</root>
+# run query
+XQUERY <hits>{ count(//text()) }</hits>
+CLOSE

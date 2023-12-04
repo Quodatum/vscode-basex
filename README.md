@@ -11,10 +11,12 @@
 The `vscode-basex` extension adds features to support [BaseX](https://basex.org/) development on VSCode.
 A key feature is a parser for [XQuery](https://quodatum.github.io/basex-xqparse/) sources that supports all BaseX features, including XQuery Update and the Full text search syntax.  
 # Status
-__Work in progress. Errors and changes to be expected.__
+* __Work in progress. Errors and changes to be expected.__
+
 
 # Features
 See the [documentation](https://quodatum.github.io/vscode-basex/) for more detail
+* Works in a Browser using [Code-server](https://github.com/coder/code-server) or [Github code-server](https://github.com/codespaces)
 ## XQuery
 * [Linting]
 * [Code Completion]

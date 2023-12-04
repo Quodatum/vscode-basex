@@ -1,0 +1,29 @@
+{
+	"new basex script": {
+		"isFileTemplate": true,
+		"prefix": "BXS (XML) Script commands",
+		"body": [         
+			"<!-- A BaseX script https://docs.basex.org/wiki/Commands#Command_Scripts -->",
+            "<commands>",
+            "${1}",
+            "</commands>"
+		],
+		"description": "New BXS (xml)"
+	},
+    "create db":{
+        "prefix":"<create",
+        "body": "<create-db name='${1:name}'/>",
+        "description": "create a database"
+    },
+    "open db":{
+        "prefix":"<open",
+        "body": "<open name='${1:name}'/>",
+        "description": "open a database"
+    },
+    "list":{
+        "prefix":"<list",
+        "body": "<list name='${1:name}' path='${2:path}' />",
+        "description": "list database content"
+    }
+
+}

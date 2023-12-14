@@ -1,4 +1,5 @@
-# 0.2.6 (2023-12-05)
+# 0.2.6 (2023-12-14)
+* Nested outline
 * Improve hovers
 * goto definition (current file only)
 # 0.2.5 (2023-11-20)

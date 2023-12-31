@@ -39,11 +39,11 @@ export class Configuration {
         return this._getForWindow<string>("xquery.executionEngine");
     }
 
-    static get xqueryProcessor(): string {
-      return this._getForWindow<string>("xquery.processor");
+    static get xqueryProfile(): string {
+      return this._getForWindow<string>("xquery.profile");
     }
-    static set xqueryProcessor(value: string) {
-       this._setForWindow("xquery.processor",value);
+    static set xqueryProfile(value: string) {
+       this._setForWindow("xquery.profile",value);
       }
     static xqueryShowHovers(): boolean {
         return this._getForWindow<boolean>("xquery.showHovers");

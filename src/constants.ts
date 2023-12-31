@@ -3,7 +3,7 @@ export namespace commands {
     export const xqExecute = "basexTools.executeXQuery";
     export const xqDoc = "basexTools.xqDoc";  // used as url scheme
     export const xqParse = "basexTools.xqParse"; // used as url scheme
-    export const xqProcessor = "basexTools.processor"; 
+    export const xqProcessor = "basexTools.profile"; 
     export const xqSelectDeclaration = "basexTools.selectDeclaration";
     export const xqLibrary = "basexTools.xqLibrary";           
     export const xqLintReport = "basexTools.xqLintReport";
@@ -46,10 +46,7 @@ export namespace stateKeys {
     export const xPathQueryLast = "xPathQueryLast";
 }
 
-export namespace uriSchemes {
-    export const file = "file";
-    export const untitled = "untitled";
-}
+
 
 export namespace views {
     export const xmlTreeView = "xmlTreeView";

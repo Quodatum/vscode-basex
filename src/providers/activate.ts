@@ -12,7 +12,7 @@ export function activate(context: ExtensionContext,diagnosticCollectionXQuery:XQ
     symbols.activate(context);
     hover.activate(context);
     definition.activate(context);
-//  codeAction.activate(context,diagnosticCollectionXQuery);
+    codeAction.activate(context,diagnosticCollectionXQuery);
     completion.activate(context);
     documentLink.activate(context);
     formatter.activate(context);   

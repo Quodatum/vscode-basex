@@ -83,7 +83,7 @@ export class XQLinters {
 
 // do the parse
 function linter(uri: vscode.Uri, document: string) {
-    const processor = Configuration.xqueryProcessor;
+    const processor = Configuration.xqueryProfile;
     const opts = { "processor": processor, "fileName": uri.fsPath };
     return new XQLint(document, opts);
 
@@ -148,12 +148,15 @@ function pushXQLintDiagnostics(
     linter: XQLint) {
     linter.getMarkers().forEach(
         (mark: Marker) => {
-            const type = mark.level === "error" ? vscode.DiagnosticSeverity.Error : vscode.DiagnosticSeverity.Warning
-            diagnostics.push(new vscode.Diagnostic(
+            const type = mark.level === "error" ? vscode.DiagnosticSeverity.Error : vscode.DiagnosticSeverity.Warning;
+            const diag=new vscode.Diagnostic(
                 importRange(mark.pos),
                 mark.message,
                 isSuppressed(mark.message) ? vscode.DiagnosticSeverity.Information : type
-            ));
+            );
+            diag.code=mark.code;
+            diag.source="xqlint";
+            diagnostics.push(diag);
         }
     );
    

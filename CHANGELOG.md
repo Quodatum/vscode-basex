@@ -1,7 +1,11 @@
+# 0.2.7 (2023-12-31)
+* goto definition for imported sources
+* rename cmd `basexTools.xquery.processor` to `basexTools.xquery.profile`
 # 0.2.6 (2023-12-14)
 * Nested outline
 * Improve hovers
 * goto definition (current file only)
+
 # 0.2.5 (2023-11-20)
 * support otherwise/ ?:
 * xqlint 0.5.0

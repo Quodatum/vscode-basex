@@ -85,9 +85,9 @@ export function activate(context: ExtensionContext) {
 
     // if changes to processor  then clear diagnostics
     workspace.onDidChangeConfiguration(event => {
-        if (affectsConfiguration(event,'xquery.processor')) {
+        if (affectsConfiguration(event,'xquery.profile')) {
             xqLinters.clear();
-            window.showInformationMessage("XQuery profile now: " + Configuration.xqueryProcessor);
+            window.showInformationMessage("XQuery profile now: " + Configuration.xqueryProfile);
         }
     })
 }

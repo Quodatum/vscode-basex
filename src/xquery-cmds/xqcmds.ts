@@ -7,12 +7,12 @@ import { findNode } from "../common/xqlint";
 import { profiles, Profile } from '@quodatum/xqlint';
 
 export async function setProcessor(): Promise<void> {
-    const processor = Configuration.xqueryProcessor;
+    const processor = Configuration.xqueryProfile;
     const items: PickProfile[] = profiles().map(item => new PickProfile(item, processor));
     const pick = await window.showQuickPick(items, { title: "Select XQuery profile: " + processor });
     if (pick) {
         channel.log("setProcessor:" + pick.id);
-        Configuration.xqueryProcessor = pick.id;
+        Configuration.xqueryProfile = pick.id;
     }
 }
 

@@ -1,11 +1,16 @@
 import { DocumentFilter, Uri, TextDocument ,TextEditor} from "vscode";
 
 import * as constants from "../constants";
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace uriSchemes {
+    export const file = "file";
+    export const untitled = "untitled";
+}
 
 export function createDocumentSelector(language: string): DocumentFilter[] {
     return [
-        { language: language, scheme: constants.uriSchemes.file },
-        { language: language, scheme: constants.uriSchemes.untitled },
+        { language: language, scheme: uriSchemes.file },
+        { language: language, scheme: uriSchemes.untitled },
     ];
 }
 
@@ -19,7 +24,7 @@ export function isNotXQDoc(doc: TextDocument): boolean {
 }
 // only supported schemes
 export function unsupportedScheme(uri: Uri): boolean {
-    const supportedSchemes = [constants.uriSchemes.file, constants.uriSchemes.untitled];
+    const supportedSchemes = [uriSchemes.file, uriSchemes.untitled];
     return supportedSchemes.indexOf(uri.scheme) === -1;
 }
 

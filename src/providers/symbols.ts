@@ -63,7 +63,7 @@ export class DocumentSymbols implements DocumentSymbolProvider {
         vars.push(info);
       });
       const r = importRange(xqdoc.variables[0].pos);
-      const vs = new DocumentSymbol("Variables", "" + xqdoc.variables.length, SymbolKind.Class, r, r);
+      const vs = new DocumentSymbol("Variables", "" + xqdoc.variables.length, SymbolKind.Variable, r, r);
       vs.children = vars;
       symbols.push(vs);
     }
@@ -82,7 +82,7 @@ export class DocumentSymbols implements DocumentSymbolProvider {
         fns.push(info);
       });
       const r = importRange(xqdoc.functions[0].pos);
-      const vs = new DocumentSymbol("Functions", "" + xqdoc.functions.length, SymbolKind.Class, r, r);
+      const vs = new DocumentSymbol("Functions", "" + xqdoc.functions.length, SymbolKind.Function, r, r);
       vs.children = fns;
       symbols.push(vs);
     }

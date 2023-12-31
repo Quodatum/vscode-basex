@@ -1,4 +1,4 @@
-import { Ast, LintRange, Sctx, XQLint } from "@quodatum/xqlint";
+import { Ast, LintRange, QName, Sctx, XQLint } from "@quodatum/xqlint";
 import { Position, Range, MarkdownString } from "vscode";
 
 
@@ -30,21 +30,22 @@ export interface What {
     path: string[]; // AST
     type: WhatType;
     value: string;
+    qname?: QName
     display?: string;
     get: unknown;
 }
 // 
 export enum WhatType{
-    other,
-    WS,
-    VarRef,
-    FunctionCall,
-    NamedFunctionRef,
-    SequenceType,
-    Annotation,
-    Constructor,
-    StringConstructor,
-    Literal
+    other="other",
+    WS="WS",
+    VarRef="VarRef",
+    FunctionCall="FunctionCall",
+    NamedFunctionRef="NamedFunctionRef",
+    SequenceType="SequenceType",
+    Annotation="Annotation",
+    Constructor="Constructor",
+    StringConstructor="StringConstructor",
+    Literal="Literal"
 }
 // metadata about given AST node {type:,path:}
 export function inspectAst(linter: XQLint, position: Position): What {
@@ -74,6 +75,7 @@ export function inspectAst(linter: XQLint, position: Position): What {
         } else if (ps.startsWith("EQName/VarName/VarRef/")) {
             r.type = WhatType.VarRef;
             const qname = sctx.resolveQName(r.value, position);
+            r.qname=qname;
             const v = sctx.getVariable(qname);
             r.value = '$' + r.value;
             r.get = v;
@@ -125,6 +127,7 @@ function getArity(node: Ast): number {
 function fnType(r: What, arity: number, sctx: Sctx, position: Position) {
     r.type = WhatType.FunctionCall;
     const qname = sctx.resolveQName(r.value, position);
+    r.qname=qname;
     const lib = sctx.getFunction(qname, arity);
     r.get = lib;
     let result = lib.return;

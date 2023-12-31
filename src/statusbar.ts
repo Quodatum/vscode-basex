@@ -21,7 +21,7 @@ export function activate({ subscriptions }: vscode.ExtensionContext,
 
     vscode.workspace.onDidChangeConfiguration(event => {
         //@todo scope?
-        if (affectsConfiguration(event,'xquery.processor')) {
+        if (affectsConfiguration(event,'xquery.profile')) {
             updateStatusBarItem(vscode.window.activeTextEditor);
          }
     })
@@ -29,7 +29,7 @@ export function activate({ subscriptions }: vscode.ExtensionContext,
 
 function updateStatusBarItem(active: vscode.TextEditor): void {
     if (isXqEditor(active)) {
-        const profile = Configuration.xqueryProcessor;
+        const profile = Configuration.xqueryProfile;
         myStatusBarItem.text = `$(package) ${profile}`;
         myStatusBarItem.tooltip = "Active XQuery profile, click to change"
         myStatusBarItem.show();

@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace commands {
-    export const executeXQuery = "basexTools.executeXQuery";
+    export const xqExecute = "basexTools.executeXQuery";
     export const xqDoc = "basexTools.xqDoc";  // used as url scheme
     export const xqParse = "basexTools.xqParse"; // used as url scheme
-    
+    export const xqProcessor = "basexTools.profile"; 
+    export const xqSelectDeclaration = "basexTools.selectDeclaration";
+    export const xqLibrary = "basexTools.xqLibrary";           
     export const xqLintReport = "basexTools.xqLintReport";
-    export const clearDiagnostics ="basexTools.clearDiagnostics"
+    export const xqClearDiagnostics ="basexTools.clearDiagnostics"
 
     export const getCurrentXPath = "basexTools.getCurrentXPath";        
     export const evaluateXPath = "basexTools.evaluateXPath";
@@ -23,12 +25,16 @@ export namespace contextKeys {
 
 export namespace diagnosticCollections {
     export const xquery = "XQueryDiagnostics";
+    export const xqActions = "XQueryActions";
 }
 
 export namespace languageIds {
+    export const bxsCmd = "basexscript.cmd";
+    export const bxsXml = "basexscript.xml";
+    export const xquery = "xquery";
+    
     export const xml = "xml";
     export const xsd = "xsd";
-    export const xquery = "xquery";
 }
 
 export namespace nativeCommands {
@@ -40,10 +46,7 @@ export namespace stateKeys {
     export const xPathQueryLast = "xPathQueryLast";
 }
 
-export namespace uriSchemes {
-    export const file = "file";
-    export const untitled = "untitled";
-}
+
 
 export namespace views {
     export const xmlTreeView = "xmlTreeView";

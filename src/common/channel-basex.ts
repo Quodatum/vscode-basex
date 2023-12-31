@@ -1,5 +1,6 @@
 // debug messages
 import { OutputChannel, window,Uri } from "vscode";
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const version = require('../../package.json');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -46,5 +47,6 @@ export class channel {
       _channel.appendLine(`${ action}: ${uri.fsPath}`) 
     }
 }
-channel.log(`Activate vscode-basex(${ version }) *****************  XQLint(${ verXQlint })`);
+channel.log(`Activate vscode-basex(${ version.version }) *****************  XQLint(${ verXQlint })`);
+channel.log(`todo`);
 _channel.show

@@ -7,7 +7,6 @@ import { XPathBuilder } from "../xpath-builder";
 export function getCurrentXPath(editor: TextEditor, edit: TextEditorEdit): void {
     if (!editor.selection) {
         window.showInformationMessage("Please put your cursor in an element or attribute name.");
-
         return;
     }
 

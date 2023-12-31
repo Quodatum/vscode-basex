@@ -1,49 +1,48 @@
 // xquery hover
 
 import * as vscode from "vscode";
-import { XQLintFactory } from "../common/xqlint";
-import { Configuration } from "../common";
+
+import { Configuration, inspectAst, markdownString } from "../common";
 import { languageIds } from "../constants";
+import { xqLinters } from "../extension";
+
+
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.languages.registerHoverProvider(
         { language: languageIds.xquery }, new XQueryHoverProvider()
     ));
 }
+
+
 class XQueryHoverProvider implements vscode.HoverProvider {
     public provideHover(
         document: vscode.TextDocument,
         position: vscode.Position,
         token: vscode.CancellationToken
     ): vscode.Hover | null {
-        if (!Configuration.xqueryShowHovers()) return null;
+       
         const range = document.getWordRangeAtPosition(position);
         if (!range) return null
         const word = document.getText(range);
+        const linter = xqLinters.xqlint(document.uri);
+        const what = inspectAst(linter, position);
+        if (what.type === 'WS') return null;
 
-        const linter = XQLintFactory.XQLint(document);
-        const node = linter.getAST(position);
-        if (node.name === 'WS') return null;
+        const hovers:vscode.MarkdownString[]=[
+            what.display?markdownString("**"+what.display+"**"):null,
+            markdownString(what.get?.description)
+        ];
 
-        let n2 = node;
-        const path = [node.name]
-        while (n2.getParent !== null) {
-            n2 = n2.getParent;
-            path.push(n2.name);
+        if (Configuration.xqueryShowHovers()) {
+            const parsePath = markdownString(
+                '<a href="https://quodatum.github.io/basex-xqparse/i-BaseX.xhtml#' + what.path[0] + '">Path:<a>');
+            parsePath.appendText(what.path.join("/"));
+            const debugInfo=`[${position.line},${position.character}] Word: ${word},
+            value: ${what.value}, type: ${what.type}`;
+            hovers.push(markdownString(debugInfo));
+            hovers.push( parsePath);
         }
-        const ps=path.join('/');
-        const isfuncall="EQName/FunctionEQName/FunctionCall/";
-        const fc=ps.startsWith(isfuncall);
-        const parsePath = new vscode.MarkdownString(
-            '<a href="https://quodatum.github.io/basex-xqparse/i-BaseX.xhtml#'+path[0]+'">Path:<a>');
-        parsePath.appendText(ps);
-        parsePath.supportHtml = true;
-        parsePath.isTrusted = true;
-
-        return new vscode.Hover([
-            `[${position.line},${position.character}] Type: ${node.name}, Word: ${word}`,
-            `value: ${node.value}, fc: ${fc}`,
-            parsePath
-        ]);
+        return new vscode.Hover(hovers);
     }
 }

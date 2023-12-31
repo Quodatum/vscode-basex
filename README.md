@@ -11,10 +11,12 @@
 The `vscode-basex` extension adds features to support [BaseX](https://basex.org/) development on VSCode.
 A key feature is a parser for [XQuery](https://quodatum.github.io/basex-xqparse/) sources that supports all BaseX features, including XQuery Update and the Full text search syntax.  
 # Status
-__Work in progress. Errors and changes to be expected.__
+* __Work in progress. Errors and changes to be expected.__
+
 
 # Features
 See the [documentation](https://quodatum.github.io/vscode-basex/) for more detail
+* Works in a Browser using [Code-server](https://github.com/coder/code-server) or [Github code-server](https://github.com/codespaces)
 ## XQuery
 * [Linting]
 * [Code Completion]
@@ -22,6 +24,7 @@ See the [documentation](https://quodatum.github.io/vscode-basex/) for more detai
 * [source formating]
 * [Symbols]
 * [Snippets]
+* [Goto definition]
 ## XPath
 * [XPath Evaluation]
 ## XML
@@ -31,7 +34,7 @@ See the [documentation](https://quodatum.github.io/vscode-basex/) for more detai
 
 
 # Requirements
-* VS Code `1.73.0` or higher
+* VS Code `1.76.0` or higher
 
 # Release Notes
 Detailed release notes are available [here](https://github.com/Quodatum/vscode-basex/releases).
@@ -51,8 +54,8 @@ npm run compile
 vsce package
 ```
 ## Documentation
-Uses https://github.com/squidfunk/mkdocs-material
-https://quodatum.github.io/basex-xqparse/i-BaseX.xhtml#ArrowFunctionSpecifier
+Uses [mkdocs-material](https://github.com/squidfunk/mkdocs-material)
+
  
 # Inspiration
 ## VSCode
@@ -61,7 +64,8 @@ This project was created from a fork of [DotJoshJohnson/vscode-xml](https://gith
 The code parsing uses [quodatum/xqlint](https://github.com/Quodatum/xqlint) which a fork of [wcandillon/xqlint](https://github.com/wcandillon/xqlint).
 These both make use of Gunther Rademacher's [REx](https://www.bottlecaps.de/rex/) Parser Generator.
 
-## Icon 
+The EBNF is shown [here](https://quodatum.github.io/basex-xqparse/i-BaseX.xhtml)
+## Icons 
 
 Icons used in the XML Tree View are used under the Creative Commons 3.0 BY license.
 * "Code" icon by Dave Gandy from www.flaticon.com

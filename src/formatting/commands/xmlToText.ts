@@ -39,11 +39,10 @@ export function textToXml(textEditor: TextEditor): void {
             const transformed = txt
                 .replace(/&lt;/g, "<")
                 .replace(/&gt;/g, ">")
-                .replace(/&amp;/g, "&")
                 // tslint:disable-next-line
                 .replace(/&quot;/g, '"')
-                .replace(/&apos;/g, "'");
-
+                .replace(/&apos;/g, "'")
+                .replace(/&amp;/g, "&");
             textEdit.replace(selection, transformed);
         });
     });

@@ -5,11 +5,10 @@ create xqdoc from parse tree
  @author Andy Bunce, Quodatum, License: Apache-2.0
  @TODO refs
 :)
- module namespace xqdc = 'quodatum:xqdoca.model.xqdoc';
+ module namespace xqdc = 'quodatum:xqdoca.model.xqdoc'; 
 
 import module namespace xqcom = 'quodatum:xqdoca.model.comment' at "comment-to-xqdoc.xqm";
-declare namespace xqdoc="http://www.xqdoc.org/1.0";
-
+declare namespace xqdoc="http://www.xqdoc.org/1.0"; 
 
 
 (:~ build xqdoc from XQuery parse tree 
@@ -67,7 +66,7 @@ return
       <xqdoc:uri>{ $uri }</xqdoc:uri>
       <xqdoc:name>{ $name }</xqdoc:name>
       { $com }
-      { util:if(xqdc:opt($opts,"body-full"),xqdc:body(root($parse)))} 
+      { util:if(xqdc:opt($opts,"body-full"),xqdc:body(root($parse))) }
     </xqdoc:module>
 };
 

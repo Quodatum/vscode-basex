@@ -1,6 +1,6 @@
 import { workspace, Uri } from "vscode";
 
-const ExtensionTopLevelSection = "basexTools";
+export const ExtensionTopLevelSection = "basexTools";
 
 export class Configuration {
     static get enableXmlTreeView(): boolean {
@@ -34,14 +34,17 @@ export class Configuration {
     static get xquerySuppressErrors(): string[] {
         return this._getForWindow<string[]>("xquery.suppressErrors");
     }
-    
+    // path to executable
     static get xqueryExecutionEngine(): string {
         return this._getForWindow<string>("xquery.executionEngine");
     }
 
-    static get xqueryProcessor(): string {
-      return this._getForWindow<string>("xquery.processor");
+    static get xqueryProfile(): string {
+      return this._getForWindow<string>("xquery.profile");
     }
+    static set xqueryProfile(value: string) {
+       this._setForWindow("xquery.profile",value);
+      }
     static xqueryShowHovers(): boolean {
         return this._getForWindow<boolean>("xquery.showHovers");
     }
@@ -68,5 +71,8 @@ export class Configuration {
 
     private static _getForWindow<T>(section: string): T  {
         return workspace.getConfiguration(ExtensionTopLevelSection).get<T>(section);
+    }
+    private static _setForWindow(section: string,value:string)  {
+         workspace.getConfiguration(ExtensionTopLevelSection).update(section,value);
     }
 }

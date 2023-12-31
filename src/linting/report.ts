@@ -1,10 +1,9 @@
 // todo 
 // see https://github.com/microsoft/vscode-extension-samples/tree/main/contentprovider-sample
-import *  as vscode from "vscode";
-import { languageIds,commands } from "../constants";
-import { channel, dump } from "../common/channel-basex";
-import { XQLintFactory } from "../common/xqlint";
-
+import  * as vscode from "vscode";
+import { commands } from "../constants";
+import { channel, dump,closeFileIfOpen, unsupportedScheme } from "../common";
+import { xqLinters } from "../extension";
 
 export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) {
 
@@ -12,17 +11,10 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
     const parseScheme =commands.xqParse;
 
     const parseProvider = new class implements vscode.TextDocumentContentProvider {
-
-        // emitter and its event
-        onDidChangeEmitter = new vscode.EventEmitter<vscode.Uri>();
-        onDidChange = this.onDidChangeEmitter.event;
-
         provideTextDocumentContent(uri: vscode.Uri): string {
-            // simply invoke cowsay, use uri-path as text
-            const document = xqueryDoc();
-            if (!document) return;
-            const linter = XQLintFactory.XQLint2(document.uri,document.getText())
-            return linter.printAST();
+            const orig=sourceUri(uri);
+            if(unsupportedScheme(orig)) return;
+            return xqLinters.xqlint(orig).printAST(); 
         }
     };
     subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(parseScheme, parseProvider));
@@ -32,22 +24,28 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
         const uri = vscode.Uri.parse(`${parseScheme}:${editor.document.uri}.xml`);
         const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
         vscode.languages.setTextDocumentLanguage(doc, "xml");
+       /*  const onDidChangeDisposable = vscode.workspace.onDidChangeTextDocument((event: vscode.TextDocumentChangeEvent)=>{
+            if (event.document === editor.document){
+                console.log('Watched doc changed: '+ editor.document.uri);
+            }  
+        });
+        const onDidCloseDisposable = vscode.workspace.onDidCloseTextDocument((closedDoc: vscode.TextDocument)=>{
+            if (closedDoc  === editor.document){
+                console.log('Watched doc was closed: '+onDidCloseDisposable);
+                closeFileIfOpen(closedDoc.uri);
+            }    
+        });
+        subscriptions.push(onDidChangeDisposable,onDidCloseDisposable); */
         await vscode.window.showTextDocument(doc, editor.viewColumn! + 1);
 
     }));
 
     const xqdocScheme = commands.xqDoc;
     const xqdocProvider = new class implements vscode.TextDocumentContentProvider {
-
-        // emitter and its event
-        onDidChangeEmitter = new vscode.EventEmitter<vscode.Uri>();
-        onDidChange = this.onDidChangeEmitter.event;
-
         provideTextDocumentContent(uri: vscode.Uri): string {
-            const document = xqueryDoc();
-            if (!document) return;
-            const linter = XQLintFactory.XQLint2(document.uri,document.getText());
-            const xqdoc= linter.getXQDoc();
+            const orig=sourceUri(uri);
+            if(unsupportedScheme(orig)) return;
+            const xqdoc=xqLinters.xqlint(orig).getXQDoc(); 
             return JSON.stringify(xqdoc,undefined," ") ;
         }
     };
@@ -57,33 +55,43 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
         const uri = vscode.Uri.parse(`${xqdocScheme}:${editor.document.uri}.json`);
         const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
         vscode.languages.setTextDocumentLanguage(doc, "json");
+
+        const onDidChangeDisposable = vscode.workspace.onDidChangeTextDocument((event: vscode.TextDocumentChangeEvent)=>{
+            if (event.document === editor.document){
+                console.log('Watched doc changed: '+ editor.document.uri);
+            }  
+        });
+        const onDidCloseDisposable = vscode.workspace.onDidCloseTextDocument((closedDoc: vscode.TextDocument)=>{
+            if (closedDoc  === editor.document){
+                console.log('Watched doc was closed: '+onDidCloseDisposable);
+                closeFileIfOpen(closedDoc.uri);
+            }    
+        });
+        subscriptions.push(onDidChangeDisposable,onDidCloseDisposable);
+
         await vscode.window.showTextDocument(doc, editor.viewColumn! + 1);
     }));
+
+}
+// convert custom scheme back to source uri
+ function sourceUri(uri: vscode.Uri): vscode.Uri {
+    const p=uri.path;
+    return  vscode.Uri.parse(p.substring(0, p.lastIndexOf('.')));
+
 }
 
 
 // dump node to console
 export function xqLintReport(textEditor: vscode.TextEditor): void {
-    const linter = XQLintFactory.XQLint(textEditor.document);
-
-
+    const linter = xqLinters.xqlint(textEditor.document.uri);
     textEditor.edit(textEdit => {
         const selections = textEditor.selections;
         selections.forEach(selection => {
             const pos = selection.start.translate(1, 1); //@TODO
             const node = linter.getAST(pos);
-            const sctx = linter.getCompletions(pos);
             const dx = dump(node);
             channel.appendLine(dx);
         });
     });
 }
 
-// the active xquery doc or null
-function xqueryDoc(): vscode.TextDocument {
-    if (!vscode.window.activeTextEditor) {
-        return null; // no editor
-    }
-    const { document } = vscode.window.activeTextEditor;
-    return (document.languageId === languageIds.xquery) ? document : null;
-}

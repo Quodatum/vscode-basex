@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.1.14",
+  "version": "0.2.7",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -36,29 +36,78 @@
     "node_modules/@quodatum/xq-catalogs"
   ],
   "contributes": {
+    "taskDefinitions": [
+      {
+        "type": "basex",
+        "required": [
+            "task"
+        ],
+        "properties": {
+            "task": {
+                "type": "string",
+                "description": "The Rake task to customize"
+            },
+            "file": {
+                "type": "string",
+                "description": "The Rake file that provides the task. Can be omitted."
+            }
+        },
+        "when": "editorLangId == xquery || editorLangId == basexscript.cmd || editorLangId == basexscript.xml"
+    }
+    ],
     "commands": [
       {
+        "command": "basexTools.profile",
+        "title": "BaseX Tools: get/set XQuery profile",
+        "shortTitle": "XQuery profile"
+      },
+      {
         "command": "basexTools.xqParse",
-        "title": "BaseX Tools: Parse of XQuery source (xml)",
+        "title": "BaseX Tools: debug parse tree XML",
         "shortTitle": "Parse tree XML",
         "icon": "$(list-tree)",
         "enablement": "editorLangId == xquery"
       },
       {
         "command": "basexTools.xqDoc",
-        "title": "BaseX Tools: XQdoc of XQuery source (json)",
+        "title": "BaseX Tools: debug xqDoc (json)",
         "shortTitle": "BaseX Tools: XQdoc for current",
         "icon": "$(bracket-dot)",
         "enablement": "editorLangId == xquery"
       },
       {
-        "command": "basexTools.evaluateXPath",
-        "title": "BaseX Tools: Evaluate XPath long title",
-        "shortTitle": "BaseX Tools: Evaluate XPath"
+        "command": "basexTools.xqLibrary",
+        "title": "BaseX Tools: About known namespaces",
+        "shortTitle": "BaseX Tools: library",
+        "enablement": "editorLangId == xquery"
+      },
+      {
+        "command": "basexTools.xqLintReport",
+        "title": "BaseX Tools: Analysis of current location in Xquery source",
+        "shortTitle": "Posinfo"
+      },
+      {
+        "command": "basexTools.clearDiagnostics",
+        "title": "BaseX Tools: Clear the XQuery Diagnostics collection"
       },
       {
         "command": "basexTools.executeXQuery",
-        "title": "BaseX Tools: Execute XQuery using standalone BaseX "
+        "title": "BaseX Tools: Run current file, XQuery or BXS, using standalone BaseX",
+        "when": "editorLangId == xquery || editorLangId == basexscript.cmd || editorLangId == basexscript.xml"
+      },
+      {
+        "command": "basexTools.selectDeclaration",
+        "title": "BaseX Tools: Select current declaration",
+        "enablement": "editorLangId == xquery"
+      },
+      {
+        "command": "basexTools.getCurrentXPath",
+        "title": "BaseX Tools: Get Current XPath"
+      },
+      {
+        "command": "basexTools.evaluateXPath",
+        "title": "BaseX Tools: Evaluate XPath ",
+        "shortTitle": "BaseX Tools: Evaluate XPath"
       },
       {
         "command": "basexTools.formatAsXml",
@@ -73,21 +122,8 @@
         "title": "BaseX Tools: Convert XML to text  (<> -> &lt;&gt;)"
       },
       {
-        "command": "basexTools.getCurrentXPath",
-        "title": "BaseX Tools: Get Current XPath"
-      },
-      {
         "command": "basexTools.minifyXml",
         "title": "BaseX Tools: Minify XML"
-      },
-      {
-        "command": "basexTools.xqLintReport",
-        "title": "BaseX Tools: Analysis of current location in Xquery source",
-        "shortTitle": "Posinfo"
-      },
-      {
-        "command": "basexTools.clearDiagnostics",
-        "title": "BaseX Tools: Clear the XQuery Diagnostics collection"
       }
     ],
     "configuration": [
@@ -96,32 +132,19 @@
         "order": 1,
         "title": "XQuery UI",
         "properties": {
-          "basexTools.xquery.processor": {
+          "basexTools.xquery.profile": {
             "type": "string",
             "default": "basex-10",
-            "enum": [
-              "basex-9",
-              "basex-10",
-              ""
-            ],
-            "enumDescriptions": [
-              "BaseX 9.7.5 modules",
-              "BaseX 10.6 ",
-              "no custom libraries"
-            ],
-            "description": "Identifier for the XQuery processor. Determines available modules"
+            "description": "Identifier for the XQuery profile. Determines available modules"
           },
           "basexTools.xquery.showHovers": {
             "type": "boolean",
             "default": false,
-            "description": "Show hovers in XQuery source. Currently these show just Diagnostic info"
+            "description": "Show Diagnostic info in hovers for XQuery source."
           },
           "basexTools.xquery.suppressErrors": {
             "type": "array",
-            "default": [
-              "[XQST0059]",
-              "[XPST0008]"
-            ],
+            "default": [],
             "description": "Lint Error messages including these strings are marked as info rather than error. TEMP HACK! "
           }
         }
@@ -140,7 +163,7 @@
           "basexTools.xquery.executionEngine": {
             "type": "string",
             "default": "",
-            "description": "The path to the executable to run when standalone BaseX. e.g ... \\basex.bat",
+            "description": "The path to the standalone BaseX executable. e.g. `basex.bat`",
             "scope": "window"
           }
         }
@@ -241,7 +264,15 @@
     "snippets": [
       {
         "language": "xquery",
-        "path": "./snippets.jsonc"
+        "path": "./languages/xquery/snippets.jsonc"
+      },
+      {
+        "language": "basexscript.cmd",
+        "path": "./languages/bxs/snippets-cmd.jsonc"
+      },
+      {
+        "language": "basexscript.xml",
+        "path": "./languages/bxs/snippets-xml.jsonc"
       }
     ],
     "keybindings": [
@@ -262,7 +293,6 @@
           ".csproj",
           ".xml",
           ".xsd",
-          ".xsl",
           ".plist",
           ".mobileconfig",
           ".sch"
@@ -288,9 +318,23 @@
         "configuration": "./languages/xquery/xquery.json"
       },
       {
-        "id": "basex-script",
+        "id": "basexscript.cmd",
         "aliases": [
-          "bxs"
+          "bxs (cmd)"
+        ],
+        "extensions": [
+          ".bxs"
+        ],
+        "icon": {
+          "light": "./resources/bxs-file.png",
+          "dark": "./resources/bxs-file.png"
+        },
+        "configuration": "./languages/bxs/bxs.json"
+      },
+      {
+        "id": "basexscript.xml",
+        "aliases": [
+          "bxs (xml)"
         ],
         "extensions": [
           ".bxs"
@@ -310,7 +354,7 @@
         },
         {
           "command": "basexTools.executeXQuery",
-          "when": "editorLangId == xquery"
+          "when": "editorLangId == xquery || editorLangId == basexscript.cmd || editorLangId == basexscript.xml"
         },
         {
           "command": "basexTools.getCurrentXPath",
@@ -384,7 +428,7 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@quodatum/xqlint": "^0.3.3",
+    "@quodatum/xqlint": "^0.6.0",
     "@xmldom/xmldom": "^0.8.10",
     "bl": "^6.0.4",
     "xpath": "^0.0.33"

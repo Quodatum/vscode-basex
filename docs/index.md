@@ -12,7 +12,7 @@ date: 2023-07-05
 !!! warning Status
     This extension is "Work in progress". Errors and changes to be expected.
     
-For information about installing this extension see [here](installation.md).
+Information about installing this extension is [here](installation.md).
 
 ## Working with XQuery sources
 * [XQuery coding](xquery/)

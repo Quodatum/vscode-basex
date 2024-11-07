@@ -22,7 +22,8 @@ export async function executeXQuery(editor: TextEditor, edit: TextEditorEdit): P
     const src: string = editor.document.uri.toString();
     channel.log("executeXQuery:" + src);
     const executable = Configuration.xqueryExecutionEngine;
-    const args: string[] = [src];
+    const executionArgs = Configuration.xqueryExecutionArgs;
+    const args: string[] = [executionArgs, src];
     if (!executable || executable === "") {
         const action = await window.showWarningMessage("An XQuery execution engine has not been defined.", "Define Now");
         if (action === "Define Now") {
@@ -37,7 +38,7 @@ export async function executeXQuery(editor: TextEditor, edit: TextEditorEdit): P
     outputChannel.appendLine(`${logdate()} XQuery: ${src}`);
     outputChannel.append("\n");
     try {
-        const bl = await ChildProcess.spawn('basex', args);
+        const bl = await ChildProcess.spawn(executable, args);
         outputChannel.appendLine(bl.toString());
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

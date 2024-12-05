@@ -32,20 +32,22 @@ export interface What {
     value: string;
     qname?: QName
     display?: string;
-    get: unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    get?: any;
 }
 // 
-export enum WhatType{
-    other="other",
-    WS="WS",
-    VarRef="VarRef",
-    FunctionCall="FunctionCall",
-    NamedFunctionRef="NamedFunctionRef",
-    SequenceType="SequenceType",
-    Annotation="Annotation",
-    Constructor="Constructor",
-    StringConstructor="StringConstructor",
-    Literal="Literal"
+export enum WhatType {
+    other = "other",
+    WS = "WS",
+    VarRef = "VarRef",
+    FunctionCall = "FunctionCall",
+    NamedFunctionRef = "NamedFunctionRef",
+    SequenceType = "SequenceType",
+    Annotation = "Annotation",
+    Constructor = "Constructor",
+    StringConstructor = "StringConstructor",
+    Literal = "Literal",
+    ModuleImport="ModuleImport"
 }
 // metadata about given AST node {type:,path:}
 export function inspectAst(linter: XQLint, position: Position): What {
@@ -53,67 +55,73 @@ export function inspectAst(linter: XQLint, position: Position): What {
     const node = linter.getAST(pos);
     const sctx = linter.getSctx(pos);
     const path = astPath(node);
-    const r: What = {
+    const what: What = {
         path: path,
         type: WhatType.other,
         value: node?.value,
         get: {}
     };
-    if (!node) return r;
+    if (!node) return what;
     if (node.name === 'WS') {
-        r.type = WhatType.WS;
+        what.type = WhatType.WS;
     } else {
         const ps = path.join("/");
-        if (ps.startsWith("EQName/FunctionEQName/FunctionCall/")) {
+        if (ps.startsWith("URIQualifiedName/FunctionEQName/FunctionCall/")){
             const arity = calcArity(ancestor(node, "FunctionCall"));
-            fnType(r, arity, sctx, position);
+            fnUpdate(what, arity, sctx, position);
+        } else if (ps.startsWith("EQName/FunctionEQName/FunctionCall/")) {
+            const arity = calcArity(ancestor(node, "FunctionCall"));
+            fnUpdate(what, arity, sctx, position);
 
         } else if (ps.startsWith("EQName/ArrowFunctionSpecifier/")) {
             const arity = calcArity(ancestor(node, "ArrowFunctionSpecifier"));
-            fnType(r, arity, sctx, position);
+            fnUpdate(what, arity, sctx, position);
 
         } else if (ps.startsWith("EQName/VarName/VarRef/")) {
-            r.type = WhatType.VarRef;
-            const qname = sctx.resolveQName(r.value, position);
-            r.qname=qname;
+            what.type = WhatType.VarRef;
+            const qname = sctx.resolveQName(what.value, position);
+            what.qname = qname;
             const v = sctx.getVariable(qname);
-            r.value = '$' + r.value;
-            r.get = v;
+            what.value = '$' + what.value;
+            what.get = v;
 
-        } else if (path.includes("NamedFunctionRef")) {    
+        } else if (path.includes("NamedFunctionRef")) {
             const arity = getArity(ancestor(node, "NamedFunctionRef"));
-            fnType(r, arity, sctx, position);
-            r.type = WhatType.NamedFunctionRef;
+            fnUpdate(what, arity, sctx, position);
+            what.type = WhatType.NamedFunctionRef;
+
+        } else if (path.includes("ModuleImport")) {
+            what.type = WhatType.ModuleImport;
 
         } else if (path.includes("SequenceType")) {
-            r.type = WhatType.SequenceType;
+            what.type = WhatType.SequenceType;
 
         } else if (path.includes("Annotation")) {
-            r.type = WhatType.Annotation;
+            what.type = WhatType.Annotation;
 
         } else if (path.includes("Constructor")) {
-            r.type =WhatType.Constructor;
-            r.value = "~~constructor";
+            what.type = WhatType.Constructor;
+            what.value = "~~constructor";
 
         } else if (path.includes("StringConstructor")) {
-            r.type = WhatType.StringConstructor;
-            r.value = "``[..";
+            what.type = WhatType.StringConstructor;
+            what.value = "``[..";
 
         } else if (path.includes("Literal")) {
-            r.type = WhatType.Literal;
+            what.type = WhatType.Literal;
 
         }
     }
-    return r;
+    return what;
 }
 
 // Calculate Arity from functioncall or ArrowFunctionSpecifier
 function calcArity(node: Ast): number {
     if (node.name === "ArrowFunctionSpecifier") {
         // find following arglist
-        const childs=node.getParent.children;
-        const pos=childs.indexOf(node);
-        return 1+ get(childs[1+pos], [ 'Argument']).length;
+        const childs = node.getParent.children;
+        const pos = childs.indexOf(node);
+        return 1 + get(childs[1 + pos], ['Argument']).length;
     } else {
         return get(node, ['ArgumentList', 'Argument']).length;
     }
@@ -124,18 +132,27 @@ function getArity(node: Ast): number {
 }
 
 //update What for function
-function fnType(r: What, arity: number, sctx: Sctx, position: Position) {
-    r.type = WhatType.FunctionCall;
-    const qname = sctx.resolveQName(r.value, position);
-    r.qname=qname;
-    const lib = sctx.getFunction(qname, arity);
-    r.get = lib;
-    let result = lib.return;
-    result = result ?? lib.type;
+function fnUpdate(what: What, arity: number, sctx: Sctx, position: Position) {
+    what.type = WhatType.FunctionCall;
+    const qname = sctx.resolveQName(what.value, position);
+    what.qname = qname;
+    const isJava = qname.uri.startsWith("java:");
+    if (isJava) {
+        what.display = "JAVA: " + qname.uri.substring(5);
+    } else {
+        const lib = sctx.getFunction(qname, arity);
+        if (!lib) {
+            console.log("not found: ", qname, arity)
+        } else {
+            what.get = lib;
+            let result = lib?.return;
+            result = result ?? lib?.type;
 
-    r.display = r.value
-        + "( " + r.get.params.join(", ") + " )"
-        + (result ? " as " + result : "");
+            what.display = what.value
+                + "( " + what.get?.params.join(", ") + " )"
+                + (result ? " as " + result : "");
+        }
+    }
 }
 
 export function markdownString(value: string): MarkdownString {

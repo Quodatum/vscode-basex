@@ -1,5 +1,5 @@
 import { window } from "vscode";
-import { TextEditor, TextEditorEdit, ViewColumn } from "vscode";
+import { TextEditor, TextEditorEdit} from "vscode";
 
 import { Configuration, ExtensionState } from "../../common";
 import * as constants from "../../constants";
@@ -16,7 +16,7 @@ class HistoricQuery {
     query: string;
 }
 
-export async function evaluateXPath(editor: TextEditor, edit: TextEditorEdit): Promise<void> {
+export async function evaluateXPath(editor: TextEditor, _edit: TextEditorEdit): Promise<void> {
     // if there is no workspace, we will track queries in the global Memento
     const memento = ExtensionState.workspace || ExtensionState.global;
 
@@ -72,6 +72,7 @@ export async function evaluateXPath(editor: TextEditor, edit: TextEditorEdit): P
     outputChannel.append("\n");
 
     if (evalResult.type === EvaluatorResultType.NODE_COLLECTION) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (evalResult.result as Node[]).forEach((node: any) => {
             outputChannel.appendLine(`[Line ${node.lineNumber}] ${node.localName}: ${node.textContent}`);
         });

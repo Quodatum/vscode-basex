@@ -1,5 +1,5 @@
 ---
-title: Installation guide
+title: Manual Installation
 summary: How to install vscode-basex.
 authors:
     - Andy Bunce

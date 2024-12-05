@@ -1,20 +1,21 @@
 /*
 Execute command line async. result is promise<any> 
 */
-import child_process = require("child_process");
-import BufferList = require('bl');
+import * as child_process  from "child_process";
+import * as bl from 'bl';
+import { BufferList } from "bl/BufferList";
 
 const isWin: boolean = process.platform === "win32";
 
 export class ChildProcess {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static async spawn(executable: string, args: string[]): Promise<any> {
+  static async spawn(executable: string, args: string[]): Promise<BufferList|null> {
     const child = isWin
       ? child_process.spawn(process.env.comspec, ["/c", executable, ...args])
       : child_process.spawn(executable, args);
 
-    const stdout = child.stdout ? new BufferList() : null;
-    const stderr = child.stderr ? new BufferList() : null;
+    const stdout = child.stdout ? new bl.BufferList() : null;
+    const stderr = child.stderr ? new bl.BufferList() : null;
 
     if (child.stdout) {
       child.stdout.on('data', data => {

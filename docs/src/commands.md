@@ -9,7 +9,7 @@ date: 2023-07-23
 # Commands 
 Commands can be invoked from the `command palette` using `F1` or `Ctrl+Shift+P`.
 The command title are all prefixed with 'BaseX Tools'.
-
+[commands](commands/installation.md)
 
 ## basexTools.xqParse
 	BaseX Tools: Parse of XQuery source (xml)		editor/title

@@ -1,5 +1,5 @@
 import { Position } from "vscode";
-import { DOMParser } from "xmldom";
+import * as slimdom from "slimdom";
 
 import { XmlTraverser } from "../common";
 
@@ -7,7 +7,7 @@ export class XPathBuilder {
 
     private _xmlTraverser: XmlTraverser;
 
-    constructor(private _xmlDocument: Document) {
+    constructor(private _xmlDocument: slimdom.Document) {
         this._xmlTraverser = new XmlTraverser(this._xmlDocument);
     }
 
@@ -17,13 +17,13 @@ export class XPathBuilder {
         return this._buildCore(selectedNode);
     }
 
-    private _buildCore(selectedNode: Node): string {
+    private _buildCore(selectedNode: slimdom.Node): string {
         if (selectedNode === this._xmlDocument.documentElement) {
             return `/${selectedNode.nodeName}`;
         }
 
         if (!this._xmlTraverser.isElement(selectedNode)) {
-            return `${this._buildCore((selectedNode as any).ownerElement)}/@${selectedNode.nodeName}`;
+            return `${this._buildCore((selectedNode as slimdom.Element))}/@${selectedNode.nodeName}`;
         }
 
         else if (this._xmlTraverser.hasSimilarSiblings(selectedNode)) {

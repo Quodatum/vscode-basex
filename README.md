@@ -16,7 +16,7 @@ A key feature is a parser for [XQuery](https://quodatum.github.io/basex-xqparse/
 
 # Features
 See the [documentation](https://quodatum.github.io/vscode-basex/) for more detail
-* Works in a Browser using [Code-server](https://github.com/coder/code-server) or [Github code-server](https://github.com/codespaces)
+* Works in a Browser using [Code-server](https://github.com/coder/code-server) or [Github codespaces](https://github.com/codespaces)
 ## XQuery
 * [Linting]
 * [Code Completion]
@@ -54,7 +54,9 @@ npm run compile
 vsce package
 ```
 ## Documentation
-Uses [mkdocs-material](https://github.com/squidfunk/mkdocs-material)
+Uses [mkdocs-material](https://github.com/squidfunk/mkdocs-material) with
+[mike](https://github.com/jimporter/mike) for versioning. 
+Docker is used to package the documentation tools.
 
  
 # Inspiration

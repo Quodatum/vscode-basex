@@ -1,5 +1,5 @@
 import { workspace, Uri } from "vscode";
-
+import {scope} from "."
 export const ExtensionTopLevelSection = "basexTools";
 
 export class Configuration {
@@ -45,8 +45,11 @@ export class Configuration {
     static set xqueryProfile(value: string) {
        this._setForWindow("xquery.profile",value);
       }
-    static xqueryShowHovers(): boolean {
+    static get xqueryShowHovers(): boolean {
         return this._getForWindow<boolean>("xquery.showHovers");
+    }
+    static set xqueryShowHovers(value: boolean) {
+        this._setForWindow("xquery.showHovers",value);
     }
 
     static enforcePrettySelfClosingTagOnFormat(resource: Uri): boolean {
@@ -70,9 +73,10 @@ export class Configuration {
     }
 
     private static _getForWindow<T>(section: string): T  {
-        return workspace.getConfiguration(ExtensionTopLevelSection).get<T>(section);
+        return workspace.getConfiguration(ExtensionTopLevelSection,scope()).get<T>(section);
     }
-    private static _setForWindow(section: string,value:string)  {
-         workspace.getConfiguration(ExtensionTopLevelSection).update(section,value);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private static _setForWindow(section: string,value:any)  {
+         workspace.getConfiguration(ExtensionTopLevelSection,scope()).update(section,value);
     }
 }

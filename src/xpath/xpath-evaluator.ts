@@ -1,7 +1,7 @@
 import * as xpath from "xpath";
-import { SelectedValue, XPathSelect } from "xpath";
-import { DOMParser } from "@xmldom/xmldom";
 
+import { sync } from 'slimdom-sax-parser';
+import * as slimdom from "slimdom";
 export class EvaluatorResult {
     type: EvaluatorResultType;
     result: Node[] | number | string | boolean;
@@ -26,16 +26,16 @@ export class XPathResultTypes {
 }
 
 export class XPathEvaluator {
-    static evaluate(query: string, xml: string, ignoreDefaultNamespace: boolean): EvaluatorResult {
-        if (ignoreDefaultNamespace) {
+    static evaluate(query: string, xml: string, _ignoreDefaultNamespace: boolean): EvaluatorResult {
+        /* if (ignoreDefaultNamespace) {
             xml = xml.replace(/xmlns=".+"/g, (match: string) => {
                 return match.replace(/xmlns/g, "xmlns:default");
             });
-        }
+        } */
 
         const nodes = new Array<Node>();
-        const xdoc: Document = new DOMParser().parseFromString(xml, "text/xml");
-        const resolver = (xpath as any).createNSResolver(xdoc);
+        const xdoc: slimdom.Document = sync(xml,{ position: true });
+
         const xPathResult  = xpath.selectWithResolver(query, xdoc, resolver, true);
 
         const evaluatorResult = new EvaluatorResult();

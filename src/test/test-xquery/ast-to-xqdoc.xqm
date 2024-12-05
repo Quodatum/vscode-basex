@@ -145,6 +145,7 @@ as element(xqdoc:variable){
 		</xqdoc:variable>
 };
 
+
 declare %private function xqdc:functions($module as element(Module), $opts as map(*))
 as element(xqdoc:functions)
 {
@@ -152,7 +153,7 @@ as element(xqdoc:functions)
   return <xqdoc:functions>{  
           $items!xqdc:function(., $opts)
           ,xqdc:main($module/MainModule/QueryBody)
-        (:~ @TODO
+        (: @TODO
         if ($body) then (
               insert node xqp:main($body) as last into xqdoc:functions,
               insert node <xqdoc:namespace prefix="local" uri="http://www.w3.org/2005/xquery-local-functions"/>
@@ -189,7 +190,7 @@ as element(xqdoc:function){
       xqcom:comment(util:or($fundecl/..,$fundecl/../Prolog))}
 		<xqdoc:name>{ 
       $fundecl/EQName/string() 
-      (:~ =>trace("FUN: ") ~:)
+      (: =>trace("FUN: ") :)
       }</xqdoc:name>
 
      { $fundecl/parent::AnnotatedDecl/Annotation

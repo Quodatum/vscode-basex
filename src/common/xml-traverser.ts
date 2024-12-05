@@ -1,23 +1,24 @@
 import { Position } from "vscode";
-
+import * as slimdom from "slimdom";
+import * as slimdom2 from "slimdom-sax-parser";
 export class XmlTraverser {
 
-    constructor(private _xmlDocument: Document) { }
+    constructor(private _xmlDocument: slimdom2.Document) { }
 
-    get xmlDocument(): Document {
+    get xmlDocument(): slimdom.Document {
         return this._xmlDocument;
     }
 
-    set xmlDocument(value: Document) {
+    set xmlDocument(value: slimdom.Document) {
         this._xmlDocument = value;
     }
 
-    getChildAttributeArray(node: Element): any[] {
+    getChildAttributeArray(node: slimdom.Element): unknown[] {
         if (!node.attributes) {
             return [];
         }
 
-        const array = new Array<any>();
+        const array = new Array<unknown>();
 
         for (let i = 0; i < node.attributes.length; i++) {
             array.push(node.attributes[i]);
@@ -26,43 +27,30 @@ export class XmlTraverser {
         return array;
     }
 
-    getChildElementArray(node: Node): any[] {
-        if (!node.childNodes) {
-            return [];
-        }
+    getChildElementArray(element: slimdom.Element): slimdom.Element[] {
+        return element.children;
 
-        const array = new Array<any>();
-
-        for (let i = 0; i < node.childNodes.length; i++) {
-            const child = node.childNodes[i];
-
-            if (this.isElement(child)) {
-                array.push(child);
-            }
-        }
-
-        return array;
     }
 
-    getElementAtPosition(position: Position): Element {
+    getElementAtPosition(position: Position): slimdom.Element {
         const node = this.getNodeAtPosition(position);
 
         return this.getNearestElementAncestor(node);
     }
 
-    getNearestElementAncestor(node: Node): Element {
+    getNearestElementAncestor(node: slimdom.Node): slimdom.Element {
         if (!this.isElement) {
             return this.getNearestElementAncestor(node.parentNode);
         }
 
-        return <Element>node;
+        return <slimdom.Element>node;
     }
 
-    getNodeAtPosition(position: Position): Node {
+    getNodeAtPosition(position: Position): slimdom.Node {
         return this._getNodeAtPositionCore(position, this._xmlDocument.documentElement);
     }
 
-    getSiblings(node: Node): Node[] {
+    getSiblings(node: slimdom.Node): slimdom.Node[] {
         if (this.isElement(node)) {
             return this.getSiblingElements(node);
         }
@@ -70,34 +58,34 @@ export class XmlTraverser {
         return this.getSiblingAttributes(node);
     }
 
-    getSiblingAttributes(node: Node): Node[] {
-        return this.getChildAttributeArray(<Element>node.parentNode);
+    getSiblingAttributes(node: slimdom.Node): slimdom.Node[] {
+        return this.getChildAttributeArray(<slimdom.Element>node.parentNode);
     }
 
-    getSiblingElements(node: Node): Node[] {
+    getSiblingElements(node: slimdom.Node): slimdom.Node[] {
         return this.getChildElementArray(node.parentNode);
     }
 
-    hasSimilarSiblings(node: Node): boolean {
+    hasSimilarSiblings(node: slimdom.Node): boolean {
         if (!node || !node.parentNode || !this.isElement(node)) {
             return false;
         }
 
-        const siblings = this.getChildElementArray(<Element>node.parentNode);
+        const siblings = this.getChildElementArray(<slimdom.Element>node.parentNode);
 
-        return (siblings.filter(x => x.tagName === (node as Element).tagName).length > 1);
+        return (siblings.filter(x => x.tagName === (node as slimdom.Element).tagName).length > 1);
     }
 
-    isElement(node: Node): boolean {
-        return (!!node && !!(node as Element).tagName);
+    isElement(node: slimdom.Node): boolean {
+        return (!!node && !!(node as slimdom.Element).tagName);
     }
 
-    private _getNodeAtPositionCore(position: Position, contextNode: Node): Node {
+    private _getNodeAtPositionCore(position: Position, contextNode: slimdom.Node): slimdom.Node {
         if (!contextNode) {
             return undefined;
         }
 
-        const lineNumber = (contextNode as any).lineNumber;
+        const lineNumber = contextNode.lineNumber;
         const columnNumber = (contextNode as any).columnNumber;
         const columnRange = [columnNumber, (columnNumber + (this._getNodeWidthInCharacters(contextNode) - 1))];
 
@@ -112,7 +100,7 @@ export class XmlTraverser {
 
         if (this.isElement(contextNode)) {
             // if the element contains text, check to see if the cursor is present in the text
-            const textContent = (contextNode as Element).textContent;
+            const textContent = (contextNode as slimdom.Element).textContent;
 
             if (textContent) {
                 columnRange[1] = (columnRange[1] + textContent.length);
@@ -122,8 +110,8 @@ export class XmlTraverser {
                 }
             }
 
-            const children = [...this.getChildAttributeArray(<Element>contextNode), ...this.getChildElementArray(contextNode)];
-            let result: Node;
+            const children = [...this.getChildAttributeArray(<slimdom.Element>contextNode), ...this.getChildElementArray(contextNode)];
+            let result: slimdom.Node;
 
             for (let i = 0; i < children.length; i++) {
                 const child = children[i];
@@ -143,7 +131,7 @@ export class XmlTraverser {
         return (lineNumber === (position.line + 1) && ((position.character + 1) >= columnRange[0] && (position.character + 1) < columnRange[1]));
     }
 
-    private _getNodeWidthInCharacters(node: Node) {
+    private _getNodeWidthInCharacters(node: slimdom.Node) {
         if (this.isElement(node)) {
             return (node.nodeName.length + 2);
         }

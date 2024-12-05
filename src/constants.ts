@@ -3,8 +3,9 @@ export namespace commands {
     export const xqExecute = "basexTools.executeXQuery";
     export const xqDoc = "basexTools.xqDoc";  // used as url scheme
     export const xqParse = "basexTools.xqParse"; // used as url scheme
-    export const xqProcessor = "basexTools.profile"; 
+    export const xqProfile = "basexTools.profile"; 
     export const xqSelectDeclaration = "basexTools.selectDeclaration";
+    export const xqToggleHoverDebug = "basexTools.toggleHoverDebug";
     export const xqLibrary = "basexTools.xqLibrary";           
     export const xqLintReport = "basexTools.xqLintReport";
     export const xqClearDiagnostics ="basexTools.clearDiagnostics"

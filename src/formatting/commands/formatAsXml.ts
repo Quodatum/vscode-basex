@@ -5,7 +5,7 @@ import { NativeCommands } from "../../common";
 import { XmlFormatterFactory } from "../xml-formatter";
 import { XmlFormattingEditProvider } from "../xml-formatting-edit-provider";
 
-export function formatAsXml(editor: TextEditor, edit: TextEditorEdit): void {
+export function formatAsXml(editor: TextEditor, _edit: TextEditorEdit): void {
     const xmlFormattingEditProvider = new XmlFormattingEditProvider(XmlFormatterFactory.getXmlFormatter());
     const formattingOptions = {
         insertSpaces: <boolean>editor.options.insertSpaces,

@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { FormattingOptions } from "vscode";
+
 
 import { TestDataLoader } from "./test-utils/test-data-loader";
 

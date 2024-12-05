@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.2.7",
+  "version": "0.2.11",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -32,28 +32,21 @@
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
-  "files": [
-    "node_modules/@quodatum/xq-catalogs"
-  ],
+ 
   "contributes": {
     "taskDefinitions": [
       {
         "type": "basex",
         "required": [
-            "task"
+          "script"
         ],
         "properties": {
-            "task": {
-                "type": "string",
-                "description": "The Rake task to customize"
-            },
-            "file": {
-                "type": "string",
-                "description": "The Rake file that provides the task. Can be omitted."
-            }
-        },
-        "when": "editorLangId == xquery || editorLangId == basexscript.cmd || editorLangId == basexscript.xml"
-    }
+          "script": {
+            "type": "string",
+            "description": "The script to execute"
+          }
+        }
+      }
     ],
     "commands": [
       {
@@ -73,6 +66,12 @@
         "title": "BaseX Tools: debug xqDoc (json)",
         "shortTitle": "BaseX Tools: XQdoc for current",
         "icon": "$(bracket-dot)",
+        "enablement": "editorLangId == xquery"
+      },
+      {
+        "command": "basexTools.toggleHoverDebug",
+        "title": "BaseX Tools: Toggle diagnostic hover info",
+        "shortTitle": "BaseX Tools: hover diags",
         "enablement": "editorLangId == xquery"
       },
       {
@@ -135,12 +134,14 @@
           "basexTools.xquery.profile": {
             "type": "string",
             "default": "basex-10",
-            "description": "Identifier for the XQuery profile. Determines available modules"
+            "description": "Identifier for the XQuery profile. Determines available modules",
+            "scope": "resource"
           },
           "basexTools.xquery.showHovers": {
             "type": "boolean",
             "default": false,
-            "description": "Show Diagnostic info in hovers for XQuery source."
+            "description": "Show Diagnostic info in hovers for XQuery source.",
+            "scope": "resource"
           },
           "basexTools.xquery.suppressErrors": {
             "type": "array",
@@ -408,29 +409,34 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint src",
     "test": "npm run compile && mocha './out/test/**/*.js'"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.15.0",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^14.18.12",
+    "@types/node": "^22.9.0",
     "@types/readable-stream": "^2.3.15",
     "@types/vscode": "^1.73.0",
     "@types/xmldom": "^0.1.31",
-    "@typescript-eslint/eslint-plugin": "^5.13.0",
-    "@typescript-eslint/parser": "^5.13.0",
+    "@typescript-eslint/eslint-plugin": "^8.14.0",
+    "@typescript-eslint/parser": "^8.14.0",
     "@vscode/test-electron": "^2.1.3",
-    "esbuild": "^0.18.17",
-    "eslint": "^8.10.0",
+    "esbuild": "^0.24.0",
+    "eslint": "9.14.0",
     "glob": "^7.2.0",
+    "globals": "^15.12.0",
     "mocha": "^9.2.1",
-    "typescript": "^4.7.3"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.14.0"
   },
   "dependencies": {
-    "@quodatum/xqlint": "^0.6.0",
-    "@xmldom/xmldom": "^0.8.10",
-    "bl": "^6.0.4",
+    "@quodatum/xqlint": "^0.6.2",
+    "bl": "^6.0.16",
+    "fontoxpath": "^3.33.0",
+    "slimdom-sax-parser": "1.5.3",
     "xpath": "^0.0.33"
   }
 }

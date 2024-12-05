@@ -16,7 +16,7 @@ const hasDef = [WhatType.FunctionCall, WhatType.NamedFunctionRef, WhatType.VarRe
 export class XQueryDefinitionProvider implements vscode.DefinitionProvider {
 
 	public provideDefinition(document: vscode.TextDocument, position: vscode.Position,
-		token: vscode.CancellationToken): vscode.Definition | Thenable<vscode.Definition> {
+		_token: vscode.CancellationToken): vscode.Definition | Thenable<vscode.Definition> {
 		const linter = xqLinters.xqlint(document.uri);
 		const what = inspectAst(linter, position);
 		if (!hasDef.includes(what.type)) return undefined;

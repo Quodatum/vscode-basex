@@ -2,7 +2,7 @@
 import * as vscode from 'vscode';
 import {commands} from "./constants";
 import { isXqEditor,Configuration, affectsConfiguration} from "./common";
-import { XQLinters } from './xqlints';
+import { XQLinters } from './linters';
 
 let myStatusBarItem: vscode.StatusBarItem;
 
@@ -11,7 +11,7 @@ export function activate({ subscriptions }: vscode.ExtensionContext,
     diagnostics: XQLinters) {
     // create a new status bar item that we can now manage
     myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-    myStatusBarItem.command = commands.xqProcessor;
+    myStatusBarItem.command = commands.xqProfile;
 
     subscriptions.push(myStatusBarItem);
     const onDidActive = vscode.window.onDidChangeActiveTextEditor(updateStatusBarItem);

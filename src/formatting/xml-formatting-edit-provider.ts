@@ -1,10 +1,10 @@
-import { workspace } from "vscode";
+
 import {
-    CancellationToken, DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider, EndOfLine,
+    CancellationToken, DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider, 
     FormattingOptions, ProviderResult, Range, TextDocument, TextEdit
 } from "vscode";
 
-import * as constants from "../constants";
+
 import { XmlFormatter } from "./xml-formatter";
 import { XmlFormattingOptionsFactory } from "./xml-formatting-options";
 
@@ -21,7 +21,7 @@ export class XmlFormattingEditProvider implements DocumentFormattingEditProvider
         return this.provideDocumentRangeFormattingEdits(document, documentRange, options, token);
     }
 
-    provideDocumentRangeFormattingEdits(document: TextDocument, range: Range, options: FormattingOptions, token: CancellationToken): ProviderResult<TextEdit[]> {
+    provideDocumentRangeFormattingEdits(document: TextDocument, range: Range, options: FormattingOptions, _token: CancellationToken): ProviderResult<TextEdit[]> {
         const allXml = document.getText();
         let selectedXml = document.getText(range);
         const extFormattingOptions = XmlFormattingOptionsFactory.getXmlFormattingOptions(options, document);

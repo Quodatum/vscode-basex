@@ -12,4 +12,6 @@ tsconfig.json
 mkdocs.yml
 tslint.json
 notes.md
+eslint.config.mjs
+scripts/
 

@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 import { XQ_ACTION } from './codeactions-diagnostics';
 import { languageIds } from "../constants";
-import { XQLinters } from "../xqlints";
+import { XQLinters } from "../linters";
 import { isEmpty } from '../common'
 import { IXQParsedEvent } from '../xqdiagEvents';
 const COMMAND = 'code-actions-basex.command';
@@ -88,7 +88,7 @@ export class Emojinfo implements vscode.CodeActionProvider {
         vscode.CodeActionKind.QuickFix
     ];
 
-    provideCodeActions(document: vscode.TextDocument, range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, token: vscode.CancellationToken): vscode.CodeAction[] {
+    provideCodeActions(_document: vscode.TextDocument, _range: vscode.Range | vscode.Selection, context: vscode.CodeActionContext, _token: vscode.CancellationToken): vscode.CodeAction[] {
         // for each diagnostic entry that has the matching `code`, create a code action command
         return context.diagnostics
             .filter(diagnostic => diagnostic.code === XQ_ACTION)
@@ -103,7 +103,7 @@ export class Emojinfo implements vscode.CodeActionProvider {
         return action;
     }
 }
-async function insertSnippet(name: string) {
+async function _insertSnippet(name: string) {
     // the below uses a pre-existing snippet with a name 'Custom Header'
     await vscode.commands.executeCommand("editor.action.insertSnippet", { "name": name });
 }

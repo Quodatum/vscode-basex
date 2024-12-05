@@ -84,7 +84,7 @@ export function activateVirtualDocs({ subscriptions }: vscode.ExtensionContext) 
 // dump node to console
 export function xqLintReport(textEditor: vscode.TextEditor): void {
     const linter = xqLinters.xqlint(textEditor.document.uri);
-    textEditor.edit(textEdit => {
+    textEditor.edit(_textEdit => {
         const selections = textEditor.selections;
         selections.forEach(selection => {
             const pos = selection.start.translate(1, 1); //@TODO

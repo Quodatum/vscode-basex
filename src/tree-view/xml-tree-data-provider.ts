@@ -1,18 +1,19 @@
 import { window, workspace } from "vscode";
 import {
-    Event, EventEmitter, ExtensionContext, Position, TextEditor, TreeDataProvider,
+   EventEmitter, ExtensionContext, Position, TextEditor, TreeDataProvider,
     TreeItem, TreeItemCollapsibleState
 } from "vscode";
 
 import * as path from "path";
-import { DOMParser } from "@xmldom/xmldom";
+import { sync } from 'slimdom-sax-parser';
+import * as slimdom from "slimdom";
 
 import { Configuration, NativeCommands, XmlTraverser } from "../common";
 import * as constants from "../constants";
 
-export class XmlTreeDataProvider implements TreeDataProvider<any> {
-    private _onDidChangeTreeData: EventEmitter<any> = new EventEmitter<any>();
-    private _xmlDocument: Document;
+export class XmlTreeDataProvider implements TreeDataProvider<never> {
+    private _onDidChangeTreeData: EventEmitter<unknown> = new EventEmitter<unknown>();
+    private _xmlDocument: slimdom.Document;
     private _xmlTraverser: XmlTraverser;
 
 
@@ -34,7 +35,7 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
         return window.activeTextEditor || null;
     }
 
-    getTreeItem(element: Element): TreeItem | Thenable<TreeItem> {
+    getTreeItem(element: slimdom.Element): TreeItem | Thenable<TreeItem> {
         const enableMetadata = Configuration.enableXmlTreeViewMetadata;
         const enableSync = Configuration.enableXmlTreeViewCursorSync;
 
@@ -45,8 +46,8 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
         }
 
         else if (enableMetadata) {
-            const childAttributes = this._xmlTraverser.getChildAttributeArray(<Element>element);
-            const childElements = this._xmlTraverser.getChildElementArray(<Element>element);
+            const childAttributes = this._xmlTraverser.getChildAttributeArray(<slimdom.Element>element);
+            const childElements = this._xmlTraverser.getChildElementArray(<slimdom.Element>element);
             const totalChildren = (childAttributes.length + childElements.length);
 
             if (totalChildren > 0) {
@@ -66,7 +67,7 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
 
             }
 
-            if (this._xmlTraverser.hasSimilarSiblings(<Element>element) && enableSync) {
+            if (this._xmlTraverser.hasSimilarSiblings(<slimdom.Element>element) && enableSync) {
                 treeItem.label += ` [line ${(element as any).lineNumber}]`;
             }
         }
@@ -85,13 +86,13 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
         return treeItem;
     }
 
-    getChildren(element?: Node): Node[] | Thenable<Node[]> {
+    getChildren(element?: slimdom.Node): slimdom.Node[] | Thenable<slimdom.Node[]> {
         if (!this._xmlDocument) {
             this._refreshTree();
         }
 
         if (this._xmlTraverser.isElement(element)) {
-            return [].concat(this._xmlTraverser.getChildAttributeArray(<Element>element), this._xmlTraverser.getChildElementArray(<Element>element));
+            return [].concat(this._xmlTraverser.getChildAttributeArray(<slimdom.Element>element), this._xmlTraverser.getChildElementArray(<slimdom.Element>element));
         }
 
         else if (this._xmlDocument) {
@@ -103,7 +104,7 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
         }
     }
 
-    getParent(element: Node): Node {
+    getParent(element: slimdom.Node): slimdom.Node {
         if ((!element || !element.parentNode || !element.parentNode.parentNode) && !(element as any).ownerElement) {
             return undefined;
         }
@@ -111,11 +112,11 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
         return element.parentNode || (element as any).ownerElement;
     }
 
-    getNodeAtPosition(position: Position): Node {
+    getNodeAtPosition(position: Position): slimdom.Node {
         return this._xmlTraverser.getNodeAtPosition(position);
     }
 
-    private _getIcon(element: Node): any {
+    private _getIcon(element: slimdom.Node): any {
         let type = "element";
 
         if (!this._xmlTraverser.isElement(element)) {
@@ -146,16 +147,11 @@ export class XmlTreeDataProvider implements TreeDataProvider<any> {
         const xml = this.activeEditor.document.getText();
 
         try {
-            this._xmlDocument = new DOMParser({
-                errorHandler: () => {
-                    throw new Error("Invalid Document");
-                },
-                locator: {}
-            }).parseFromString(xml, "text/xml");
+            this._xmlDocument = sync(xml);
         }
 
         catch {
-            this._xmlDocument = new DOMParser().parseFromString("<InvalidDocument />", "text/xml");
+            this._xmlDocument = sync("<InvalidDocument />");
         }
 
         finally {

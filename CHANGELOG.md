@@ -1,3 +1,17 @@
+# 0.2.11 (2024-11-18)
+* Update dependancies 
+# 0.2.10 (2024-5-20)
+* ensure imports use profile setting
+* improve handling of Java calls
+* symbols as module children
+* local function call hover shows description
+# 0.2.9
+* symbols: add namespace, separate function arity from name
+* add toggleHoverDebug 
+# 0.2.8 (2024-02-20)
+* add update snippets
+* fix undefined (reading 'return') #21
+
 # 0.2.7 (2023-12-31)
 * goto definition for imported sources
 * rename cmd `basexTools.xquery.processor` to `basexTools.xquery.profile`

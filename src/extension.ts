@@ -6,7 +6,7 @@ import {
 import { channel, createDocumentSelector, ExtensionState, 
     Configuration, affectsConfiguration } from "./common";
 import { activate as statusbar } from "./statusbar";
-import { XQLinters, subscribeToDocumentChanges } from "./xqlints"
+import { XQLinters, subscribeToDocumentChanges } from "./linters"
 //import { activate  as activateActions} from "./xquery-cmds/xqactions";
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
 import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
@@ -14,7 +14,7 @@ import { xqLintReport, activateVirtualDocs } from "./linting";
 import { XmlTreeDataProvider } from "./tree-view";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 
-import { setProcessor, selectDeclaration, executeXQuery, libraryInfo } from "./xquery-cmds";
+import { registerXQueryCommands} from "./xquery-cmds";
 
 import * as constants from "./constants";
 import * as providers from "./providers/activate";
@@ -75,19 +75,16 @@ export function activate(context: ExtensionContext) {
     );
 
     /* XQuery Features */
-    context.subscriptions.push(
-        commands.registerTextEditorCommand(constants.commands.xqExecute, executeXQuery),
-        commands.registerTextEditorCommand(constants.commands.xqSelectDeclaration, selectDeclaration),
-        commands.registerTextEditorCommand(constants.commands.xqLibrary, libraryInfo),
-        commands.registerCommand(constants.commands.xqProcessor, setProcessor),
-        commands.registerCommand(constants.commands.xqClearDiagnostics, xqLinters.clear),
-    );
+    registerXQueryCommands(context);
+   
 
     // if changes to processor  then clear diagnostics
     workspace.onDidChangeConfiguration(event => {
         if (affectsConfiguration(event,'xquery.profile')) {
             xqLinters.clear();
             window.showInformationMessage("XQuery profile now: " + Configuration.xqueryProfile);
+        } else if(affectsConfiguration(event,'xquery.showHovers')){
+            window.showInformationMessage("XQuery hover diagnostics : " + Configuration.xqueryShowHovers)
         }
     })
 }

@@ -69,16 +69,51 @@
 		"prefix": "some",
 		"body": "some \\$${1:varname} in ${2:expr} satisfies ${3:expr}"
 	},
+	"declare namespace": {
+		"prefix": [
+			"declare",
+			"namespace"
+		],
+		"body": [
+			"declare ${1:prefix}='${2:namespace}';",
+			""
+		],
+		"description": "declare  namespace"
+	},
+	"declare base-uri": {
+		"prefix": [
+			"declare",
+			"baseuri"
+		],
+		"body": [
+			"declare base-uri '${1:uriliteral}';",
+			""
+		],
+		"description": "declare  base-uri"
+	},
+	"declare option": {
+		"prefix": [
+			"declare",
+			"option"
+		],
+		"body": [
+			"declare option ${1:eqname} '${2:string}';",
+			""
+		],
+		"description": "declare option"
+	},
 	"declare function": {
 		"prefix": [
 			"declare",
 			"function"
 		],
 		"body": [
-			"(:~ ${2:name} :)",
-			"declare function ${1:ns}:${2:name}(){",
+			"(:~ ${1:name} :)",
+			"declare function ${2:ns}:${1:name}()",
+			"as ${3:type}{",
 			"${3:expr}",
-			"};"
+			"};",
+			""
 		],
 		"description": "declare  function"
 	},
@@ -160,8 +195,74 @@
 	},
 	"cast": {
 		"body": "cast as ${1:atomicType}"
+	},
+	// Updates ***************
+	"update insert": {
+		"prefix": [
+			"update",
+			"insert"
+		],
+		"body": "insert node ${1:expr} into ${2:xpath}"
+	},
+	"update delete": {
+		"prefix": ["delete","update"],
+		"body": "delete node ${1:xpath}"
+	},
+	"update replace node": {
+		"prefix":["update","replace"],
+		"body": "replace node ${1:xpath} with ${2:expr}"
+	},
+	"update replace value": {
+		"prefix": [ "update",
+			"replace",
+			"value"
+		],
+		"body": "replace value of node ${1:xpath}  with ${2:expr}"
+	},
+	"update rename": {
+		"prefix": [
+			"update",
+			"rename"
+		],
+		"body": "rename node ${1:xpath} as ${2:eqname}"
+	},
+	"copy modify return": {
+		"prefix": [
+			"copy",
+			"modify",
+			"return"
+		],
+		"body": [
+			"copy \\$${1:varname} := ${2:node}",
+			"modify ${3:updates}",
+			"return \\$${1:varname}"
+		]
+	},
+	"transform with": {
+		"prefix": [
+			"transform",
+			"with",
+			"update"
+		],
+		"body": [
+			"${1:node} transform with {",
+			"    ${2:update}",
+			"}"
+		]
+	},
+	"transform update": {
+		"prefix": [
+			"transform",
+			"update"
+		],
+		"body": [
+			"${1:node} update {",
+			"${2:update}",
+			"}"
+		]
 	}
 }
+
 //snippet group
 //	group by $${1:varname} := ${2:expr}
 //snippet order
@@ -176,7 +277,3 @@
 //	unordered { ${1:expr} }
 //snippet treat 
 //	treat as ${1:expr}
-//snippet castable
-//	castable as ${1:atomicType}
-//snippet cast
-//	cast as ${1:atomicType}

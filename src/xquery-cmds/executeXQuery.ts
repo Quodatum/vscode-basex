@@ -8,7 +8,7 @@ import { Configuration, NativeCommands } from "../common";
 
 let outputChannel: OutputChannel;
 
-export async function executeXQuery(editor: TextEditor, edit: TextEditorEdit): Promise<void> {
+export async function executeXQuery(editor: TextEditor, _edit: TextEditorEdit): Promise<void> {
 
       const canEval = [constants.languageIds.xquery,
     constants.languageIds.bxsCmd,

@@ -83,8 +83,8 @@ export class XQLinters {
 
 // do the parse
 function linter(uri: vscode.Uri, document: string) {
-    const processor = Configuration.xqueryProfile;
-    const opts = { "processor": processor, "fileName": uri.fsPath };
+    const profile = Configuration.xqueryProfile;
+    const opts = { "processor": profile, "fileName": uri.fsPath };
     return new XQLint(document, opts);
 
 }
@@ -98,7 +98,7 @@ export function refreshDiagnostics(doc: vscode.TextDocument,
     xqLinters: XQLinters,
     reason: string): void {
     if (isNotXQDoc(doc)) return;
-    const editor = findEditor(doc);
+    const _editor = findEditor(doc);
 
     const isNew = !xqLinters.has(doc.uri);
     const refresh = reason === "change";

@@ -92,11 +92,9 @@ export class ClassicXmlFormatter implements XmlFormatter {
      */
     private _stripLineBreaks(options: XmlFormattingOptions, xml: string): string {
         let output = "";
-        const inTag = false;
-        const inTagName = false;
+        
         let inCdataOrComment = false;
-        const inAttribute = false;
-
+       
         let preserveSpace = false;
         let level = 0;
         let levelpreserveSpaceActivated = 0;

@@ -20,7 +20,7 @@ export class NativeCommands {
         commands.executeCommand("workbench.action.openGlobalSettings");
     }
 
-    static setContext(key: string, value: any): void {
+    static setContext(key: string, value: unknown): void {
         commands.executeCommand("setContext", key, value);
     }
 }

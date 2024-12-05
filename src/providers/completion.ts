@@ -12,7 +12,7 @@ import { XQLint, XQLintCompletion as XQLintCompletionItem } from '@quodatum/xqli
 export function activate(context: ExtensionContext) {
     const obj = {
         provideCompletionItems: async (document: TextDocument, position: Position,
-            token: CancellationToken, context: CompletionContext)
+            _token: CancellationToken, _context: CompletionContext)
             : Promise<CompletionList> => {
             const linter = xqLinters.xqlint(document.uri);
 

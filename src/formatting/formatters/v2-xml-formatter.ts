@@ -310,7 +310,7 @@ export class V2XmlFormatter implements XmlFormatter {
             const cc = xml[i];
             const nc = xml.charAt(i + 1);
             const nnc = xml.charAt(i + 2);
-            const pc = xml.charAt(i - 1);
+            const _pc = xml.charAt(i - 1);
 
             if (!inCommentOrCDATA && cc === "<" && nc === "!" && (nnc === "-" || nnc === "[")) {
                 inCommentOrCDATA = true;

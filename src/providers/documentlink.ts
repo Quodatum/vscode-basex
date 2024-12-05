@@ -5,7 +5,7 @@
  *  Licensed under the MIT License.
  *----------------------------------------------------------*/
 
-import {  DocLink } from '@quodatum/xqlint';
+
 import {
     ExtensionContext, languages, TextDocument, CancellationToken,
     DocumentLink, DocumentLinkProvider,Uri

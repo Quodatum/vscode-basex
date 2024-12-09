@@ -30,4 +30,5 @@ And [General](xquery/index.md)
 * [Tree view](xml/xml-tree-view.md)
 * [XPath evaluation](xml/xpath-evaluation.md)
 
-
+## Development
+* [Docs](dev/build-docs.md)

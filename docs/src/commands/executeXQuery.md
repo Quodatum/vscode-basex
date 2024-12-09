@@ -10,4 +10,4 @@ tags:
 ---
 
 	BaseX Tools: Execute XQuery using standalone BaseX		commandPalette
-see [Run XQuery code](xquery/xquery-script-execution.md)
+see [Run XQuery code](../xquery/xquery-script-execution.md)

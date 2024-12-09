@@ -31,7 +31,7 @@ console.log(formatted);
 
 ## XML
 ```xml
-<note>
+<note id="note1">
 <to>Tove</to>
 <from>Jani</from>
 <heading>Reminder</heading>

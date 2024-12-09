@@ -1,5 +1,7 @@
 {
     "recommendations": [
+        "redhat.vscode-xml",
+        "deltaxml.xslt-xpath"
      
     ]
 }

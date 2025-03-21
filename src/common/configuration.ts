@@ -39,6 +39,11 @@ export class Configuration {
         return this._getForWindow<string>("xquery.executionEngine");
     }
 
+    // arguments to executable
+    static get xqueryExecutionArgs(): string {
+        return this._getForWindow<string>("xquery.executionArgs");
+    }
+
     static get xqueryProfile(): string {
       return this._getForWindow<string>("xquery.profile");
     }

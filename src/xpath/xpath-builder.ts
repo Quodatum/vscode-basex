@@ -11,10 +11,10 @@ export class XPathBuilder {
         this._xmlTraverser = new XmlTraverser(this._xmlDocument);
     }
 
-    build(position: Position): string {
-        const selectedNode = this._xmlTraverser.getNodeAtPosition(position);
+    build(_position: Position): string {
+       
 
-        return this._buildCore(selectedNode);
+        return "@TODO";
     }
 
     private _buildCore(selectedNode: slimdom.Node): string {
@@ -26,12 +26,6 @@ export class XPathBuilder {
             return `${this._buildCore((selectedNode as slimdom.Element))}/@${selectedNode.nodeName}`;
         }
 
-        else if (this._xmlTraverser.hasSimilarSiblings(selectedNode)) {
-            const siblings = this._xmlTraverser.getSiblings(selectedNode);
-            const xPathIndex = (siblings.indexOf(selectedNode) + 1);
-
-            return `${this._buildCore(selectedNode.parentNode)}/${selectedNode.nodeName}[${xPathIndex}]`;
-        }
 
         else {
             return `${this._buildCore(selectedNode.parentNode)}/${selectedNode.nodeName}`;

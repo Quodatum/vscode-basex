@@ -20,11 +20,13 @@ export function activate(context: vscode.ExtensionContext, diagnosticCollectionX
     
     context.subscriptions.push(xqActionsDiagnostics);
     const update=function(event: IXQParsedEvent) {
+        const uri=event.uri;
         if (event.xqlint) {
-            console.log("Parsed: " + event.uri.toString());
-            xqActionsDiagnostics
+            console.log("Parsed: " + uri);
+            xqActionsDiagnostics.set(uri,undefined);
         } else {
-            console.log("Dropped: " + event.uri.toString());
+            console.log("Dropped: " + uri);
+            xqActionsDiagnostics.delete(uri);
         }
 
     };
@@ -51,7 +53,7 @@ export class XQActionProvider implements vscode.CodeActionProvider {
         vscode.CodeActionKind.QuickFix
     ];
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     public provideCodeActions(document: vscode.TextDocument, _range: vscode.Range): vscode.CodeAction[] | undefined {
         const actions = [];
         if (isEmpty(document)) {

@@ -66,7 +66,7 @@ export async function libraryInfo(textEditor: TextEditor): Promise<void> {
     if (pick) {
         //lib[pick].functions["http://basex.org/modules/admin#logs#0"]
         channel.log("libraryInfo: " + pick);
-        channel.log(lib[pick]);
+        //channel.log(lib[parseInt(pick)]);
         window.showInformationMessage("libraryInfo: " + pick);
     }
 }

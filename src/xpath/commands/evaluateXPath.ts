@@ -1,6 +1,6 @@
 import { window } from "vscode";
 import { TextEditor, TextEditorEdit} from "vscode";
-
+import { sync } from 'slimdom-sax-parser';
 import { Configuration, ExtensionState } from "../../common";
 import * as constants from "../../constants";
 
@@ -51,17 +51,8 @@ export async function evaluateXPath(editor: TextEditor, _edit: TextEditorEdit): 
 
     // run the query
     const xml = editor.document.getText();
-    let evalResult: EvaluatorResult;
-
-    try {
-        evalResult = XPathEvaluator.evaluate(query, xml, ignoreDefaultNamespace);
-    }
-
-    catch (error) {
-        console.error(error);
-        window.showErrorMessage(`Something went wrong while evaluating the XPath: ${error}`);
-        return;
-    }
+    
+  
 
     // show the results to the user
     const outputChannel = window.createOutputChannel("XPath Results");
@@ -71,16 +62,6 @@ export async function evaluateXPath(editor: TextEditor, _edit: TextEditorEdit): 
     outputChannel.appendLine(`XPath Query: ${query}`);
     outputChannel.append("\n");
 
-    if (evalResult.type === EvaluatorResultType.NODE_COLLECTION) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (evalResult.result as Node[]).forEach((node: any) => {
-            outputChannel.appendLine(`[Line ${node.lineNumber}] ${node.localName}: ${node.textContent}`);
-        });
-    }
-
-    else {
-        outputChannel.appendLine(`[Result]: ${evalResult.result}`);
-    }
 
     outputChannel.show(false);
 

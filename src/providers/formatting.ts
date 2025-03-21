@@ -18,10 +18,12 @@ export function activate(context: ExtensionContext) {
 }
 function format(xquery: string,document: TextDocument): string {
     channel.log("XQueryFormatter" + document.uri);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const linter = new (XQLint as any)(xquery, { "styleCheck": false });
     channel.appendLine(" linter hasSyntaxError: " + linter.hasSyntaxError());
     //if(linter.hasSyntaxError()+linter.hasSyntaxError()) throw new Error("XQuery syntax error")
     const ast = linter.getAST()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const formatter = new (CodeFormatter as any)(ast);
     const formatted = formatter.format().trim();
     channel.log("XQueryFormatter done");

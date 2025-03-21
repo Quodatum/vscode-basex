@@ -8,7 +8,6 @@ let _basexTaskProvider: vscode.Disposable | undefined;
 export class BasexTaskProvider implements vscode.TaskProvider {
 	static BasexType = 'basex';
 	private basexPromise: Thenable<vscode.Task[]> | undefined = undefined;
-	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor(_workspaceRoot: string) {
 		
 	}
@@ -25,6 +24,7 @@ export class BasexTaskProvider implements vscode.TaskProvider {
 		// Make sure that this looks like a basex task by checking that there is a task.
 		if (script) {
 			// resolveTask requires that the same definition object be used.
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const definition: BasexTaskDefinition = <any>_task.definition;
 			return new vscode.Task(definition,
 				_task.scope ?? vscode.TaskScope.Workspace,

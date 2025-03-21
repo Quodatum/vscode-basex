@@ -1,3 +1,8 @@
+# 0.2.12
+* mod Update dependancies
+* del XML treeview
+* add fontoxpath,slimdom-sax-parser
+* mod xquery language wordpattern
 # 0.2.11 (2024-11-18)
 * Update dependancies 
 # 0.2.10 (2024-5-20)

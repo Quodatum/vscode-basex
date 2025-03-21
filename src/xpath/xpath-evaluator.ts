@@ -26,48 +26,14 @@ export class XPathResultTypes {
 }
 
 export class XPathEvaluator {
-    static evaluate(query: string, xml: string, _ignoreDefaultNamespace: boolean): EvaluatorResult {
+    static evaluate(query: string, xml: string, _ignoreDefaultNamespace: boolean): string {
         /* if (ignoreDefaultNamespace) {
             xml = xml.replace(/xmlns=".+"/g, (match: string) => {
                 return match.replace(/xmlns/g, "xmlns:default");
             });
         } */
 
-        const nodes = new Array<Node>();
-        const xdoc: slimdom.Document = sync(xml,{ position: true });
-
-        const xPathResult  = xpath.selectWithResolver(query, xdoc, resolver, true);
-
-        const evaluatorResult = new EvaluatorResult();
-        evaluatorResult.type = EvaluatorResultType.SCALAR_TYPE;
-
-        switch (xPathResult.resultType) {
-            case XPathResultTypes.NUMBER_TYPE:
-                evaluatorResult.result = xPathResult.numberValue;
-                break;
-            case XPathResultTypes.STRING_TYPE:
-                evaluatorResult.result = xPathResult.stringValue;
-                break;
-            case XPathResultTypes.BOOLEAN_TYPE:
-                evaluatorResult.result = xPathResult.booleanValue;
-                break;
-            case XPathResultTypes.UNORDERED_NODE_ITERATOR_TYPE:
-            case XPathResultTypes.ORDERED_NODE_ITERATOR_TYPE:{
-                evaluatorResult.result = xPathResult.booleanValue;
-
-                let node: Node;
-
-                while ((node = xPathResult.iterateNext())) {
-                    nodes.push(node);
-                }
-
-                evaluatorResult.result = nodes;
-                evaluatorResult.type = EvaluatorResultType.NODE_COLLECTION;
-                break;
-            }
-        }
-
-
-        return evaluatorResult;
+        return "@TODO"
     }
+       
 }

@@ -8,7 +8,6 @@ import { BufferList } from "bl/BufferList";
 const isWin: boolean = process.platform === "win32";
 
 export class ChildProcess {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static async spawn(executable: string, args: string[]): Promise<BufferList|null> {
     const child = isWin
       ? child_process.spawn(process.env.comspec, ["/c", executable, ...args])

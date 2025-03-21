@@ -10,11 +10,13 @@ nav:
   - Working with XQuery: xquery/index.md
   - Commands: commands.md
   - Settings: settings.md
+  - Tags: tags.md
   - Development: dev/build-docs.md
   - About: mkdocs.md
 
 theme:
   name: "material"
+  logo: basex.png
   favicon: basex.png
 
 markdown_extensions:
@@ -34,10 +36,8 @@ markdown_extensions:
   - pymdownx.details
 
 plugins:
-  - tags:
-      tags_file: tags.md
+  - tags
   - search
 extra:
   version:
     provider: mike
-

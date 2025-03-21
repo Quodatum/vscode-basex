@@ -16,7 +16,7 @@ A key feature is a parser for [XQuery](https://quodatum.github.io/basex-xqparse/
 
 # Features
 See the [documentation](https://quodatum.github.io/vscode-basex/) for more detail
-* Works in a Browser using [Code-server](https://github.com/coder/code-server) or [Github codespaces](https://github.com/codespaces)
+* Works in a Browser with [Code-server](https://github.com/coder/code-server) or [Github codespaces](https://github.com/codespaces)
 ## XQuery
 * [Linting]
 * [Code Completion]

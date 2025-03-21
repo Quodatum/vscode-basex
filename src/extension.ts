@@ -1,6 +1,6 @@
 import {
     commands, languages, window, ExtensionContext,
-    TextEditorSelectionChangeKind, workspace
+    workspace
 } from "vscode";
 
 import { channel, createDocumentSelector, ExtensionState, 
@@ -11,7 +11,7 @@ import { XQLinters, subscribeToDocumentChanges } from "./linters"
 import { XmlFormatterFactory, XmlFormattingEditProvider } from "./formatting";
 import { formatAsXml, minifyXml, xmlToText, textToXml } from "./formatting/commands";
 import { xqLintReport, activateVirtualDocs } from "./linting";
-import { XmlTreeDataProvider } from "./tree-view";
+//import { XmlTreeDataProvider } from "./tree-view/index.ts.old";
 import { evaluateXPath, getCurrentXPath } from "./xpath/commands";
 
 import { registerXQueryCommands} from "./xquery-cmds";
@@ -50,7 +50,7 @@ export function activate(context: ExtensionContext) {
         languages.registerDocumentRangeFormattingEditProvider(xmlXsdDocSelector, xmlFormattingEditProvider),
 
     );
-    /* Tree View Features */
+    /* Tree View Features
     const treeViewDataProvider = new XmlTreeDataProvider(context);
     const treeView = window.createTreeView<Node>(constants.views.xmlTreeView, {
         treeDataProvider: treeViewDataProvider
@@ -67,7 +67,7 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(
         treeView
     );
-
+    */
     /* XPath Features */
     context.subscriptions.push(
         commands.registerTextEditorCommand(constants.commands.evaluateXPath, evaluateXPath),

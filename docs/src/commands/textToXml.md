@@ -6,7 +6,7 @@ authors:
 date: 2024-12-03
 tags:
   - xml
-  - commmand
+  - command
   
 ---
 	BaseX Tools: Convert text to XML (&lt;&gt; -> <>)		

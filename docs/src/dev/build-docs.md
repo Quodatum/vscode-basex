@@ -8,16 +8,26 @@ tags:
   - dev
 ---
 
-Uses [mkdocs-material](https://github.com/squidfunk/mkdocs-material) with
+The documentation website uses [mkdocs-material](https://github.com/squidfunk/mkdocs-material) with
 [mike](https://github.com/jimporter/mike) for versioning. 
 Docker is used to package the documentation tools. This can be built using the supplied Dockerfile. 
-
 ```
+docs\mkdocs-docker>docker build -t mkdocs-mike . --no-cache --pull
+```
+ `docs\run-docker.bat` will drop into a Unix bash shell.
+```
+git config --global --add safe.directory /usr/src/myap
+git config --global user.name "Andy Bunce"
+git config --global user.email "bunce.andy@gmail.com"
+
+mike set-default 0.2 --ignore-remote-status
 mike deploy 0.2 --ignore-remote-status
+mike serve
 ```
 # General
 !!! note
     currently this page is just used to test mkdocs features.
+
 * Gif images are 960x540
 
 # Highlighting samples

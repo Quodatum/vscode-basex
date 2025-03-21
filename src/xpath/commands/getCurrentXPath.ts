@@ -10,7 +10,8 @@ export function getCurrentXPath(editor: TextEditor, _edit: TextEditorEdit): void
         return;
     }
 
-    const document = sync(editor.document.getText()) as unknown as slimdom.Document;
+    const document = sync(editor.document.getText(), { position: true }) as unknown as slimdom.Document;
+    
     const xpath = new XPathBuilder(document).build(editor.selection.start);
 
     window.showInputBox({

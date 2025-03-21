@@ -21,7 +21,6 @@ export function activate(context: ExtensionContext) {
     );
 }
 class XQueryDocumentLinks implements DocumentLinkProvider {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     provideDocumentLinks = async (doc: TextDocument, _token: CancellationToken): Promise<DocumentLink[]> => {
         channel.start("Doclinks" , doc.uri);
         const linter =   xqLinters.xqlint(doc.uri); 

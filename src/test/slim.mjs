@@ -2,14 +2,15 @@
 import { sync } from 'slimdom-sax-parser';
 import fonto from 'fontoxpath';
 import * as fs from 'fs';
+import {resolve} from 'path';
 
  //https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
 const Node = {
   ELEMENT_NODE:1
 };
-const { evaluateXPath, evaluateXPathToString } = fonto;
+const { evaluateXPathToString } = fonto;
 const filePath = "../test/test-xml/function-catalog.xml"
-const txt = fs.readFileSync(filePath, "utf8")
+const txt = fs.readFileSync(resolve(import.meta.dirname, filePath), "utf8")
 
 const document = sync(txt, { position: true });
 

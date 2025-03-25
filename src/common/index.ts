@@ -7,4 +7,5 @@ export * from "./native-commands";
 export * from "./workspace";
 export * from "./xml-traverser";
 export * from "./xqlint";
+export * from "./secrets";
 

@@ -1,6 +1,10 @@
 import { workspace, Uri } from "vscode";
 import {scope} from "."
 export const ExtensionTopLevelSection = "basexTools";
+export type executionCommand = {
+    name: string;
+    cmd: string;
+};
 
 export class Configuration {
     static get enableXmlTreeView(): boolean {
@@ -26,24 +30,22 @@ export class Configuration {
     static get xmlFormatterImplementation(): string {
         return this._getForWindow<string>("xml.FormatterImplementation");
     }
-
-    static get xqueryExecutionArguments(): string[] {
-        return this._getForWindow<string[]>("xquery.executionArguments");
+    // arrayof command lines for Xquery execution
+    static get xqueryExecutionCommands():executionCommand[] {
+        return this._getForWindow<Array<{ name: string; cmd: string }>>("xquery.executionCommands");
     }
 
     static get xquerySuppressErrors(): string[] {
         return this._getForWindow<string[]>("xquery.suppressErrors");
     }
-    // path to executable
-    static get xqueryExecutionEngine(): string {
-        return this._getForWindow<string>("xquery.executionEngine");
+    // name of lastused xquery execution command
+    static get xqueryExecutionDefault(): string {
+        return this._getForWindow<string>("xquery.executionDefault");
     }
-
-    // arguments to executable
-    static get xqueryExecutionArgs(): string {
-        return this._getForWindow<string>("xquery.executionArgs");
+    static set xqueryExecutionDefault(value: string) {
+        this._setForWindow("xquery.executionDefault",value);
     }
-
+   
     static get xqueryProfile(): string {
       return this._getForWindow<string>("xquery.profile");
     }

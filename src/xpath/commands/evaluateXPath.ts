@@ -63,7 +63,7 @@ export async function evaluateXPath(editor: TextEditor, _edit: TextEditorEdit): 
     outputChannel.append("\n");
 
 
-    outputChannel.show(false);
+    outputChannel.show(true);
 
     if (persistQueries) {
         const historicQuery = new HistoricQuery(editor.document.uri.toString(), query);

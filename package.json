@@ -2,7 +2,7 @@
   "name": "vscode-basex",
   "displayName": "BaseX tools",
   "description": "BaseX tools: XQuery, XML, XPath Tools for Visual Studio Code",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "preview": true,
   "publisher": "quodatum",
   "author": "Andy Bunce (https://github.com/Quodatum)",
@@ -32,7 +32,6 @@
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
- 
   "contributes": {
     "taskDefinitions": [
       {
@@ -91,7 +90,7 @@
       },
       {
         "command": "basexTools.executeXQuery",
-        "title": "BaseX Tools: Run current file, XQuery or BXS, using standalone BaseX",
+        "title": "BaseX Tools: Run current file using XQuery execution settings",
         "when": "editorLangId == xquery || editorLangId == basexscript.cmd || editorLangId == basexscript.xml"
       },
       {
@@ -155,17 +154,41 @@
         "order": 2,
         "title": "XQuery Execute",
         "properties": {
-          "basexTools.xquery.executionArguments": {
+          "basexTools.xquery.executionCommands": {
             "type": "array",
-            "default": [],
-            "description": "Arguments to be passed to the XQuery execution engine.",
-            "scope": "window"
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "command": {
+                  "type": "string"
+                }
+              }
+            },
+            "default": [
+              {
+                "name": "basex",
+                "cmd": "basex {📁file}"
+              },
+              {
+                "name": "basexclient",
+                "cmd": "basexclient -Uadmin -P{🔒password}  -nlocalhost {📁file}"
+              },
+              {
+                "name": "saxon",
+                "cmd": "java -cp {🌐SAXON_HOME}/* net.sf.saxon.Query -q:{📁file}"
+              }
+            ],
+            "description": "Names and command lines used to run XQuery execution engines.",
+            "scope": "workspace"
           },
-          "basexTools.xquery.executionEngine": {
+          "basexTools.xquery.executionDefault": {
             "type": "string",
-            "default": "",
-            "description": "The path to the standalone BaseX executable. e.g. `basex.bat`",
-            "scope": "window"
+            "default": "basex",
+            "description": "Name of the default XQuery executionCommand",
+            "scope": "workspace"
           }
         }
       },
@@ -390,18 +413,16 @@
         }
       ]
     },
-    "views": {
-      
-    }
+    "views": {}
   },
   "scripts": {
     "vscode:prepublish": "npm run esbuild-base -- --minify",
     "esbuild-base": "esbuild ./src/extension.ts --bundle  --outfile=out/extension.js --external:vscode --external:@quodatum/xq-catalogs --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
-    "test-compile": "tsc -p ./",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "test-compile": "tsc ",
+    "compile": "tsc ",
+    "watch": "tsc -watch ",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "npm run compile && mocha './out/test/**/*.js'"

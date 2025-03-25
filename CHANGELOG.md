@@ -1,15 +1,21 @@
+# 0.2.13
+* [mod] rework xquery.executionCommands
+* [dev] upgrade to tsc Version 5.8.2 (non strict)
 # 0.2.12
 * mod Update dependancies
 * del XML treeview
 * add fontoxpath,slimdom-sax-parser
 * mod xquery language wordpattern
+
 # 0.2.11 (2024-11-18)
 * Update dependancies 
+
 # 0.2.10 (2024-5-20)
 * ensure imports use profile setting
 * improve handling of Java calls
 * symbols as module children
 * local function call hover shows description
+
 # 0.2.9
 * symbols: add namespace, separate function arity from name
 * add toggleHoverDebug 

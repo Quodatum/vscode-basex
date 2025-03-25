@@ -37,7 +37,7 @@ export class channel {
         _channel.appendLine(dump(obj))
     }
     static show() :void{
-        _channel.show()
+        _channel.show(true)
     }
     static start(action:string,uri:Uri):void{
       _channel.appendLine(`${ action}: ${uri.fsPath}`) 
@@ -47,4 +47,4 @@ channel.log(
   `Activate vscode-basex(${ packageJson.version }) *****************  XQLint(${ xqlint.version })`
 );
 channel.log(`todo`);
-_channel.show();
+_channel.show(true);

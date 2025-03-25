@@ -12,5 +12,6 @@
     "basexTools.xquery.processor": "basex-9",
     "basexTools.xquery.profile": "basex-10",
     "basexTools.xquery.showHovers": true,
-    "svg.preview.background": "transparent"
+    "svg.preview.background": "transparent",
+    "basexTools.xquery.executionDefault": "basexclient"
 }

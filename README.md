@@ -48,7 +48,7 @@ Run into a bug? Report it [here](https://github.com/Quodatum/vscode-basex/issues
 ```
 npm install
 npm install -g typescript #once
-npm install --global @vscode/vsce
+npm install --global @vscode/vsce 
 #
 npm run compile
 vsce package

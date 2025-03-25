@@ -5,6 +5,7 @@ import {
 
 import { channel, createDocumentSelector, ExtensionState, 
     Configuration, affectsConfiguration } from "./common";
+import { activate as secrets } from "./common";
 import { activate as statusbar } from "./statusbar";
 import { XQLinters, subscribeToDocumentChanges } from "./linters"
 //import { activate  as activateActions} from "./xquery-cmds/xqactions";
@@ -25,6 +26,7 @@ export const xqLinters = new XQLinters();
 
 export function activate(context: ExtensionContext) {
     channel.log("Extension activate");
+    secrets(context);
     ExtensionState.configure(context);
     statusbar(context, xqLinters);
     //activateActions(context,actionDiagnostics);

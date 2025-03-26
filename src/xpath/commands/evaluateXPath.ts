@@ -1,10 +1,14 @@
+/* 
+ given a xml doc and cursor loc display xpath in inputbox
+*/
 import { window } from "vscode";
 import { TextEditor, TextEditorEdit} from "vscode";
 import { sync } from 'slimdom-sax-parser';
+import {evaluateXPathToNodes} from 'fontoxpath';
 import { Configuration, ExtensionState } from "../../common";
 import * as constants from "../../constants";
 
-import { EvaluatorResult, EvaluatorResultType, XPathEvaluator } from "../xpath-evaluator";
+//import { EvaluatorResult, EvaluatorResultType, XPathEvaluator } from "../xpath-evaluator";
 
 class HistoricQuery {
     constructor(uri: string, query: string) {
@@ -46,13 +50,19 @@ export async function evaluateXPath(editor: TextEditor, _edit: TextEditorEdit): 
     if (!query) {
         return;
     }
-
-    const ignoreDefaultNamespace = Configuration.ignoreDefaultNamespace;
+    // TODO
+    const _ignoreDefaultNamespace = Configuration.ignoreDefaultNamespace;
 
     // run the query
     const xml = editor.document.getText();
-    
-  
+    const document = sync(xml,{ position: true });
+    let result;
+    try{
+      result=evaluateXPathToNodes(query,document,null, null, {});
+    }catch(error){
+        window.showErrorMessage(`XPath execution error:  ${error.message}`);
+        return 
+    }
 
     // show the results to the user
     const outputChannel = window.createOutputChannel("XPath Results");
@@ -61,7 +71,10 @@ export async function evaluateXPath(editor: TextEditor, _edit: TextEditorEdit): 
 
     outputChannel.appendLine(`XPath Query: ${query}`);
     outputChannel.append("\n");
-
+    outputChannel.append(`count: ${result.length}`);
+   result.forEach(v =>{
+    outputChannel.appendLine((v as Node).textContent);
+   });
 
     outputChannel.show(true);
 

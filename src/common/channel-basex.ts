@@ -1,7 +1,7 @@
 // debug messages
 import { OutputChannel, window,Uri } from "vscode";
 import  * as packageJson from '../../package.json';
-import  * as xqlint from '@quodatum/xqlint';
+//TODO import  * as xqlint from '@quodatum/xqlint';
 
 const _channel:OutputChannel = window.createOutputChannel("BaseX",{log:true});
 
@@ -44,7 +44,7 @@ export class channel {
     }
 }
 channel.log(
-  `Activate vscode-basex(${ packageJson.version }) *****************  XQLint(${ xqlint.version })`
+  `Activate vscode-basex(${ packageJson.version }) *****************  XQLint(${ 'xqlint.version' })`
 );
 channel.log(`todo`);
 _channel.show(true);

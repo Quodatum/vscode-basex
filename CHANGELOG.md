@@ -1,6 +1,7 @@
 # 0.2.13
 * [mod] rework xquery.executionCommands
-* [dev] upgrade to tsc Version 5.8.2 (non strict)
+* [mod] replace `xpath` with `fontoxpath`, remove unused `bl` package
+* [dev] upgrade to `tsc` Version 5.8.2 (using with non strict)
 # 0.2.12
 * mod Update dependancies
 * del XML treeview

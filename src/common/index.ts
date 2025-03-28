@@ -8,4 +8,4 @@ export * from "./workspace";
 export * from "./xml-traverser";
 export * from "./xqlint";
 export * from "./secrets";
-
+export * from "./pickone";

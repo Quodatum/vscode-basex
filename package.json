@@ -90,7 +90,7 @@
       },
       {
         "command": "basexTools.executeXQuery",
-        "title": "BaseX Tools: Run current file using XQuery execution settings",
+        "title": "BaseX Tools: Run current file via command line",
         "when": "editorLangId == xquery || editorLangId == basexscript.cmd || editorLangId == basexscript.xml"
       },
       {
@@ -420,8 +420,8 @@
     "esbuild-base": "esbuild ./src/extension.ts --bundle  --outfile=out/extension.js --external:vscode --external:@quodatum/xq-catalogs --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
-    "test-compile": "tsc ",
-    "compile": "tsc ",
+    "test-compile": "tsc -p ./test ",
+    "compile": "tsc -p ./",
     "watch": "tsc -watch ",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
@@ -449,9 +449,7 @@
   },
   "dependencies": {
     "@quodatum/xqlint": "^0.6.2",
-    "bl": "^6.0.19",
     "fontoxpath": "^3.33.0",
-    "slimdom-sax-parser": "1.5.3",
-    "xpath": "^0.0.33"
+    "slimdom-sax-parser": "1.5.3"
   }
 }

@@ -13,5 +13,5 @@
     "basexTools.xquery.profile": "basex-10",
     "basexTools.xquery.showHovers": true,
     "svg.preview.background": "transparent",
-    "basexTools.xquery.executionDefault": "saxon"
+    "basexTools.xquery.executionDefault": "basex"
 }

@@ -2,13 +2,11 @@
  given a xml doc and cursor loc display xpath in inputbox
 */
 import { window } from "vscode";
-import { TextEditor, TextEditorEdit} from "vscode";
+import { TextEditor, TextEditorEdit } from "vscode";
 import { sync } from 'slimdom-sax-parser';
-import {evaluateXPathToNodes} from 'fontoxpath';
+import { evaluateXPathToNodes } from 'fontoxpath';
 import { Configuration, ExtensionState } from "../../common";
 import * as constants from "../../constants";
-
-//import { EvaluatorResult, EvaluatorResultType, XPathEvaluator } from "../xpath-evaluator";
 
 class HistoricQuery {
     constructor(uri: string, query: string) {
@@ -47,21 +45,19 @@ export async function evaluateXPath(editor: TextEditor, _edit: TextEditorEdit): 
     });
 
     // showInputBox() will return undefined if the user dimissed the prompt
-    if (!query) {
-        return;
-    }
-    // TODO
+    if (!query) return;
+    // TODO is default fontopath behavior?
     const _ignoreDefaultNamespace = Configuration.ignoreDefaultNamespace;
 
     // run the query
     const xml = editor.document.getText();
-    const document = sync(xml,{ position: true });
+    const document = sync(xml, { position: true });
     let result;
-    try{
-      result=evaluateXPathToNodes(query,document,null, null, {});
-    }catch(error){
+    try {
+        result = evaluateXPathToNodes(query, document, null, null, {});
+    } catch (error) {
         window.showErrorMessage(`XPath execution error:  ${error.message}`);
-        return 
+        return
     }
 
     // show the results to the user
@@ -71,10 +67,13 @@ export async function evaluateXPath(editor: TextEditor, _edit: TextEditorEdit): 
 
     outputChannel.appendLine(`XPath Query: ${query}`);
     outputChannel.append("\n");
-    outputChannel.append(`count: ${result.length}`);
-   result.forEach(v =>{
-    outputChannel.appendLine((v as Node).textContent);
-   });
+    outputChannel.appendLine(`count: ${result.length}`);
+    result.forEach(v => {
+        const pos = `${v.position.line} ${v.position.column}`;
+        const start = v.position.start;
+        const text = xml.substring(start, start + 30);
+        outputChannel.appendLine(`[${pos}] ${text}`);
+    });
 
     outputChannel.show(true);
 

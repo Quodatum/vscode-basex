@@ -1,10 +1,9 @@
 import {
     commands, OutputChannel, window,
-    TextEditor, TextEditorEdit, QuickPickItem
-} from "vscode";
+    TextEditor, TextEditorEdit, QuickPickItem} from "vscode";
 
 import * as constants from "../constants";
-import { logdate } from "../common/channel-basex";
+import { logdate,pickOne  } from "../common";
 import { Configuration, executionCommand, ExtensionTopLevelSection } from "../common";
 import { exec } from 'child_process';
 class PickItem implements QuickPickItem {
@@ -34,10 +33,11 @@ export async function executeXQuery(editor: TextEditor, _edit: TextEditorEdit): 
 
     const active = Configuration.xqueryExecutionDefault;
     const execCmds = Configuration.xqueryExecutionCommands;
-
-    const items = execCmds.map(item => new PickItem(item));
-    const index=items.findIndex(item=>item.id==active);
-    const quickPick = window.createQuickPick();
+   
+    const items= execCmds.map(item => new PickItem(item));
+    const index=items.findIndex(item=>item.label==active);
+    const result=await pickOne(items,index);
+   /*  const quickPick = window.createQuickPick();
     quickPick.items = items;
     quickPick.title = 'select XQuery execution command ' + index;
     //quickPick.selectedItems = items.filter(item => item.id == active);
@@ -50,7 +50,7 @@ export async function executeXQuery(editor: TextEditor, _edit: TextEditorEdit): 
         });
         quickPick.onDidHide(() => resolve(undefined));
     });
-    quickPick.dispose();
+    quickPick.dispose(); */
     if (!result) return;
     Configuration.xqueryExecutionDefault = result.label;
     const cmd = expandCommand(result.detail, { "file": src });

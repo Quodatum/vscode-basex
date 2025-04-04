@@ -1,10 +1,7 @@
 import { workspace, Uri } from "vscode";
 import {scope} from "."
 export const ExtensionTopLevelSection = "basexTools";
-export type executionCommand = {
-    name: string;
-    cmd: string;
-};
+
 
 export class Configuration {
     static get enableXmlTreeView(): boolean {
@@ -31,9 +28,9 @@ export class Configuration {
         return this._getForWindow<string>("xml.FormatterImplementation");
     }
     // arrayof command lines for Xquery execution
-    static get xqueryExecutionCommands():executionCommand[] {
-        return this._getForWindow<Array<{ name: string; cmd: string }>>("xquery.executionCommands");
-    }
+ /*    static get xqueryExecutionCommands():executionCommand[] {
+        return this._getForWindow<executionCommand[] >("xquery.executionCommands");
+    } */
 
     static get xquerySuppressErrors(): string[] {
         return this._getForWindow<string[]>("xquery.suppressErrors");
@@ -86,4 +83,8 @@ export class Configuration {
     private static _setForWindow(section: string,value:any)  {
          workspace.getConfiguration(ExtensionTopLevelSection,scope()).update(section,value);
     }
+    // arrayof command lines for Xquery execution
+ static xqueryObject<T>(cmd:string):T[] {
+    return this._getForWindow<T[]>(cmd);
+}
 }

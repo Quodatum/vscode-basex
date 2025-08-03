@@ -2,7 +2,7 @@
 import { exec } from 'child_process';
 import { OutputChannel, window } from "vscode";
 
-export function spawn(cmd:string,outputChannel:OutputChannel){
+export function execute(cmd:string,outputChannel:OutputChannel){
     exec(cmd, (error, stdout, stderr) => {
         if (error) {
             outputChannel.appendLine(`Error executing batch file: ${error.message}`);

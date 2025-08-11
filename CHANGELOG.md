@@ -1,3 +1,5 @@
+# 0.2.14 2025-08-11
+* update dependances
 # 0.2.13
 * [mod] rework xquery.executionCommands
 * [mod] replace `xpath` with `fontoxpath`, remove unused `bl` package

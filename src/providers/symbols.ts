@@ -40,23 +40,16 @@ export class DocumentSymbols implements DocumentSymbolProvider {
     const name=xqdoc.prefixes[0] ?? "local";
     const mod=new DocumentSymbol(name, xqdoc?.ns, SymbolKind.Module, range, range);
     symbols.push(mod);
-    if (xqdoc.variables.length > 0) {
-      const vars: DocumentSymbol[] = [];
+    
       xqdoc.variables.forEach(function (v: VarDecl): void {
         const name = "$" + v.name;
         const description = v?.description;
         //channel.log(name + v);
         const range = importRange(v.pos);
         const info = new DocumentSymbol(name, description, SymbolKind.Variable, range, range);
-        vars.push(info);
+        symbols.push(info);
       });
-      const r = fullRange(document);
-      const vs = new DocumentSymbol("Variables", "" + xqdoc.variables.length, SymbolKind.Variable, r, r);
-      vs.children = vars;
-      mod.children.push(vs);
-    }
-    if (xqdoc.functions.length > 0) {
-      const fns: DocumentSymbol[] = [];
+     
       xqdoc.functions.forEach(function (f: FunDecl) {
         const name = f.name + " #" + f.params.length;
         const description = f?.description;
@@ -67,13 +60,10 @@ export class DocumentSymbols implements DocumentSymbolProvider {
         // f.params.forEach(function(paramName: string){
         //   info.children.push(makeSymbol(paramName, "", SymbolKind.Variable, f.pos))
         // });
-        fns.push(info);
+        symbols.push(info);
       });
-      const r = fullRange(document);
-      const vs = new DocumentSymbol("Functions", "" + xqdoc.functions.length, SymbolKind.Function, r, r);
-      vs.children = fns;
-      mod.children.push(vs);
-    }
+     
+
     if (xqdoc.queryBody) {
       const range = importRange(xqdoc.queryBody);
       const q = new DocumentSymbol("querybody", "", SymbolKind.Package, range, range);

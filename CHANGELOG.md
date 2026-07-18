@@ -1,5 +1,8 @@
+# 0.2.15 2025-10-06
+* fix symbols bug on missing fn result type
+* update dependencies 
 # 0.2.14 2025-08-11
-* update dependances
+* update dependencies 
 # 0.2.13
 * [mod] rework xquery.executionCommands
 * [mod] replace `xpath` with `fontoxpath`, remove unused `bl` package
